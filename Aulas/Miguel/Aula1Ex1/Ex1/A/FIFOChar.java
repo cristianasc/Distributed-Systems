@@ -1,13 +1,14 @@
-public class FIFOObj {
 
-	  private Object[] array;
+public class FIFOChar {
+
+	  private char[] array;
 	  private int size;
 	  private int head;  // proximo a sair (first)
 	  private int tail;  // proximo entrar (last)
 	  
 	   @SuppressWarnings(value = "unchecked")
-	  public FIFOObj(int capacity) {
-	    array = new Object[capacity];
+	  public FIFOChar(int capacity) {
+	    array = new char[capacity];
 	    size = 0;
 	    head = 0;
 	    tail = 0;
@@ -32,15 +33,15 @@ public class FIFOObj {
 
 	  public void out() {
 	    assert !isEmpty();
-	    //array[head] = null;  // para primitivos, nâ€žo seria necessÂ·rio...
+	    //array[head] = null;  // para primitivos, não seria necessário...
 	    head = next(head);
 	    size--;
 	    assert !isFull();
 	    assert invariant();
 	  }
 
-	  // devolve o primeiro elemento (o mais antigo, prÃ›ximo a sair)
-	  public Object peek() {
+	  // devolve o primeiro elemento (o mais antigo, próximo a sair)
+	  public char peek() {
 	    assert !isEmpty();
 	    return array[head];
 	  }
@@ -52,7 +53,7 @@ public class FIFOObj {
 	  public boolean isFull() { return size==array.length; }
 
 	  public void clear() {
-	    //while (!isEmpty()) out();  // para primitivos, naÄ± necessÂ·rio-
+	    //while (!isEmpty()) out();  // para primitivos, naõ necessário-
 	    size = 0;
 	    assert isEmpty();
 	  }
