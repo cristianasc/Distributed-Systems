@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package Horse;
 
 /**
  *
  * @author cristianacarvalho
  */
-public class General {
-    
+public enum HorseStates {
+    AT_THE_STABLE, AT_THE_PADDOCK, AT_THE_START_LINE, RUNNING, AT_THE_FINISH_LINE;
 }

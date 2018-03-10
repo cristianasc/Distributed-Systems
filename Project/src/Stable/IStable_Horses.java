@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package Stable;
 
 /**
  *
  * @author cristianacarvalho
  */
-public interface IStable {
-    void proceedToPaddock(); 
+public interface IStable_Horses {
     void proceedToStable();
 }

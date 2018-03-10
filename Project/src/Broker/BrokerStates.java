@@ -3,18 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package Broker;
 
 /**
  *
  * @author cristianacarvalho
  */
-public class ThreadHorses extends Thread{
-    
-    public final int id; 
-    
-    public ThreadHorses(int id){
-        this.id = id;
-        
-    }
+public enum BrokerStates {
+    OPENING_THE_EVENT, ANNOUNCING_NEXT_RACE, WAITING_FOR_BETS, 
+    SUPERVISING_THE_RACE, SETTLING_ACCOUNTS, PLAYING_HOST_AT_THE_BAR;
 }

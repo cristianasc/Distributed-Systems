@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package Stable;
 
 /**
  *
  * @author cristianacarvalho
  */
-public class ThreadBroker {
-    
+public interface IStable_Broker {
+    void summonHorsesToPaddock();
 }
