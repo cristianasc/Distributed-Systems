@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package RacingTrack;
 
 /**
  *
  * @author cristianacarvalho
  */
-public interface IPaddock {
-    void proceedToStartLine();   
+public interface IRacingTrack_Broker {
+    void startTheRace();
 }

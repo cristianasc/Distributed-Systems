@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package Paddock;
 
 /**
  *
  * @author cristianacarvalho
  */
-public interface IRacingTrack {
-    void makeAMove();
-    void hasFinishLineBeenCrossed();
-    void proceedToStable();
+public interface IPaddock_Spectator {
+    void proceedToPaddock();
 }

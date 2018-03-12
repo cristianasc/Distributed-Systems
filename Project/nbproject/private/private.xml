@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/cristianacarvalho/Desktop/UA/4Ano/SD/Distributed-Systems.git/Project/src/Stable/Stable.java</file>
-            <file>file:/Users/cristianacarvalho/Desktop/UA/4Ano/SD/Distributed-Systems.git/Project/src/Stable/IStable_Broker.java</file>
+            <file>file:/Users/cristianacarvalho/Desktop/UA/4Ano/SD/Distributed-Systems.git/Project/src/RacingTrack/IRacingTrack_Broker.java</file>
+            <file>file:/Users/cristianacarvalho/Desktop/UA/4Ano/SD/Distributed-Systems.git/Project/src/Paddock/Paddock.java</file>
+            <file>file:/Users/cristianacarvalho/Desktop/UA/4Ano/SD/Distributed-Systems.git/Project/src/RacingTrack/RacingTrack.java</file>
+            <file>file:/Users/cristianacarvalho/Desktop/UA/4Ano/SD/Distributed-Systems.git/Project/src/RacingTrack/IRacingTrack_Horses.java</file>
         </group>
     </open-files>
 </project-private>
