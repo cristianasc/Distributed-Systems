@@ -12,24 +12,31 @@ import java.util.HashMap;
  * @author cristianacarvalho
  */
 public class GeneralRepository {
-    private int nHorses, nSpectators, nRaces, nWinners;
+    private int nHorses, nSpectators, nRaces, distance;
     private HashMap<Integer, Integer> horsePositions;
-    private HashMap<Integer, Integer> horseSkiils;
+    private HashMap<Integer, Integer> horseSkills;
+    private HashMap<Integer, Bet> betsPerSpectator;
+    private int nWinners;
+    private int currentRace;
     
     /**
      * Construtor da classe
      *
-     * @param nSpect - Numero de espetadores
      * @param nHorses - Numero de cavalos
      * @param nRaces - Numero de corridas
+     * @param distance - Distância da pista
+     * @param betsPerSpectator - HashMap, com Key= ID do apostador e Value= valor
+     * obtido no total de corridas
      */
     
-    public GeneralRepository(int nHorses, int nSpectators, int nRaces){
+    public GeneralRepository(int nHorses, int nSpectators, int nRaces, int distance, int nWinners){
         this.nHorses = nHorses;
         this.nSpectators = nSpectators;
         this.nRaces = nRaces;
         horsePositions = new HashMap<>();
-        horseSkiils = new HashMap<>();
+        horseSkills = new HashMap<>();
+        betsPerSpectator = new HashMap<>();
+        this.nWinners = nWinners;
     }
     
     public int getnHorses(){
@@ -56,12 +63,12 @@ public class GeneralRepository {
         this.nRaces = nRaces;
     }
     
-    public int getHorseSkiils(int id) {
-        return horseSkiils.get(id);
+    public int getHorseSkills(int id) {
+        return horseSkills.get(id);
     }
     
-    public void setHorseSkiils(int id, int skiil) {
-        horseSkiils.put(id, skiil);
+    public void setHorseSkills(int id, int skiil) {
+        horseSkills.put(id, skiil);
     }
     
     public void gethorsePositions(int id) {
@@ -70,6 +77,28 @@ public class GeneralRepository {
     
     public void sethorsePositions(int id, int position) {
         horsePositions.put(id, position);
+    }
+    
+    public void setBetsPerSpectator(int ID, Bet bet) {
+        betsPerSpectator.put(ID, bet);
+    }
+    
+    /**
+     * Método para obter o numero de apostadores vencedores de uma corrida
+     *
+     * @return nWinners - Numero de vencedores
+     */
+    public int getnWinners() {
+        return nWinners;
+    }
+
+    /**
+     * Método para atualizar o numero de apostadores vencedores de uma corrida
+     *
+     * @param size - Numero de vencedores
+     */
+    public void setnWinners(int size) {
+        this.nWinners = size;
     }
     
 }
