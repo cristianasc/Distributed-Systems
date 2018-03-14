@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @author cristianacarvalho
  */
 public class GeneralRepository {
-    private int nHorses, nSpectators, nRaces, distance;
+    private int nHorses, nSpectators, nRaces, nWinners, distance;
     private HashMap<Integer, Integer> horsePositions;
     private HashMap<Integer, Integer> horseSkills;
     private HashMap<Integer, Bet> betsPerSpectator;
@@ -33,10 +33,19 @@ public class GeneralRepository {
         this.nHorses = nHorses;
         this.nSpectators = nSpectators;
         this.nRaces = nRaces;
+        this.distance = distance;
         horsePositions = new HashMap<>();
         horseSkills = new HashMap<>();
         betsPerSpectator = new HashMap<>();
         this.nWinners = nWinners;
+    }
+    
+    public int getDistance(){
+        return distance;
+    }
+    
+    public void setDistance(){
+        this.distance = distance;
     }
     
     public int getnHorses(){
@@ -83,20 +92,10 @@ public class GeneralRepository {
         betsPerSpectator.put(ID, bet);
     }
     
-    /**
-     * Método para obter o numero de apostadores vencedores de uma corrida
-     *
-     * @return nWinners - Numero de vencedores
-     */
     public int getnWinners() {
         return nWinners;
     }
 
-    /**
-     * Método para atualizar o numero de apostadores vencedores de uma corrida
-     *
-     * @param size - Numero de vencedores
-     */
     public void setnWinners(int size) {
         this.nWinners = size;
     }
