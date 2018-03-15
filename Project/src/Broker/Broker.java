@@ -5,8 +5,9 @@
  */
 package Broker;
 
-import Stable.Stable;
-import RacingTrack.RacingTrack;
+import Stable.IStable_Broker;
+import Stable.IStable_Horses;
+import RacingTrack.IRacingTrack_Broker;
 import GeneralRepository.GeneralRepository;
 
 /**
@@ -16,15 +17,16 @@ import GeneralRepository.GeneralRepository;
 public class Broker extends Thread{
     
     private BrokerStates state;
-    private Stable st;
-    private RacingTrack rt;
+    private IStable_Broker stBroker;
+    private IStable_Horses stHorses;
+    private IRacingTrack_Broker rtBroker;
     private GeneralRepository gr;
     private int nRaces;
     
     
-    public Broker(Stable st, RacingTrack rt, GeneralRepository gr){
-        this.st = st;
-        this.rt = rt;
+    public Broker(IStable_Broker stBroker, IStable_Horses stHorses, IRacingTrack_Broker rtBroker, GeneralRepository gr){
+        this.stBroker = stBroker;
+        this.rtBroker = rtBroker;
         this.gr = gr;
         nRaces = gr.getnRaces();
     }
@@ -33,15 +35,16 @@ public class Broker extends Thread{
     public void run() {
         state = BrokerStates.OPENING_THE_EVENT;
         
-        System.out.println("Broker iniciado");
+        System.out.print("Broker iniciado.");
         summonHorsesToPaddock();
     }
 
     public void summonHorsesToPaddock(){
+        System.out.print("\nBroker está no Control Centre.");
         state = BrokerStates.ANNOUNCING_NEXT_RACE;
         
         //chamar os cavalos para o paddock
-        st.summonHorsesToPaddock();
+        stBroker.summonHorsesToPaddock();
         //chamar os espectadores para o paddock
         //EM FALTA cc.summonHorsesToPaddock();
         
@@ -59,7 +62,7 @@ public class Broker extends Thread{
     public void startTheRace(){
         state = BrokerStates.SUPERVISING_THE_RACE;
         
-        rt.startTheRace();
+        rtBroker.startTheRace();
         //EM FALTA cc.startTheRace();
         
         //a corrida acabou, por isso diminuimos o numero de corridas

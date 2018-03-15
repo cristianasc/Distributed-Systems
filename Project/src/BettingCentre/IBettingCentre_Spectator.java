@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package BettingCentre;
 
 /**
  *
- * @author cristianacarvalho
+ * @author Miguel
  */
-public interface IBettingCentre {
-    void placeABet();
-    void accepttheBets();
-    void goWaththeRace();
-    void relaxABit();
+public interface IBettingCentre_Spectator {
+    void placeABet(int spectatorID, double value, int horseID);
+    double goCollectTheGains(int SpectatorID);
 }

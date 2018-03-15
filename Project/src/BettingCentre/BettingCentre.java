@@ -1,4 +1,4 @@
-package BettingCenter;
+package BettingCentre;
 
 import GeneralRepository.Bet;
 import GeneralRepository.GeneralRepository;

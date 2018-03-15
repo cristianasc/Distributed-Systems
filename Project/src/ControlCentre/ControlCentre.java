@@ -3,13 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package ControlCentre;
+
+import GeneralRepository.*;
 
 /**
  *
  * @author cristianacarvalho
  */
-public class ControlCentreWatchingStand implements IControlCentre{
+public class ControlCentre implements IControlCentre{
+    
+    public ControlCentre(GeneralRepository gr){
+        
+    }
 
     @Override
     public void haveIwon() {

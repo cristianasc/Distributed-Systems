@@ -5,8 +5,8 @@
  */
 package Stable;
 
-import Stable.IStable_Horses;
-import GeneralRepository.GeneralRepository;
+import Stable.*;
+import GeneralRepository.*;
 
 /**
  *
@@ -16,11 +16,12 @@ public class Stable implements IStable_Horses, IStable_Broker{
     
     private int horseId;
     private boolean callHorses;
-    private GeneralRepository gn;
+    private GeneralRepository gr;
     
-    public Stable(){
+    public Stable(GeneralRepository gr){
         horseId = 0;
         callHorses = false;
+        this.gr = gr;
     }
 
     /**
@@ -30,10 +31,11 @@ public class Stable implements IStable_Horses, IStable_Broker{
      */
     @Override
     public synchronized void proceedToStable() {
-        notifyAll();
+        // notifyAll();
+        
         while (!callHorses) {
             try {
-                System.out.println("\nOs cavalos estão no estábulo.");
+                System.out.print("\nOs cavalos estão no estábulo.");
                 wait();
             } catch (InterruptedException ex) {
             }
@@ -43,21 +45,25 @@ public class Stable implements IStable_Horses, IStable_Broker{
         notifyAll();
     }
     
+    /**
+     *
+     * 
+     */
     @Override
     public synchronized void summonHorsesToPaddock() {
-        System.out.println("\nBroker chama os Cavalos para paddock.");
+        System.out.print("\nBroker chama os Cavalos para paddock.");
         callHorses = true;
         
         // todos os cavalos em espera (no estábulo) serão acordados
         notifyAll();
         
-        while (horseId != gn.getnHorses()) {
+        while (horseId != gr.getnHorses()) {
             try {
                 wait();
             } catch (InterruptedException ex) {
             }
         }
-        System.out.println("\nOs cavalos foram chamados pelo Broker");
+        System.out.print("\nOs cavalos foram chamados pelo Broker.");
         
         //horseId e callHorses voltam aos valores inicias
         horseId = 0;

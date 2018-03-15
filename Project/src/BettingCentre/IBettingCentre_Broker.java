@@ -3,19 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package project;
+package BettingCentre;
 
 /**
  *
  * @author cristianacarvalho
  */
-public class Project {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
-    
+public interface IBettingCentre_Broker {
+    void acceptTheBets(int spectatorID, double value, int horseID);
+    void honourTheBets();
 }

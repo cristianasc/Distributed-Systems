@@ -16,7 +16,6 @@ public class GeneralRepository {
     private HashMap<Integer, Integer> horsePositions;
     private HashMap<Integer, Integer> horseSkills;
     private HashMap<Integer, Bet> betsPerSpectator;
-    private int nWinners;
     private int currentRace;
     
     /**
@@ -29,7 +28,7 @@ public class GeneralRepository {
      * obtido no total de corridas
      */
     
-    public GeneralRepository(int nHorses, int nSpectators, int nRaces, int distance, int nWinners){
+    public GeneralRepository(int nHorses, int nSpectators, int nRaces, int distance){
         this.nHorses = nHorses;
         this.nSpectators = nSpectators;
         this.nRaces = nRaces;
@@ -37,7 +36,6 @@ public class GeneralRepository {
         horsePositions = new HashMap<>();
         horseSkills = new HashMap<>();
         betsPerSpectator = new HashMap<>();
-        this.nWinners = nWinners;
     }
     
     public int getDistance(){

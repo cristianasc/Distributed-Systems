@@ -5,7 +5,7 @@
  */
 package Paddock;
 
-import GeneralRepository.GeneralRepository;
+import GeneralRepository.*;
 
 /**
  *
@@ -15,11 +15,12 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
     
     private int horseId, horseNTotal, spectator, spectatorNTotal, spectatorToBet;
     private boolean goCheckHorses, goToStartLine, horsesProcessedToStartLine;
-    private GeneralRepository gn;
+    private GeneralRepository gr;
     
-    public Paddock(){
-        horseNTotal = gn.getnHorses();
-        spectatorNTotal = gn.getnSpectator();
+    public Paddock(GeneralRepository gr){
+        this.gr = gr;
+        horseNTotal = gr.getnHorses();
+        spectatorNTotal = gr.getnSpectator();
         horseId = 0;
         spectator = 0;
         spectatorToBet = 0;
