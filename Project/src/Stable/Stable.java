@@ -30,12 +30,12 @@ public class Stable implements IStable_Horses, IStable_Broker{
      *
      */
     @Override
-    public synchronized void proceedToStable() {
-        // notifyAll();
+    public synchronized void proceedToStable(int horseID) {
+        //notifyAll();
         
+        System.out.print("\nO cavalo "+ horseID + " está no estábulo.");
         while (!callHorses) {
             try {
-                System.out.print("\nOs cavalos estão no estábulo.");
                 wait();
             } catch (InterruptedException ex) {
             }
@@ -51,7 +51,7 @@ public class Stable implements IStable_Horses, IStable_Broker{
      */
     @Override
     public synchronized void summonHorsesToPaddock() {
-        System.out.print("\nBroker chama os Cavalos para paddock.");
+        System.out.print("\nBroker vai chamar os Cavalos para paddock.");
         callHorses = true;
         
         // todos os cavalos em espera (no estábulo) serão acordados
@@ -63,8 +63,7 @@ public class Stable implements IStable_Horses, IStable_Broker{
             } catch (InterruptedException ex) {
             }
         }
-        System.out.print("\nOs cavalos foram chamados pelo Broker.");
-        
+              
         //horseId e callHorses voltam aos valores inicias
         horseId = 0;
         callHorses = false;

@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package Horse;
+import Stable.*;
+import ControlCentre.*;
+import Paddock.*;
+import GeneralRepository.*;
 
 /**
  *
@@ -11,16 +15,21 @@ package Horse;
  */
 public class Horse extends Thread{
     
-    
     private HorseStates state;
+    private IStable_Horses stHorses;
+    private IControlCentre_Horses ccHorses;
+    private IPaddock_Horses padHorses;
+    private GeneralRepository gr;
+    private int horseID;
     
     
-    public Horse(){
-    
-    
+    public Horse(IPaddock_Horses padHorses, IStable_Horses stHorses, IControlCentre_Horses ccHorses, int horseID, GeneralRepository gr){
+        this.gr = gr;
+        this.stHorses = stHorses;
+        this.ccHorses = ccHorses;
+        this.padHorses = padHorses;
+        this.horseID = horseID;
     }
-    
-    
     
     @Override
     public void run() {
@@ -28,11 +37,18 @@ public class Horse extends Thread{
         proceedToStable();
     }
     
-    public void proceedToStable(){ 
+    public void proceedToStable(){
+        stHorses.proceedToStable(horseID);
+        proceedToPaddock();
+        
     }
     
     public void proceedToPaddock(){
         state = HorseStates.AT_THE_PADDOCK;
+        ccHorses.proceedToPaddock(horseID);
+        padHorses.proceedToPaddock(horseID);
+        
+   
     }
     
     public void proceedToStartLine(){

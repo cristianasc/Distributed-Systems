@@ -9,13 +9,8 @@ package ControlCentre;
  *
  * @author cristianacarvalho
  */
-public interface IControlCentre {
-    void haveIwon();
-    void arethereanyWinners();
-    void goCollecttheGains();
-    void waitForNextRace();
+public interface IControlCentre_Broker {
     void reportResults();
-    void honourTheBets();
-    void entertainTheGuests();
-    void SummonHorsesToPaddock();
+    void summonHorsesToPaddock();
+    void startTheRace();
 }

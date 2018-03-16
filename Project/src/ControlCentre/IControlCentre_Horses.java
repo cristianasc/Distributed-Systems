@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Paddock;
+package ControlCentre;
 
 /**
  *
  * @author cristianacarvalho
  */
-public interface IPaddock_Spectator {
-    void goCheckHorses(int spectatorID);
+public interface IControlCentre_Horses {
+    void proceedToPaddock(int HorseID);
+    void makeAMove();
 }

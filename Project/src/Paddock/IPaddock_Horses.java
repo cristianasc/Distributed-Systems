@@ -10,5 +10,6 @@ package Paddock;
  * @author cristianacarvalho
  */
 public interface IPaddock_Horses {
-    void goCheckHorses(int spectatorID);
+    void proceedToPaddock(int horseID);
+    void proceedToStartLine();
 }

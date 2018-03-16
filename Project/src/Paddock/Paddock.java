@@ -13,7 +13,7 @@ import GeneralRepository.*;
  */
 public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
     
-    private int horseId, horseNTotal, spectator, spectatorNTotal, spectatorToBet;
+    private int nHorse, horseNTotal, spectator, spectatorNTotal, spectatorToBet;
     private boolean goCheckHorses, goToStartLine, horsesProcessedToStartLine;
     private GeneralRepository gr;
     
@@ -21,7 +21,7 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
         this.gr = gr;
         horseNTotal = gr.getnHorses();
         spectatorNTotal = gr.getnSpectator();
-        horseId = 0;
+        nHorse = 0;
         spectator = 0;
         spectatorToBet = 0;
         goCheckHorses = false;
@@ -29,24 +29,26 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
     }
     
     @Override
-    public synchronized void proceedToPaddock() {
+    public synchronized void proceedToPaddock(int horseID) {
+        
         while (!goCheckHorses) {
             try {
-                System.out.println("\nOs espetadores estão no Watching Stand.");
                 wait();
             } catch (InterruptedException ex) {
             }
         }
         
-        System.out.println("\nCavalo" + horseId + "a ir para a StartLine.");
-        horseId++;
+        /*
+        System.out.print("\nCavalo " + horseID + " a ir para a StartLine.");
+        nHorse++;
         
-        if(horseId == horseNTotal){
+        if(nHorse == horseNTotal){
             goToStartLine = true;
-            horseId = 0;
+            nHorse = 0;
             notifyAll();
             goCheckHorses = false;
         }
+        */
     }
 
     @Override
@@ -56,11 +58,12 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
             goCheckHorses = true;
             //acorda todos os cavalos 
             notifyAll();
+            System.out.print("\nOs espetadores estão no paddock.");
         }
         
+        /**
         while (!goToStartLine) {
             try {
-                System.out.println("\nOs espetadores estão no paddock a ver os cavalos.");
                 wait();
             } catch (InterruptedException ex) {
             }
@@ -72,6 +75,11 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
             spectatorToBet = 0;
             spectator = 0;
             horsesProcessedToStartLine = true;
-        }
+        } */
+    }
+
+    @Override
+    public void proceedToStartLine() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -25,10 +25,10 @@ public class AfternoonAtTheRaces {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
-        int nHorses = 0;
-        int nSpectators = 0;
-        int nRaces = 0;
-        int distance = 0;
+        int nHorses = 4;
+        int nSpectators = 4;
+        int nRaces = 4;
+        int distance = 4;
         
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
         BettingCentre bt = new BettingCentre(gr);
@@ -43,19 +43,21 @@ public class AfternoonAtTheRaces {
         ArrayList<Horse> horses = new ArrayList<>();
         ArrayList<Spectator> spectators = new ArrayList <>();
         
-        for (int i=1; i<= nHorses; i++){
-            horse = new Horse();
-            horses.add(horse);
-            horse.start();
-        }
-        
         for (int i=1; i<= nSpectators; i++){
-            spectator = new Spectator();
+            spectator = new Spectator((IControlCentre_Spectator) cc, (IPaddock_Spectator) pad, i, gr);
             spectators.add(spectator);
             spectator.start();
         }
         
-        Broker br = new Broker((IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt, gr);
+        
+        for (int i=1; i<= nHorses; i++){
+            horse = new Horse((IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, gr);
+            horses.add(horse);
+            horse.start();
+        }
+        
+        Broker br = new Broker((IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
+                (IControlCentre_Broker) cc, gr);
         br.start();
         br.join();
         

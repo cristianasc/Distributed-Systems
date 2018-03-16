@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package Spectator;
+import ControlCentre.*;
+import GeneralRepository.*;
+import Paddock.*;
 
 /**
  *
@@ -12,20 +15,36 @@ package Spectator;
 public class Spectator extends Thread{
     
     private SpectatorStates state;
+    private IControlCentre_Spectator ccSpectator;
+    private IPaddock_Spectator padSpectator;
+    private GeneralRepository gr;
     
-    public Spectator(){
+    private int spectatorID;
+    
+    public Spectator(IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, GeneralRepository gr){
+        this.ccSpectator = ccSpectator;
+        this.padSpectator = padSpectator;
+        this.gr = gr;
+        this.spectatorID = spectatorID;
     }
     
     @Override
     public void run() {
+        System.out.print("\nO espectador " + spectatorID + " está à espera da próxima corrida.");
         state = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
         waitForNextRace();
     }
     
-    public void waitForNextRace(){}
+    public void waitForNextRace(){
+        ccSpectator.waitForTheNextRace(spectatorID);
+        goCheckHorses();
+    }
     
     public void goCheckHorses(){
         state = SpectatorStates.APPRAISING_THE_HORSES;
+        padSpectator.goCheckHorses(spectatorID);
+        //placeABet();
+        
     }
     
     public void placeABet(){
