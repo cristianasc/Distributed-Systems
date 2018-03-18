@@ -31,13 +31,10 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         
         while (!makeAMove) {
             try {
-                System.out.println("\nOs cavalos estão na StartLine.");
                 wait();
             } catch (InterruptedException ex) {
             }
         }
-        
-        notifyAll();
          
     }
 

@@ -38,17 +38,8 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
             }
         }
         
-        /*
         System.out.print("\nCavalo " + horseID + " a ir para a StartLine.");
         nHorse++;
-        
-        if(nHorse == horseNTotal){
-            goToStartLine = true;
-            nHorse = 0;
-            notifyAll();
-            goCheckHorses = false;
-        }
-        */
     }
 
     @Override
@@ -61,7 +52,7 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
             System.out.print("\nOs espetadores estão no paddock.");
         }
         
-        /**
+        
         while (!goToStartLine) {
             try {
                 wait();
@@ -69,17 +60,23 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
             }
         }
         
-        System.out.println("\nO espectador"+ spectatorID + "vai apostar.");
+        System.out.print("\nO espectador "+ spectatorID + " vai apostar.");
         spectatorToBet++;
         if (spectatorToBet == spectatorNTotal){
             spectatorToBet = 0;
             spectator = 0;
             horsesProcessedToStartLine = true;
-        } */
+        } 
     }
 
     @Override
-    public void proceedToStartLine() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized void proceedToStartLine() {
+        if(nHorse == horseNTotal){
+            System.out.print("\nOs cavalos sairam todos do paddock.");
+            goToStartLine = true;
+            nHorse = 0;
+            notifyAll();
+            goCheckHorses = false;
+        }
     }
 }

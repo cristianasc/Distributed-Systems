@@ -7,6 +7,8 @@ package Spectator;
 import ControlCentre.*;
 import GeneralRepository.*;
 import Paddock.*;
+import BettingCentre.*;
+import java.util.Random;
 
 /**
  *
@@ -17,15 +19,18 @@ public class Spectator extends Thread{
     private SpectatorStates state;
     private IControlCentre_Spectator ccSpectator;
     private IPaddock_Spectator padSpectator;
+    private IBettingCentre_Spectator bcSpectator;
     private GeneralRepository gr;
+    private int spectatorID, bestHorse, money, bet;
     
-    private int spectatorID;
-    
-    public Spectator(IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, GeneralRepository gr){
+    public Spectator(IBettingCentre_Spectator bcSpectator, IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, GeneralRepository gr){
         this.ccSpectator = ccSpectator;
         this.padSpectator = padSpectator;
+        this.bcSpectator = bcSpectator;
         this.gr = gr;
         this.spectatorID = spectatorID;
+        this.money = 5;
+        this.bet = 0;
     }
     
     @Override
@@ -43,16 +48,29 @@ public class Spectator extends Thread{
     public void goCheckHorses(){
         state = SpectatorStates.APPRAISING_THE_HORSES;
         padSpectator.goCheckHorses(spectatorID);
-        //placeABet();
+        //escolher um cavalo
+        Random r = new Random();
+        bestHorse = 1 + r.nextInt(gr.getnHorses());
+   
+        placeABet();
         
     }
     
     public void placeABet(){
         state = SpectatorStates.PLACING_A_BET;
+        if(money <1)
+            bet = 0;
+        else
+            bet = (int) ((money - 1) * Math.random()) + 1 ; //+1 para ser no minimo 1€.
+        
+        bcSpectator.placeABet(spectatorID, bet, bestHorse);
+        money = money - bet;            
+        goWatchTheRace();
     }
     
     public void goWatchTheRace(){
         state = SpectatorStates.WATCHING_A_RACE;
+        ccSpectator.goWatchTheRace(spectatorID);
     }
     
     public void goCollectTheGains(){

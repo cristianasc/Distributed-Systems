@@ -9,65 +9,53 @@ import java.util.logging.Logger;
 public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spectator {
     
     public boolean finalBet;
-    private GeneralRepository rpt;
-    private int punterCount, collectscount;
-    private boolean managerAcceptingBets = true;
+    private GeneralRepository gr;
+    private int spectatorCount, collectscount;
+    private boolean brokerAcceptingBets;
     private Bet bet;
-    private boolean newBetDone;
+    private boolean newBet;
     private ArrayList<Bet> losers;
     private ArrayList< ArrayList<Bet>> loserList;
     private boolean ManagerHounourTheBets;
     private boolean finalCollect;
     private double totalGet;
     
-    public BettingCentre(GeneralRepository rpt) {
-        this.rpt = rpt;
+    public BettingCentre(GeneralRepository gr) {
+        this.gr = gr;
         losers = new ArrayList<>();
         loserList = new ArrayList<ArrayList<Bet>>();
-        managerAcceptingBets = false;
-        newBetDone = false;
+        brokerAcceptingBets = false;
+        newBet = false;
         ManagerHounourTheBets = false;
         finalCollect = false;
-        punterCount = 0;
+        spectatorCount = 0;
         collectscount = 0;
         totalGet = 0;
     }
 
-    // NECESSÁRIO VERIFICAR ESTA FUNÇÃO, Provavelmente está mal !!!
-    
     @Override
-    public synchronized void acceptTheBets(int spectatorID, double value, int horseID) {
-        while (!managerAcceptingBets) {
+    public synchronized Bet acceptTheBets() {
+        brokerAcceptingBets = true;
+        notifyAll();
+        
+        while (!newBet && finalBet != true) {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                Logger.getLogger(BettingCentre.class.getName()).log(Level.SEVERE, null, ex);
+                
             }
         }
 
-        bet = new Bet();
-        bet.setSpectatorID(spectatorID);
-        bet.setBetvalue(value);
-        bet.setHorseID(horseID);
-        rpt.setBetsPerSpectator(spectatorID, bet);
-
-        newBetDone = true;
-        notifyAll();
-
-        managerAcceptingBets = false;
-        punterCount++;
-        if (punterCount == rpt.getnSpectator()) {
-            finalBet = true;
-            notifyAll();
-            punterCount = 0;
-        }
-        System.err.println("\nApostador " + spectatorID + " apostou " + (int) value + " €" + " no cavalo " + horseID + ".");
-
+        newBet = false;
+        finalBet = false;
+        losers = new ArrayList<>();
+        totalGet = 0;
+        return bet;
     }
 
     @Override
     public synchronized void honourTheBets() {
-        System.err.println("\nManager paga a quem ganhou (Inicio). Tamanho da lista de perdedores: " + loserList.size());
+        System.err.print("\nManager paga a quem ganhou (Inicio). Tamanho da lista de perdedores: " + loserList.size());
         this.loserList = loserList;
         while (finalCollect == false) {
             ManagerHounourTheBets = true;
@@ -75,7 +63,7 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
             try {
                 wait();
             } catch (InterruptedException ex) {
-                Logger.getLogger(BettingCentre.class.getName()).log(Level.SEVERE, null, ex);
+
             }
         }
         ManagerHounourTheBets = false;
@@ -83,22 +71,12 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         collectscount = 0;
     }
 
-    /**
-     * Método que aceita apostas de um punterID, sobre um horseID no valor de
-     * value A thread punter entra em wait enquanto não estiverem feitas todas
-     * as apostas, e acorda os espetadores após estarem concluidas todas as
-     * apostas.
-     *
-     * @param punterID - ID do apostador
-     * @param value - Valor da aposta
-     * @param horseID - ID do cavalo a apostar
-     */
+   
     public synchronized void placeABet(int spectatorID, double value, int horseID) {
-        while (!managerAcceptingBets) {
+        while (!brokerAcceptingBets) {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                Logger.getLogger(BettingCentre.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -106,31 +84,31 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         bet.setSpectatorID(spectatorID);
         bet.setBetvalue(value);
         bet.setHorseID(horseID);
-        rpt.setBetsPerSpectator(spectatorID, bet);
+        gr.setBetsPerSpectator(spectatorID, bet);
 
-        newBetDone = true;
+        newBet = true;
         notifyAll();
 
-        managerAcceptingBets = false;
-        punterCount++;
-        if (punterCount == rpt.getnSpectator()) {
+        brokerAcceptingBets = false;
+        spectatorCount++;
+        if (spectatorCount == gr.getnSpectator()) {
             finalBet = true;
             notifyAll();
-            punterCount = 0;
+            spectatorCount = 0;
         }
-        System.err.println("\nApostador " + spectatorID + " apostou " + (int) value + " €" + " no cavalo " + horseID + ".");
+        System.out.print("\nApostador " + spectatorID + " apostou"  + " no cavalo " + horseID +", " + (int) value + " €.");
 
     }
 
     @Override
     public synchronized double goCollectTheGains(int spectatorID) {
-        System.err.println("\nApostador " + spectatorID + " apostou no cavalo ganhador, vai receber prémio!");
+        System.out.print("\nApostador " + spectatorID + " apostou no cavalo ganhador, vai receber prémio!");
 
         while (!ManagerHounourTheBets) {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                Logger.getLogger(BettingCentre.class.getName()).log(Level.SEVERE, null, ex);
+
             }
         }
         notifyAll();
@@ -143,11 +121,26 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
                 gain = gain + losers.get(j).Betvalue;
             }
         }
-        if (collectscount == rpt.getnWinners()) {
+        if (collectscount == gr.getnWinners()) {
             finalCollect = true;
             notifyAll();
         }
 
         return gain;
+    }
+
+    @Override
+    public void areThereAnyWinners() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void entertainTheGuests() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void relaxABit() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

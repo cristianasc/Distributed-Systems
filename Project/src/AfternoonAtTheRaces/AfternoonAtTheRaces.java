@@ -31,7 +31,7 @@ public class AfternoonAtTheRaces {
         int distance = 4;
         
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
-        BettingCentre bt = new BettingCentre(gr);
+        BettingCentre bc = new BettingCentre(gr);
         ControlCentre cc = new ControlCentre(gr);
         Paddock pad = new Paddock(gr);
         Stable st = new Stable(gr);
@@ -44,19 +44,18 @@ public class AfternoonAtTheRaces {
         ArrayList<Spectator> spectators = new ArrayList <>();
         
         for (int i=1; i<= nSpectators; i++){
-            spectator = new Spectator((IControlCentre_Spectator) cc, (IPaddock_Spectator) pad, i, gr);
+            spectator = new Spectator((IBettingCentre_Spectator) bc, (IControlCentre_Spectator) cc, (IPaddock_Spectator) pad, i, gr);
             spectators.add(spectator);
             spectator.start();
         }
         
-        
         for (int i=1; i<= nHorses; i++){
-            horse = new Horse((IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, gr);
+            horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, gr);
             horses.add(horse);
             horse.start();
         }
         
-        Broker br = new Broker((IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
+        Broker br = new Broker((IBettingCentre_Broker) bc, (IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
                 (IControlCentre_Broker) cc, gr);
         br.start();
         br.join();

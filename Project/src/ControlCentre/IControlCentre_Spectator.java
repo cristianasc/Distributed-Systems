@@ -10,7 +10,7 @@ package ControlCentre;
  * @author cristianacarvalho
  */
 public interface IControlCentre_Spectator {
-    void goWatchTheRace();
+    void goWatchTheRace(int spectatorID);
     void waitForTheNextRace(int spectatorID);
     void haveIWon();
 }

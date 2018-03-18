@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 package BettingCentre;
+import GeneralRepository.*;
 
 /**
  *
  * @author cristianacarvalho
  */
 public interface IBettingCentre_Broker {
-    void acceptTheBets(int spectatorID, double value, int horseID);
+    Bet acceptTheBets();
     void honourTheBets();
+    void areThereAnyWinners();
+    void entertainTheGuests();
 }

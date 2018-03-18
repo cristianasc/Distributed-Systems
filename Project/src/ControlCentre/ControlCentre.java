@@ -18,7 +18,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     
     private GeneralRepository gr;
     private Paddock pad;
-    private boolean lastHorseToPaddock, lastSpectator;
+    private boolean lastHorseToPaddock, lastSpectator, reportResults;
     private int nSpectators, nHorses;
     
     
@@ -26,6 +26,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         this.gr = gr;
         lastHorseToPaddock = false;
         lastSpectator = false;
+        reportResults = false;
         this.nSpectators = 0;
         this.nHorses = 0;
     }
@@ -72,8 +73,16 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     }
 
     @Override
-    public synchronized void goWatchTheRace() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized void goWatchTheRace(int spectatorID) {
+         System.out.print("\nApostador " + spectatorID + " vai para a Watching Stand.");
+         while (!reportResults) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+            }
+        }
+         
+        notifyAll();
     }
 
     @Override
@@ -87,7 +96,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         }
         
         nSpectators++; 
-        System.out.print("\nO espectador "+ spectatorID +" vão para o Paddock.");
+        System.out.print("\nO espectador "+ spectatorID +" vai para o Paddock.");
         if(nSpectators == gr.getnSpectator()){
             lastSpectator = true;
             notifyAll();
