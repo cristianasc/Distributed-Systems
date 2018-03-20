@@ -5,12 +5,15 @@
  */
 package ControlCentre;
 
+import GeneralRepository.Bet;
+import java.util.ArrayList;
+
 /**
  *
  * @author cristianacarvalho
  */
 public interface IControlCentre_Broker {
-    void reportResults();
+    void reportResults(ArrayList<Bet> betlist);
     void summonHorsesToPaddock();
     void startTheRace();
 }

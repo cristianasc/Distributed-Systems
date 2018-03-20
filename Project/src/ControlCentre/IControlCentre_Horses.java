@@ -11,5 +11,4 @@ package ControlCentre;
  */
 public interface IControlCentre_Horses {
     void proceedToPaddock(int HorseID);
-    void makeAMove();
 }

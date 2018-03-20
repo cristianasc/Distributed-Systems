@@ -97,9 +97,8 @@ public class Broker extends Thread{
         gr.setnRaces(nRaces);
         System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
         
-        
         //reportar cavalo vencedor
-        //reportResults();
+        reportResults();
     }
     
     public void reportResults(){

@@ -76,12 +76,9 @@ public class Horse extends Thread{
         System.out.print("\nCavalo " + horseID + " sai da corrida!");
         nRaces--;
 
-
         if (nRaces != 0) {
             proceedToStable();
         }
-        
-        proceedToStable();
         
     }
     

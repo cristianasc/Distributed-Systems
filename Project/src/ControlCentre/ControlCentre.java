@@ -7,6 +7,7 @@ package ControlCentre;
 
 import GeneralRepository.*;
 import Paddock.*;
+import java.util.ArrayList;
 
 
 /**
@@ -20,6 +21,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     private Paddock pad;
     private boolean lastHorseToPaddock, lastSpectator, reportResults;
     private int nSpectators, nHorses;
+    private ArrayList<Bet> winners;
     
     
     public ControlCentre(GeneralRepository gr){
@@ -28,6 +30,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         lastSpectator = false;
         reportResults = false;
         this.nSpectators = 0;
+        winners = new ArrayList<>();
         this.nHorses = 0;
     }
 
@@ -44,13 +47,24 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     }
 
     @Override
-    public synchronized void makeAMove() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public synchronized void reportResults(ArrayList<Bet> betlist) {
+        
+        System.out.print("\nA reportar resultados.");
+        
+        winners = betlist;
+        reportResults = true;
+        notifyAll();
 
-    @Override
-    public synchronized void reportResults() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        while (!lastSpectator) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+            }
+        }
+        reportResults = false;
+        lastSpectator = false;
+        nSpectators = 0;
+
     }
 
     @Override
