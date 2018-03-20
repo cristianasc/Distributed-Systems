@@ -90,12 +90,13 @@ public class Broker extends Thread{
     public void startTheRace(){
         state = BrokerStates.SUPERVISING_THE_RACE;
         
-        //rtBroker.startTheRace();
-        //EM FALTA cc.startTheRace();
+        rtBroker.startTheRace();
         
         //a corrida acabou, por isso diminuimos o numero de corridas
-        //nRaces--;
-        //gr.setnRaces(nRaces);
+        nRaces--;
+        gr.setnRaces(nRaces);
+        System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
+        
         
         //reportar cavalo vencedor
         //reportResults();

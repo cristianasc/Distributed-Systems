@@ -28,14 +28,15 @@ public class AfternoonAtTheRaces {
         int nHorses = 4;
         int nSpectators = 4;
         int nRaces = 4;
-        int distance = 4;
+        int distance = 10;
+        
         
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
         BettingCentre bc = new BettingCentre(gr);
         ControlCentre cc = new ControlCentre(gr);
         Paddock pad = new Paddock(gr);
         Stable st = new Stable(gr);
-        RacingTrack rt = new RacingTrack();
+        RacingTrack rt = new RacingTrack(gr);
         
         Horse horse;
         Spectator spectator;
@@ -49,8 +50,9 @@ public class AfternoonAtTheRaces {
             spectator.start();
         }
         
+        // verificar move!!
         for (int i=1; i<= nHorses; i++){
-            horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, gr);
+            horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (10 + Math.random() * 5), gr);
             horses.add(horse);
             horse.start();
         }

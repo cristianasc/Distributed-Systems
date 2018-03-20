@@ -10,7 +10,7 @@ package RacingTrack;
  * @author cristianacarvalho
  */
 public interface IRacingTrack_Horses {
-    void makeAMove();
+    void makeAMove(int horseID, int move);
     boolean hasFinishLineBeenCrossed(int horseID);
     void proceedToStartLine();
 }

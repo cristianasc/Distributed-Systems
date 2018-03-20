@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @author cristianacarvalho
  */
 public class GeneralRepository {
-    private int nHorses, nSpectators, nRaces, nWinners, distance;
+    private int nHorses, nSpectators, nRaces, nWinners, distance, horseWinner;
     private HashMap<Integer, Integer> horsePositions;
     private HashMap<Integer, Integer> horseSkills;
     private HashMap<Integer, Bet> betsPerSpectator;
@@ -96,6 +96,14 @@ public class GeneralRepository {
 
     public void setnWinners(int size) {
         this.nWinners = size;
+    }
+    
+    public int getHorseWinner() {
+        return horseWinner;
+    }
+
+    public void setHorseWinner(int horseID) {
+        this.horseWinner = horseID;
     }
     
 }
