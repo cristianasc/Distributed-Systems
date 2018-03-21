@@ -12,5 +12,5 @@ package ControlCentre;
 public interface IControlCentre_Spectator {
     void goWatchTheRace(int spectatorID);
     void waitForTheNextRace(int spectatorID);
-    boolean haveIWon();
+    boolean haveIWon(int spectatorID);
 }

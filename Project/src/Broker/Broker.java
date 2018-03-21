@@ -49,10 +49,6 @@ public class Broker extends Thread{
         state = BrokerStates.OPENING_THE_EVENT;
         
         System.out.print("\nBroker iniciado.");
-        summonHorsesToPaddock();
-    }
-
-    public void summonHorsesToPaddock(){
         System.out.print("\nBroker está no Control Centre.");
         state = BrokerStates.ANNOUNCING_NEXT_RACE;
         
@@ -61,14 +57,7 @@ public class Broker extends Thread{
         //chamar os espectadores para o paddock
         ccBroker.summonHorsesToPaddock();
         
-        acceptTheBets();
-    }
-    
-    public void acceptTheBets(){
         state = BrokerStates.WAITING_FOR_BETS;
-        
-        bets = new ArrayList<>();
-        betsByHorses = new HashMap<>();
         
         int i = 0;
         do {
@@ -84,27 +73,15 @@ public class Broker extends Thread{
             betsByHorses.put(bet.getHorseID(), bets);
         } while (i != gr.getnSpectator());
         
-        
-        startTheRace();
-    }
-    
-    public void startTheRace(){
         state = BrokerStates.SUPERVISING_THE_RACE;
-        
         rtBroker.startTheRace();
          
-        
         //a corrida acabou, por isso diminuimos o numero de corridas
         nRaces--;
         gr.setnRaces(nRaces);
         System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
         
         //reportar cavalo vencedor
-        reportResults();
-    }
-    
-    public void reportResults(){
-        
         if (betsByHorses.get(gr.getHorseWinner()) == null){
             bets = null;
             ccBroker.reportResults(bets);
@@ -112,16 +89,19 @@ public class Broker extends Thread{
         else{
             bets = betsByHorses.get(gr.getHorseWinner());
             //calcular valor das bets
-            for (int i = 0; i < bets.size(); i++) {
-                moneyBet = (int) (moneyBet + bets.get(i).Betvalue);
+            for (int j = 0; j < bets.size(); j++) {
+                moneyBet = (int) (moneyBet + bets.get(j).Betvalue);
             }
             ccBroker.reportResults(bets);
         }
+        
+        state = BrokerStates.SETTLING_ACCOUNTS;
          
+      
     }
     
     public void honourTheBets(){
-        state = BrokerStates.SETTLING_ACCOUNTS;
+        
         //EM FALTA bc.honourTheBets();
     }
     

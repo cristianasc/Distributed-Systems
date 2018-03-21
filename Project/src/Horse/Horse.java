@@ -52,7 +52,6 @@ public class Horse extends Thread{
         
         do {
             rtHorses.makeAMove(horseID, move);
-            
         } while (!rtHorses.hasFinishLineBeenCrossed(horseID));
 
         

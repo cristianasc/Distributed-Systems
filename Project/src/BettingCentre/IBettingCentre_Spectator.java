@@ -12,5 +12,5 @@ package BettingCentre;
 public interface IBettingCentre_Spectator {
     void placeABet(int spectatorID, double value, int horseID);
     double goCollectTheGains(int SpectatorID);
-    void relaxABit();
+    void relaxABit(int SpectatorID, int money);
 }

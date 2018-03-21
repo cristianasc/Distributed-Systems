@@ -80,11 +80,6 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     }
 
     @Override
-    public synchronized void startTheRace() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public synchronized void goWatchTheRace(int spectatorID) {
          System.out.print("\nApostador " + spectatorID + " vai para a Watching Stand.");
          while (!reportResults) {
@@ -113,12 +108,17 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
             lastSpectator = true;
             notifyAll();
         }
-        
     }
 
     @Override
-    public boolean haveIWon() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized boolean haveIWon(int spectator) {
+        if (winners == null)
+            return false;
+        for(int i=0; i<winners.size(); i++){
+            if(spectator == winners.get(i).SpectatorID)
+                return true;
+        }
+        return false;
     }
 
     

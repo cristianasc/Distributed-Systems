@@ -130,17 +130,16 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
     }
 
     @Override
-    public void areThereAnyWinners() {
+    public synchronized boolean areThereAnyWinners() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void entertainTheGuests() {
+    public synchronized void entertainTheGuests() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void relaxABit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized void relaxABit(int spectatorID, int money) {
+        System.out.println("\nApostador " + spectatorID + " vai relaxar..Acabou com " + money + "€.");    }
     }
-}

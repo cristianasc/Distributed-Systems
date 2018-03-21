@@ -13,6 +13,6 @@ import GeneralRepository.*;
 public interface IBettingCentre_Broker {
     Bet acceptTheBets();
     void honourTheBets();
-    void areThereAnyWinners();
+    boolean areThereAnyWinners();
     void entertainTheGuests();
 }

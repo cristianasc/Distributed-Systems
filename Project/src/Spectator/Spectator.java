@@ -38,25 +38,14 @@ public class Spectator extends Thread{
     public void run() {
         System.out.print("\nO espectador " + spectatorID + " está à espera da próxima corrida.");
         state = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
-        waitForNextRace();
-    }
-    
-    public void waitForNextRace(){
         ccSpectator.waitForTheNextRace(spectatorID);
-        goCheckHorses();
-    }
-    
-    public void goCheckHorses(){
+        
         state = SpectatorStates.APPRAISING_THE_HORSES;
         padSpectator.goCheckHorses(spectatorID);
         //escolher um cavalo
         Random r = new Random();
-        bestHorse = 1 + r.nextInt(gr.getnHorses());   
-        placeABet();
+        bestHorse = 1 + r.nextInt(gr.getnHorses()); 
         
-    }
-    
-    public void placeABet(){
         state = SpectatorStates.PLACING_A_BET;
         if(money <1)
             bet = 0;
@@ -64,47 +53,36 @@ public class Spectator extends Thread{
             bet = (int) ((money - 1) * Math.random()) + 1 ; //+1 para ser no minimo 1€.
         
         bcSpectator.placeABet(spectatorID, bet, bestHorse);
-        money = money - bet;            
-        goWatchTheRace();
-    }
-    
-    public void goWatchTheRace(){
+        money = money - bet; 
+        
         state = SpectatorStates.WATCHING_A_RACE;
         ccSpectator.goWatchTheRace(spectatorID);
         nRaces--;
-        /*
-        // Verifica se apostou no cavalo vencedor
-        if (ccSpectator.haveIWon()) {
-            goCollectTheGains();
-        } else {
-
-            System.err.println("\nApostador " + spectatorID + " nao apostou no cavalo ganhador. Perdeu: " + bet + " fica com: " + money);
-        }
-
-        // Verifica numero de corridas restantes
-        if (nRaces != 0) {
-            waitForNextRace();
-        } //Se não houver mais corridas vai relaxar 
-        else {
-            relaxABit();
-        }*/
-    }
-    
-    public void goCollectTheGains(){
-        state = SpectatorStates.COLLECTING_THE_GAINS;
+        
+        if (ccSpectator.haveIWon(spectatorID)) {
+             state = SpectatorStates.COLLECTING_THE_GAINS;
         /*double totalApostadoPerdido = bcSpectator.goCollectTheGains(spectatorID);
         int totalApostasVencedor = bcSpectator.getTotalBetValue();
         int ganho = (apos / totalApostasVencedor) * totalApostadoPerdido;
         money = money + bet + ganho;*/
         //System.err.println("\nApostador " + spectatorID + " ganhou : " + (int) ganho + " fica com: " + (int) money);
 
-    }
-    
-    public void relaxABit(){
-        state = SpectatorStates.CELEBRATING;
+        } else {
+
+            System.err.println("\nApostador " + spectatorID + " nao apostou no cavalo ganhador. Perdeu: " + bet + " fica com: " + money);
+        }
         
-        System.out.println("\nApostador " + spectatorID + " vai relaxar..Acabou com " + money + "€.");
-    }
-    
-    
+        if (nRaces != 0) {
+            ccSpectator.waitForTheNextRace(spectatorID);
+        } 
+        else {
+            state = SpectatorStates.CELEBRATING;
+            //relaxABit();
+        }
+        
+        
+        
+       
+        
+    }  
 }
