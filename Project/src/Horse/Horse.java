@@ -57,7 +57,9 @@ public class Horse extends Thread{
     public void proceedToStartLine(){
         state = HorseStates.AT_THE_START_LINE;
         padHorses.proceedToStartLine();
-        rtHorses.proceedToStartLine();
+        rtHorses.proceedToStartLine(horseID);
+        
+       
         
         makeAmove();        
     }
@@ -65,13 +67,15 @@ public class Horse extends Thread{
     public void makeAmove(){
         state = HorseStates.RUNNING;
         
-        //rtHorses.makeAMove(horseID, move);
-        while(rtHorses.hasFinishLineBeenCrossed(horseID))
+        do {
             rtHorses.makeAMove(horseID, move);
+            
+        } while (!rtHorses.hasFinishLineBeenCrossed(horseID));
+
         
         System.out.print("\nCavalo " + horseID + " sai da corrida!");
         nRaces--;
-
+       
         if (nRaces != 0) {
             proceedToStable();
         }   

@@ -28,7 +28,7 @@ public class AfternoonAtTheRaces {
         int nHorses = 4;
         int nSpectators = 4;
         int nRaces = 4;
-        int distance = 10;
+        int distance = 20;
         
         
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);

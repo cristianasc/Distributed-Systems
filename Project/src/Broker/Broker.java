@@ -26,7 +26,7 @@ public class Broker extends Thread{
     private IControlCentre_Broker ccBroker;
     private IBettingCentre_Broker bcBroker;
     private GeneralRepository gr;
-    private int nRaces;
+    private int nRaces, winnerHorse, moneyBet;
     private Bet bet;
     private ArrayList<Bet> bets;
     private HashMap<Integer, ArrayList<Bet>> betsByHorses;
@@ -84,6 +84,7 @@ public class Broker extends Thread{
             betsByHorses.put(bet.getHorseID(), bets);
         } while (i != gr.getnSpectator());
         
+        
         startTheRace();
     }
     
@@ -91,6 +92,7 @@ public class Broker extends Thread{
         state = BrokerStates.SUPERVISING_THE_RACE;
         
         rtBroker.startTheRace();
+         
         
         //a corrida acabou, por isso diminuimos o numero de corridas
         nRaces--;
@@ -102,7 +104,20 @@ public class Broker extends Thread{
     }
     
     public void reportResults(){
-        //EM FALTA cc.reportResults()
+        
+        if (betsByHorses.get(gr.getHorseWinner()) == null){
+            bets = null;
+            ccBroker.reportResults(bets);
+        }
+        else{
+            bets = betsByHorses.get(gr.getHorseWinner());
+            //calcular valor das bets
+            for (int i = 0; i < bets.size(); i++) {
+                moneyBet = (int) (moneyBet + bets.get(i).Betvalue);
+            }
+            ccBroker.reportResults(bets);
+        }
+         
     }
     
     public void honourTheBets(){

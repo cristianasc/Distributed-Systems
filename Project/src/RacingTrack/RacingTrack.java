@@ -6,6 +6,7 @@
 package RacingTrack;
 
 import GeneralRepository.GeneralRepository;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -17,10 +18,11 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
     private boolean makeAMove, reportResults, lastHorse;
     private GeneralRepository gn;
     private HashMap<Integer, Integer> positions;
-    private int next, horseNum, position, nHorsesInRace;
+    private int next, nHorses, position, nHorsesInRace;
     
     public RacingTrack(GeneralRepository gn){
         this.gn = gn;
+        this.nHorses = gn.getnHorses();
         next = 0;
         makeAMove = false;
         reportResults = false;
@@ -29,7 +31,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
     }
     
     @Override
-    public synchronized void proceedToStartLine() {
+    public synchronized void proceedToStartLine(int horseID) {
         while (!makeAMove) {
             try {
                 wait();
@@ -57,28 +59,37 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         
         position += move;
         positions.put(horse, position);
+       
         gn.sethorsePositions(horse, position);
         System.out.print("\nCavalo " + horse+ " mexeu-se " + move + ", fica na posição " + position);
         
         if (position >= gn.getDistance()){
             System.out.print("\nCavalo " + horse+ " passou a meta.");
             
+            
             if(nHorsesInRace == gn.getnHorses())
                 gn.setHorseWinner(horse);
             
-            if(positions.containsKey(horse))
+            if (positions.containsKey(horse))
                 positions.remove(horse);
             
             nHorsesInRace--; 
+        }
+        
+        if (nHorsesInRace != 0){
+            next = ((next % nHorses) + 1);
+            if (!positions.containsKey(next)) {
+                do {
+                    next = positions.keySet().iterator().next();
+                } while (!positions.containsKey(next));
+            }
         }
         
         if (nHorsesInRace == 0){
             System.out.print("\nO último cavalo passou a meta.");
             lastHorse = true;
         }
-        else{
-            next = (int) positions.values().toArray()[0];
-        }
+        
         notifyAll();        
     }
 
@@ -94,18 +105,18 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
     public synchronized void startTheRace() {
         System.out.print("\nCOMEÇA A CORRIDA");
         
-        makeAMove = true;
         next = 1;
+        makeAMove = true;
         
         //posições iniciais dos cavalos
         for (int i = 0; i < gn.getnHorses(); i++) {
             positions.put((i + 1), 0);          // repoe posições dos cavalos a zero
         }
-       
+        
         //Acordar os cavalos
         notifyAll();
         for (int i = 0; i < gn.getnHorses(); i++){
-            System.out.print("\nCavalo " + i + " na posição " + positions.get(i+1));
+            System.out.print("\nCavalo " + (i+1) + " na posição " + positions.get(i+1));
         }
         
          while (!lastHorse) {
