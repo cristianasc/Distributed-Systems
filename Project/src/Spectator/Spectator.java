@@ -21,7 +21,7 @@ public class Spectator extends Thread{
     private IPaddock_Spectator padSpectator;
     private IBettingCentre_Spectator bcSpectator;
     private GeneralRepository gr;
-    private int spectatorID, bestHorse, money, bet;
+    private int spectatorID, bestHorse, money, bet,nRaces;
     
     public Spectator(IBettingCentre_Spectator bcSpectator, IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, GeneralRepository gr){
         this.ccSpectator = ccSpectator;
@@ -31,6 +31,7 @@ public class Spectator extends Thread{
         this.spectatorID = spectatorID;
         this.money = 5;
         this.bet = 0;
+        this.nRaces = gr.getnRaces();
     }
     
     @Override
@@ -50,8 +51,7 @@ public class Spectator extends Thread{
         padSpectator.goCheckHorses(spectatorID);
         //escolher um cavalo
         Random r = new Random();
-        bestHorse = 1 + r.nextInt(gr.getnHorses());
-   
+        bestHorse = 1 + r.nextInt(gr.getnHorses());   
         placeABet();
         
     }
@@ -71,14 +71,39 @@ public class Spectator extends Thread{
     public void goWatchTheRace(){
         state = SpectatorStates.WATCHING_A_RACE;
         ccSpectator.goWatchTheRace(spectatorID);
+        nRaces--;
+        /*
+        // Verifica se apostou no cavalo vencedor
+        if (ccSpectator.haveIWon()) {
+            goCollectTheGains();
+        } else {
+
+            System.err.println("\nApostador " + spectatorID + " nao apostou no cavalo ganhador. Perdeu: " + bet + " fica com: " + money);
+        }
+
+        // Verifica numero de corridas restantes
+        if (nRaces != 0) {
+            waitForNextRace();
+        } //Se não houver mais corridas vai relaxar 
+        else {
+            relaxABit();
+        }*/
     }
     
     public void goCollectTheGains(){
         state = SpectatorStates.COLLECTING_THE_GAINS;
+        /*double totalApostadoPerdido = bcSpectator.goCollectTheGains(spectatorID);
+        int totalApostasVencedor = bcSpectator.getTotalBetValue();
+        int ganho = (apos / totalApostasVencedor) * totalApostadoPerdido;
+        money = money + bet + ganho;*/
+        //System.err.println("\nApostador " + spectatorID + " ganhou : " + (int) ganho + " fica com: " + (int) money);
+
     }
     
     public void relaxABit(){
         state = SpectatorStates.CELEBRATING;
+        
+        System.out.println("\nApostador " + spectatorID + " vai relaxar..Acabou com " + money + "€.");
     }
     
     

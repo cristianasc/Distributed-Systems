@@ -24,7 +24,6 @@ public class Horse extends Thread{
     private GeneralRepository gr;
     private int horseID, nRaces, move;
     
-    
     public Horse(IRacingTrack_Horses rtHorses, IPaddock_Horses padHorses, IStable_Horses stHorses, IControlCentre_Horses ccHorses, int horseID, int move, GeneralRepository gr){
         this.gr = gr;
         this.stHorses = stHorses;
@@ -45,7 +44,6 @@ public class Horse extends Thread{
     public void proceedToStable(){
         stHorses.proceedToStable(horseID);
         proceedToPaddock();
-        
     }
     
     public void proceedToPaddock(){
@@ -54,7 +52,6 @@ public class Horse extends Thread{
         padHorses.proceedToPaddock(horseID);
         
         proceedToStartLine();
-   
     }
     
     public void proceedToStartLine(){
@@ -62,14 +59,13 @@ public class Horse extends Thread{
         padHorses.proceedToStartLine();
         rtHorses.proceedToStartLine();
         
-        makeAmove();
-        
+        makeAmove();        
     }
     
     public void makeAmove(){
         state = HorseStates.RUNNING;
         
-        rtHorses.makeAMove(horseID, move);
+        //rtHorses.makeAMove(horseID, move);
         while(rtHorses.hasFinishLineBeenCrossed(horseID))
             rtHorses.makeAMove(horseID, move);
         
@@ -78,8 +74,6 @@ public class Horse extends Thread{
 
         if (nRaces != 0) {
             proceedToStable();
-        }
-        
-    }
-    
+        }   
+    }    
 }

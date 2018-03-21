@@ -9,7 +9,6 @@ import GeneralRepository.*;
 import Paddock.*;
 import java.util.ArrayList;
 
-
 /**
  *
  * @author cristianacarvalho
@@ -42,7 +41,6 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
             lastHorseToPaddock = true;
             System.out.print("\nTodos os cavalos estão no Paddock.");
             notifyAll();
-            
         }
     }
 
@@ -119,7 +117,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     }
 
     @Override
-    public void haveIWon() {
+    public boolean haveIWon() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

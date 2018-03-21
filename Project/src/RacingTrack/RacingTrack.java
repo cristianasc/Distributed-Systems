@@ -30,14 +30,12 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
     
     @Override
     public synchronized void proceedToStartLine() {
-        
         while (!makeAMove) {
             try {
                 wait();
             } catch (InterruptedException ex) {
             }
-        }
-         
+        }         
     }
 
     @Override
@@ -81,9 +79,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         else{
             next = (int) positions.values().toArray()[0];
         }
-      
-        notifyAll();
-        
+        notifyAll();        
     }
 
     @Override
@@ -108,8 +104,9 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
        
         //Acordar os cavalos
         notifyAll();
-        for (int i = 0; i < gn.getnHorses(); i++)
+        for (int i = 0; i < gn.getnHorses(); i++){
             System.out.print("\nCavalo " + i + " na posição " + positions.get(i+1));
+        }
         
          while (!lastHorse) {
             try {
@@ -121,7 +118,5 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         lastHorse = false;
         makeAMove = false;
         System.out.print("\nFIM DA CORRIDA.");
-    }
-
-    
+    }    
 }
