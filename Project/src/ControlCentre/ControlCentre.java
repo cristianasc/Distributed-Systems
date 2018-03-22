@@ -111,7 +111,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         if (winners == null)
             return false;
         for (int i=0; i<winners.size(); i++){
-            if (spectator == winners.get(i).SpectatorID)
+            if (spectator == winners.get(i).getSpectatorID())
                 return true;
         }
         return false;

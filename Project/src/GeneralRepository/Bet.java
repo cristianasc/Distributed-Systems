@@ -2,9 +2,9 @@ package GeneralRepository;
 
 public class Bet {
 
-    public int SpectatorID;       // SpectatorID identifica um espectador
-    public int horseID;           // HorseID identifica um cavalo
-    public int Betvalue;         // Betvalue identifica um valor de uma aposta
+    private int SpectatorID;       // SpectatorID identifica um espectador
+    private int horseID;           // HorseID identifica um cavalo
+    private int Betvalue;         // Betvalue identifica um valor de uma aposta
 
     public int getSpectatorID() {
         return SpectatorID;

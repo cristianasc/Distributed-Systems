@@ -92,7 +92,7 @@ public class Broker extends Thread{
                 bets = betsByHorses.get(gr.getHorseWinner());
                 //calcular valor das bets
                 for (int j = 0; j < bets.size(); j++) {
-                    moneyBet = (int) (moneyBet + bets.get(j).Betvalue);
+                    moneyBet = (int) (moneyBet + bets.get(j).getBetvalue());
                 }
                 ccBroker.reportResults(bets);
                

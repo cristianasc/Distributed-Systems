@@ -70,7 +70,7 @@ public class Spectator extends Thread{
             bcSpectator.goCollectTheGains(spectatorID);
             
             for (int j = 0; j < bets.size(); j++) {
-                total = (int) (total + bets.get(j).Betvalue);
+                total = (int) (total + bets.get(j).getBetvalue());
             }
             
             //double ganho = (bet / totalApostasVencedor) * totalApostadoPerdido;
