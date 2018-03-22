@@ -19,8 +19,8 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     
     private GeneralRepository gr;
     private Paddock pad;
-    private boolean lastHorseToPaddock, lastSpectator, reportResults;
-    private int nSpectators, nHorses;
+    private boolean lastHorseToPaddock, lastSpectator, reportResults, allReportResults;
+    private int nSpectators, nHorses, spec;
     private ArrayList<Bet> winners;
     
     
@@ -30,6 +30,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         lastSpectator = false;
         reportResults = false;
         this.nSpectators = 0;
+        this.spec = 0;
         winners = new ArrayList<>();
         this.nHorses = 0;
     }
@@ -52,10 +53,17 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         winners = betlist;
         reportResults = true;
         notifyAll();
-
         
-        lastSpectator = false;
-        nSpectators = 0;
+        while (!allReportResults) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+            }
+        }
+        
+        reportResults = false;
+        allReportResults = false;
+        spec = 0;
 
     }
 
@@ -82,8 +90,12 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
             } catch (InterruptedException ex) {
             }
         }
+         
+        spec++;
+        if (spec == gr.getnSpectator()) {
+            allReportResults = true;
+        }
         
-        reportResults = false;
         notifyAll();
     }
 
@@ -108,11 +120,13 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
 
     @Override
     public synchronized boolean haveIWon(int spectator) {
-        if (winners == null)
+        if (winners == null){
             return false;
+        }
         for (int i=0; i<winners.size(); i++){
-            if (spectator == winners.get(i).getSpectatorID())
+            if (spectator == winners.get(i).getSpectatorID()){
                 return true;
+            }
         }
         return false;
     }

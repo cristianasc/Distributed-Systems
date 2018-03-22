@@ -99,7 +99,6 @@ public class Broker extends Thread{
             }
             
             if (ccBroker.areThereAnyWinners()){
-                System.err.println("\n print aquiiiiiiiiiiiiiii");
                 state = BrokerStates.SETTLING_ACCOUNTS;        
                 bcBroker.honourTheBets();
             }

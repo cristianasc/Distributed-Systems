@@ -10,13 +10,13 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
     
     public boolean finalBet;
     private GeneralRepository gr;
-    private int spectatorCount, collectscount;
+    private int spectatorCount, nCollects;
     private boolean brokerAcceptingBets;
     private Bet bet;
     private boolean newBet;
     private ArrayList<Bet> losers;
     private ArrayList< ArrayList<Bet>> loserList;
-    private boolean ManagerHounourTheBets;
+    private boolean hounourTheBets;
     private boolean finalCollect;
     private double totalValue;
     
@@ -26,10 +26,10 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         loserList = new ArrayList<ArrayList<Bet>>();
         brokerAcceptingBets = false;
         newBet = false;
-        ManagerHounourTheBets = false;
+        hounourTheBets = false;
         finalCollect = false;
         spectatorCount = 0;
-        collectscount = 0;
+        nCollects = 0;
         totalValue = 0;
     }
 
@@ -82,12 +82,10 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
 
     @Override
     public synchronized void honourTheBets() {
-        System.out.print("\nManager paga a quem ganhou (Inicio). Tamanho da lista de perdedores: " + loserList.size());
-        this.loserList = loserList;
-        System.err.println("Helloooooo");
-
+            System.out.print("\nBroker paga.");
+        
         if (finalCollect == false){
-            ManagerHounourTheBets = true;
+            hounourTheBets = true;
             notifyAll();
         }
         while (finalCollect == false) {            
@@ -97,16 +95,16 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
 
             }
         }
-        ManagerHounourTheBets = false;
+        hounourTheBets = false;
         finalCollect = false;
-        collectscount = 0;
+        nCollects = 0;
     }
     
     @Override
     public synchronized void goCollectTheGains(int spectatorID) {
-        System.out.print("\nApostador " + spectatorID + " apostou no cavalo ganhador, vai receber prémio!");
+        System.out.print("\nApostador " + spectatorID + " vai receber prémio.");
 
-        while (!ManagerHounourTheBets) {
+        while (!hounourTheBets) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -114,9 +112,9 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
             }
         }
         notifyAll();
-        collectscount++;
+        nCollects++;
         
-        if (collectscount == gr.getnWinners()) {
+        if (nCollects == gr.getnWinners()) {
             finalCollect = true;
             notifyAll();
         }

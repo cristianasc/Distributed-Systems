@@ -55,7 +55,6 @@ public class Spectator extends Thread{
         }            
         else{
             bet = (int) ((money - 1) * Math.random()) + 1 ; //+1 para ser no minimo 1€.
-            System.err.println("Valor da apostaaaaaaaaaaaaaaaaaaaaaa -> "+bet);
         }
         
         bcSpectator.placeABet(spectatorID, bet, bestHorse);
@@ -68,17 +67,18 @@ public class Spectator extends Thread{
         if (ccSpectator.haveIWon(spectatorID)) {
             state = SpectatorStates.COLLECTING_THE_GAINS;
             bcSpectator.goCollectTheGains(spectatorID);
+            System.out.print("AQUI!");
             
-            for (int j = 0; j < bets.size(); j++) {
-                total = (int) (total + bets.get(j).getBetvalue());
-            }
+            //for (int j = 0; j < bets.size(); j++) {
+            //    total = (int) (total + bets.get(j).getBetvalue());
+            //}
             
             //double ganho = (bet / totalApostasVencedor) * totalApostadoPerdido;
             //money = (int) (money + bet + ganho);
             //System.out.println("\nApostador " + spectatorID + " ganhou : " + (int) ganho + " fica com: " + (int) money);
 
         } else {
-            System.out.println("\nApostador " + spectatorID + " nao apostou no cavalo ganhador. Perdeu: " + bet + " fica com: " + money);
+            System.out.print("\nApostador " + spectatorID + " perdeu.");
         }
         
         if (nRaces != 0) {
