@@ -8,6 +8,7 @@ package ControlCentre;
 import GeneralRepository.*;
 import Paddock.*;
 import java.util.ArrayList;
+import GeneralRepository.Bet;
 
 /**
  *
@@ -48,18 +49,11 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     public synchronized void reportResults(ArrayList<Bet> betlist) {
         
         System.out.print("\nA reportar resultados.");
-        
         winners = betlist;
         reportResults = true;
         notifyAll();
 
-        while (!lastSpectator) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-            }
-        }
-        reportResults = false;
+        
         lastSpectator = false;
         nSpectators = 0;
 
@@ -88,7 +82,8 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
             } catch (InterruptedException ex) {
             }
         }
-         
+        
+        reportResults = false;
         notifyAll();
     }
 

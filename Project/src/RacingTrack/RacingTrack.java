@@ -66,7 +66,6 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         if (position >= gn.getDistance()){
             System.out.print("\nCavalo " + horse+ " passou a meta.");
             
-            
             if(nHorsesInRace == gn.getnHorses())
                 gn.setHorseWinner(horse);
             

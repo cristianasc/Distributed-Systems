@@ -86,6 +86,7 @@ public class Broker extends Thread{
             if (betsByHorses.get(gr.getHorseWinner()) == null){
                 bets = null;
                 ccBroker.reportResults(bets);
+                 
             }
             else{
                 bets = betsByHorses.get(gr.getHorseWinner());
@@ -94,9 +95,11 @@ public class Broker extends Thread{
                     moneyBet = (int) (moneyBet + bets.get(j).Betvalue);
                 }
                 ccBroker.reportResults(bets);
+               
             }
-
+            
             if (ccBroker.areThereAnyWinners()){
+                System.err.println("\n print aquiiiiiiiiiiiiiii");
                 state = BrokerStates.SETTLING_ACCOUNTS;        
                 bcBroker.honourTheBets();
             }
