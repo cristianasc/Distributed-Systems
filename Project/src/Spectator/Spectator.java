@@ -8,6 +8,7 @@ import ControlCentre.*;
 import GeneralRepository.*;
 import Paddock.*;
 import BettingCentre.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -21,7 +22,9 @@ public class Spectator extends Thread{
     private IPaddock_Spectator padSpectator;
     private IBettingCentre_Spectator bcSpectator;
     private GeneralRepository gr;
-    private int spectatorID, bestHorse, money, bet,nRaces;
+    private int spectatorID, bestHorse, money, total, bet,nRaces;
+    private Bet aposta;
+    private ArrayList<Bet> bets;
     
     public Spectator(IBettingCentre_Spectator bcSpectator, IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, GeneralRepository gr){
         this.ccSpectator = ccSpectator;
@@ -47,10 +50,13 @@ public class Spectator extends Thread{
         bestHorse = 1 + r.nextInt(gr.getnHorses()); 
         
         state = SpectatorStates.PLACING_A_BET;
-        if(money <1)
+        if(money < 1){
             bet = 0;
-        else
+        }            
+        else{
             bet = (int) ((money - 1) * Math.random()) + 1 ; //+1 para ser no minimo 1€.
+            System.err.println("Valor da apostaaaaaaaaaaaaaaaaaaaaaa -> "+bet);
+        }
         
         bcSpectator.placeABet(spectatorID, bet, bestHorse);
         money = money - bet; 
@@ -60,29 +66,28 @@ public class Spectator extends Thread{
         nRaces--;
         
         if (ccSpectator.haveIWon(spectatorID)) {
-             state = SpectatorStates.COLLECTING_THE_GAINS;
-        /*double totalApostadoPerdido = bcSpectator.goCollectTheGains(spectatorID);
-        int totalApostasVencedor = bcSpectator.getTotalBetValue();
-        int ganho = (apos / totalApostasVencedor) * totalApostadoPerdido;
-        money = money + bet + ganho;*/
-        //System.err.println("\nApostador " + spectatorID + " ganhou : " + (int) ganho + " fica com: " + (int) money);
+            state = SpectatorStates.COLLECTING_THE_GAINS;
+            bcSpectator.goCollectTheGains(spectatorID);
+            
+            for (int j = 0; j < bets.size(); j++) {
+                total = (int) (total + bets.get(j).Betvalue);
+            }
+            
+            //double ganho = (bet / totalApostasVencedor) * totalApostadoPerdido;
+            //money = (int) (money + bet + ganho);
+            //System.out.println("\nApostador " + spectatorID + " ganhou : " + (int) ganho + " fica com: " + (int) money);
 
         } else {
-
-            System.err.println("\nApostador " + spectatorID + " nao apostou no cavalo ganhador. Perdeu: " + bet + " fica com: " + money);
+            System.out.println("\nApostador " + spectatorID + " nao apostou no cavalo ganhador. Perdeu: " + bet + " fica com: " + money);
         }
         
         if (nRaces != 0) {
             ccSpectator.waitForTheNextRace(spectatorID);
         } 
         else {
+            //RELAX A BIT
             state = SpectatorStates.CELEBRATING;
-            //relaxABit();
-        }
-        
-        
-        
-       
-        
+            bcSpectator.relaxABit(spectatorID,money);
+        }        
     }  
 }

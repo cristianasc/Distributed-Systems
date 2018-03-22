@@ -5,6 +5,7 @@
  */
 package BettingCentre;
 import GeneralRepository.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,6 +14,6 @@ import GeneralRepository.*;
 public interface IBettingCentre_Broker {
     Bet acceptTheBets();
     void honourTheBets();
-    boolean areThereAnyWinners();
+    //boolean areThereAnyWinners(ArrayList<Bet> bets);
     void entertainTheGuests();
 }

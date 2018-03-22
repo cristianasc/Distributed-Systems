@@ -15,4 +15,5 @@ import java.util.ArrayList;
 public interface IControlCentre_Broker {
     void reportResults(ArrayList<Bet> betlist);
     void summonHorsesToPaddock();
+    boolean areThereAnyWinners();
 }

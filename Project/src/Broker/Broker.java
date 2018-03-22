@@ -46,68 +46,64 @@ public class Broker extends Thread{
     
     @Override
     public void run() {
-        state = BrokerStates.OPENING_THE_EVENT;
+        for (int k = 0; k < gr.getnRaces(); k++){
+            state = BrokerStates.OPENING_THE_EVENT;
         
-        System.out.print("\nBroker iniciado.");
-        System.out.print("\nBroker está no Control Centre.");
-        state = BrokerStates.ANNOUNCING_NEXT_RACE;
-        
-        //chamar os cavalos para o paddock
-        stBroker.summonHorsesToPaddock();
-        //chamar os espectadores para o paddock
-        ccBroker.summonHorsesToPaddock();
-        
-        state = BrokerStates.WAITING_FOR_BETS;
-        
-        int i = 0;
-        do {
-            i++;
-            bet = bcBroker.acceptTheBets();
-            bets = betsByHorses.get(bet.getHorseID());
-            if (bets != null) {
-                bets.add(bet);
-            } else {
-                bets = new ArrayList<>();
-                bets.add(bet);
+            System.out.print("\nBroker iniciado.");
+            System.out.print("\nBroker está no Control Centre.");
+            state = BrokerStates.ANNOUNCING_NEXT_RACE;
+
+            //chamar os cavalos para o paddock
+            stBroker.summonHorsesToPaddock();
+            //chamar os espectadores para o paddock
+            ccBroker.summonHorsesToPaddock();
+
+            state = BrokerStates.WAITING_FOR_BETS;
+
+            int i = 0;
+            do {
+                i++;
+                bet = bcBroker.acceptTheBets();
+                bets = betsByHorses.get(bet.getHorseID());
+                if (bets != null) {
+                    bets.add(bet);
+                } else {
+                    bets = new ArrayList<>();
+                    bets.add(bet);
+                }
+                betsByHorses.put(bet.getHorseID(), bets);
+            } while (i != gr.getnSpectator());
+
+            state = BrokerStates.SUPERVISING_THE_RACE;
+            rtBroker.startTheRace();
+
+            //a corrida acabou, por isso diminuimos o numero de corridas
+            nRaces--;
+            gr.setnRaces(nRaces);
+            System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
+
+            //reportar cavalo vencedor
+            if (betsByHorses.get(gr.getHorseWinner()) == null){
+                bets = null;
+                ccBroker.reportResults(bets);
             }
-            betsByHorses.put(bet.getHorseID(), bets);
-        } while (i != gr.getnSpectator());
-        
-        state = BrokerStates.SUPERVISING_THE_RACE;
-        rtBroker.startTheRace();
-         
-        //a corrida acabou, por isso diminuimos o numero de corridas
-        nRaces--;
-        gr.setnRaces(nRaces);
-        System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
-        
-        //reportar cavalo vencedor
-        if (betsByHorses.get(gr.getHorseWinner()) == null){
-            bets = null;
-            ccBroker.reportResults(bets);
-        }
-        else{
-            bets = betsByHorses.get(gr.getHorseWinner());
-            //calcular valor das bets
-            for (int j = 0; j < bets.size(); j++) {
-                moneyBet = (int) (moneyBet + bets.get(j).Betvalue);
+            else{
+                bets = betsByHorses.get(gr.getHorseWinner());
+                //calcular valor das bets
+                for (int j = 0; j < bets.size(); j++) {
+                    moneyBet = (int) (moneyBet + bets.get(j).Betvalue);
+                }
+                ccBroker.reportResults(bets);
             }
-            ccBroker.reportResults(bets);
+
+            if (ccBroker.areThereAnyWinners()){
+                state = BrokerStates.SETTLING_ACCOUNTS;        
+                bcBroker.honourTheBets();
+            }
         }
         
-        state = BrokerStates.SETTLING_ACCOUNTS;
-         
-      
-    }
-    
-    public void honourTheBets(){
-        
-        //EM FALTA bc.honourTheBets();
-    }
-    
-    public void entertainTheGuests(){
+        // ENTERTAIN THE GUESTS (FORA DO FOR)
         state = BrokerStates.PLAYING_HOST_AT_THE_BAR;
-        //EM FALTA bc.entertainTheGuests();
+        bcBroker.entertainTheGuests();
     }
-    
 }

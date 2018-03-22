@@ -62,14 +62,15 @@ public class AfternoonAtTheRaces {
         br.start();
         br.join();
         
+        /*
         for (int i = 0; i < horses.size(); i++) {
             try {
                 horse = horses.get(i);
                 horse.join();
             } 
-            catch (InterruptedException ex) {
+            catch (Exception ex) {
             }
-        }
+        }*/
         
         for (int i = 0; i < spectators.size(); i++) {
             try {
@@ -81,11 +82,6 @@ public class AfternoonAtTheRaces {
         }
         
         System.out.print("\nFim.");
-        
-        
-        
-        
-        
     }
     
 }

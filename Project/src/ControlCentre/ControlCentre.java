@@ -99,6 +99,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
             try {
                 wait();
             } catch (InterruptedException ex) {
+                
             }
         }
         
@@ -114,13 +115,18 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     public synchronized boolean haveIWon(int spectator) {
         if (winners == null)
             return false;
-        for(int i=0; i<winners.size(); i++){
-            if(spectator == winners.get(i).SpectatorID)
+        for (int i=0; i<winners.size(); i++){
+            if (spectator == winners.get(i).SpectatorID)
                 return true;
         }
         return false;
     }
-
     
-    
+    @Override
+    public synchronized boolean areThereAnyWinners() {
+        if (winners == null) {
+            return false;
+        }
+        return true;
+    }
 }

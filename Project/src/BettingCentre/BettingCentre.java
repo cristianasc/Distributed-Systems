@@ -18,7 +18,7 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
     private ArrayList< ArrayList<Bet>> loserList;
     private boolean ManagerHounourTheBets;
     private boolean finalCollect;
-    private double totalGet;
+    private double totalValue;
     
     public BettingCentre(GeneralRepository gr) {
         this.gr = gr;
@@ -30,49 +30,10 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         finalCollect = false;
         spectatorCount = 0;
         collectscount = 0;
-        totalGet = 0;
+        totalValue = 0;
     }
 
-    @Override
-    public synchronized Bet acceptTheBets() {
-        brokerAcceptingBets = true;
-        notifyAll();
-        
-        while (!newBet && finalBet != true) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                
-            }
-        }
-
-        newBet = false;
-        finalBet = false;
-        losers = new ArrayList<>();
-        totalGet = 0;
-        return bet;
-    }
-
-    @Override
-    public synchronized void honourTheBets() {
-        System.err.print("\nManager paga a quem ganhou (Inicio). Tamanho da lista de perdedores: " + loserList.size());
-        this.loserList = loserList;
-        while (finalCollect == false) {
-            ManagerHounourTheBets = true;
-            notifyAll();
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-
-            }
-        }
-        ManagerHounourTheBets = false;
-        finalCollect = false;
-        collectscount = 0;
-    }
-
-   
-    public synchronized void placeABet(int spectatorID, double value, int horseID) {
+    public synchronized void placeABet(int spectatorID, int value, int horseID) {
         while (!brokerAcceptingBets) {
             try {
                 wait();
@@ -97,11 +58,52 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
             spectatorCount = 0;
         }
         System.out.print("\nApostador " + spectatorID + " apostou"  + " no cavalo " + horseID +", " + (int) value + " €.");
+    }
+    
+    @Override
+    public synchronized Bet acceptTheBets() {
+        brokerAcceptingBets = true;
+        notifyAll();
+        
+        while (!newBet && finalBet != true) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                
+            }
+        }
 
+        newBet = false;
+        finalBet = false;
+        losers = new ArrayList<>();
+        totalValue = 0;
+        return bet;
     }
 
     @Override
-    public synchronized double goCollectTheGains(int spectatorID) {
+    public synchronized void honourTheBets() {
+        System.out.print("\nManager paga a quem ganhou (Inicio). Tamanho da lista de perdedores: " + loserList.size());
+        this.loserList = loserList;
+        System.err.println("Helloooooo");
+
+        if (finalCollect == false){
+            ManagerHounourTheBets = true;
+            notifyAll();
+        }
+        while (finalCollect == false) {            
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+
+            }
+        }
+        ManagerHounourTheBets = false;
+        finalCollect = false;
+        collectscount = 0;
+    }
+    
+    @Override
+    public synchronized void goCollectTheGains(int spectatorID) {
         System.out.print("\nApostador " + spectatorID + " apostou no cavalo ganhador, vai receber prémio!");
 
         while (!ManagerHounourTheBets) {
@@ -113,30 +115,16 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         }
         notifyAll();
         collectscount++;
-        double gain = 0;
-        for (int i = 0; i < loserList.size(); i++) {
-            losers = loserList.get(i);
-
-            for (int j = 0; j < losers.size(); j++) {
-                gain = gain + losers.get(j).Betvalue;
-            }
-        }
+        
         if (collectscount == gr.getnWinners()) {
             finalCollect = true;
             notifyAll();
         }
-
-        return gain;
-    }
-
-    @Override
-    public synchronized boolean areThereAnyWinners() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public synchronized void entertainTheGuests() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Os convidados estão-se a divertir! ");
     }
 
     @Override
