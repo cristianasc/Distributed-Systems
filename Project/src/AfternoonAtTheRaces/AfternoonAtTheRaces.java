@@ -30,7 +30,6 @@ public class AfternoonAtTheRaces {
         int nRaces = 4;
         int distance = 20;
         
-        
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
         BettingCentre bc = new BettingCentre(gr);
         ControlCentre cc = new ControlCentre(gr);
@@ -51,26 +50,19 @@ public class AfternoonAtTheRaces {
         }
         
         // verificar move!!
+        
         for (int i=1; i<= nHorses; i++){
             horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (10 + Math.random() * 5), gr);
             horses.add(horse);
             horse.start();
         }
         
+        
         Broker br = new Broker((IBettingCentre_Broker) bc, (IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
                 (IControlCentre_Broker) cc, gr);
         br.start();
         br.join();
         
-        /*
-        for (int i = 0; i < horses.size(); i++) {
-            try {
-                horse = horses.get(i);
-                horse.join();
-            } 
-            catch (Exception ex) {
-            }
-        }*/
         
         for (int i = 0; i < spectators.size(); i++) {
             try {
@@ -82,6 +74,7 @@ public class AfternoonAtTheRaces {
         }
         
         System.out.print("\nFim.");
+        System.exit(0);
+        
     }
-    
 }

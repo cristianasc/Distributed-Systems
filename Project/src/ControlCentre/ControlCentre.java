@@ -39,6 +39,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     public synchronized void proceedToPaddock(int horseID) {
         System.out.print("\nO cavalo "+ horseID +" vai para o paddock.");
         nHorses++;
+        System.out.print(nHorses);
         if(nHorses==gr.getnHorses()){
             lastHorseToPaddock = true;
             System.out.print("\nTodos os cavalos estão no Paddock.");
@@ -64,6 +65,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         reportResults = false;
         allReportResults = false;
         spec = 0;
+        nHorses = 0; 
 
     }
 

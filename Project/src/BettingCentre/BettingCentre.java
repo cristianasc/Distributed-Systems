@@ -82,7 +82,7 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
 
     @Override
     public synchronized void honourTheBets() {
-            System.out.print("\nBroker paga.");
+        System.out.print("\nBroker paga.");
         
         if (finalCollect == false){
             hounourTheBets = true;

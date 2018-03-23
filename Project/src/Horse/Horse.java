@@ -38,32 +38,41 @@ public class Horse extends Thread{
     @Override
     public void run() {
         state = HorseStates.AT_THE_STABLE;
-        stHorses.proceedToStable(horseID);
         
-        state = HorseStates.AT_THE_PADDOCK;
-        ccHorses.proceedToPaddock(horseID);
-        padHorses.proceedToPaddock(horseID);
-        
-        state = HorseStates.AT_THE_START_LINE;
-        padHorses.proceedToStartLine();
-        rtHorses.proceedToStartLine(horseID);
-        
-        state = HorseStates.RUNNING;
-        
-        do {
-            rtHorses.makeAMove(horseID, move);
-        } while (!rtHorses.hasFinishLineBeenCrossed(horseID));
-
-        
-        System.out.print("\nCavalo " + horseID + " sai da corrida!");
-        nRaces--;
-       
-        if (nRaces != 0){
-            state = HorseStates.AT_THE_STABLE;
-            stHorses.proceedToStable(horseID);
-        }
-        else
-            System.out.print("\nFim das corridas!");
+        proceedToStable();
     }
-    
+     
+    public void proceedToStable(){
+      stHorses.proceedToStable(horseID);
+      proceedToPaddock();
+    }
+
+    public void proceedToPaddock(){
+      state = HorseStates.AT_THE_PADDOCK;
+      ccHorses.proceedToPaddock(horseID);
+      padHorses.proceedToPaddock(horseID);
+      proceedToStartLine();
+    }
+
+    public void proceedToStartLine(){
+      state = HorseStates.AT_THE_START_LINE;
+      padHorses.proceedToStartLine();
+      rtHorses.proceedToStartLine(horseID);
+      makeAMove();
+    }
+
+    public void makeAMove(){
+      state = HorseStates.RUNNING;
+
+      do {
+        rtHorses.makeAMove(horseID, move);
+      } while (!rtHorses.hasFinishLineBeenCrossed(horseID));
+
+
+      System.out.print("\nCavalo " + horseID + " sai da corrida!");
+
+      state = HorseStates.AT_THE_STABLE;
+      proceedToStable();
+    }
+       
 }

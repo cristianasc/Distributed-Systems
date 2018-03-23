@@ -106,6 +106,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         
         next = 1;
         makeAMove = true;
+        nHorsesInRace = gn.getnHorses();
         
         //posições iniciais dos cavalos
         for (int i = 0; i < gn.getnHorses(); i++) {

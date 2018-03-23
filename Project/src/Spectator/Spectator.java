@@ -39,16 +39,26 @@ public class Spectator extends Thread{
     
     @Override
     public void run() {
-        System.out.print("\nO espectador " + spectatorID + " está à espera da próxima corrida.");
         state = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
+        waitForTheNextRace();   
+    }
+    
+    public void waitForTheNextRace(){
+        System.out.print("\nO espectador " + spectatorID + " está à espera da próxima corrida.");
         ccSpectator.waitForTheNextRace(spectatorID);
-        
+        goCheckHorses();
+    }
+    
+    public void goCheckHorses(){
         state = SpectatorStates.APPRAISING_THE_HORSES;
         padSpectator.goCheckHorses(spectatorID);
         //escolher um cavalo
         Random r = new Random();
         bestHorse = 1 + r.nextInt(gr.getnHorses()); 
-        
+        placeABet();
+    }
+    
+    public void placeABet(){
         state = SpectatorStates.PLACING_A_BET;
         if(money < 1){
             bet = 0;
@@ -59,7 +69,10 @@ public class Spectator extends Thread{
         
         bcSpectator.placeABet(spectatorID, bet, bestHorse);
         money = money - bet; 
-        
+        goWatchTheRace();
+    }
+    
+    public void goWatchTheRace(){
         state = SpectatorStates.WATCHING_A_RACE;
         ccSpectator.goWatchTheRace(spectatorID);
         nRaces--;
@@ -67,7 +80,7 @@ public class Spectator extends Thread{
         if (ccSpectator.haveIWon(spectatorID)) {
             state = SpectatorStates.COLLECTING_THE_GAINS;
             bcSpectator.goCollectTheGains(spectatorID);
-            System.out.print("AQUI!");
+            
             
             //for (int j = 0; j < bets.size(); j++) {
             //    total = (int) (total + bets.get(j).getBetvalue());
@@ -82,12 +95,16 @@ public class Spectator extends Thread{
         }
         
         if (nRaces != 0) {
-            ccSpectator.waitForTheNextRace(spectatorID);
+            state = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
+            waitForTheNextRace();
         } 
         else {
             //RELAX A BIT
             state = SpectatorStates.CELEBRATING;
             bcSpectator.relaxABit(spectatorID,money);
-        }        
-    }  
+        }   
+        
+    }
+    
+    
 }
