@@ -27,7 +27,7 @@ public class AfternoonAtTheRaces {
     public static void main(String[] args) throws InterruptedException {
         int nHorses = 4;
         int nSpectators = 4;
-        int nRaces = 3;
+        int nRaces = 2;
         int distance = 20;
         
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
@@ -62,18 +62,19 @@ public class AfternoonAtTheRaces {
                 (IControlCentre_Broker) cc, gr);
         br.start();
         br.join();
+        System.out.print("AQUI!");
         
         
         for (int i = 0; i < spectators.size(); i++) {
             try {
                 spectator = spectators.get(i);
                 spectator.join();
+                System.out.print("AQUI!");
             } 
             catch (InterruptedException ex) {
             }
         }
         
-        System.out.print("\nFim.");
         System.exit(0);
         
     }

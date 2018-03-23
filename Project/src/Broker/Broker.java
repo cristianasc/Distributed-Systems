@@ -46,8 +46,7 @@ public class Broker extends Thread{
     
     @Override
     public void run() {
-        for (int k = 0; k <= gr.getnRaces(); k++){
-            System.out.print(gr.getnRaces());
+        for (int k = 1; k <= gr.getnRaces(); k++){
             state = BrokerStates.OPENING_THE_EVENT;
         
             System.out.print("\nBroker iniciado.");
