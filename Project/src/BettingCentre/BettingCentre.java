@@ -88,7 +88,6 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
             hounourTheBets = true;
             notifyAll();
             try {
-                
                 wait();
             } catch (InterruptedException ex) {
 
@@ -114,10 +113,20 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         notifyAll();
         nCollects++;
         
+        System.out.print(gr.getnWinners() + ", " + nCollects);
+        
         if (nCollects == gr.getnWinners()) {
             finalCollect = true;
             notifyAll();
         }
+    }
+    
+    @Override
+    public synchronized boolean areThereAnyWinners(ArrayList<Bet> winners) {
+        if (winners == null) {
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -134,10 +134,9 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
     }
     
     @Override
-    public synchronized boolean areThereAnyWinners() {
-        if (winners == null) {
-            return false;
-        }
-        return true;
-    }
+    public ArrayList<Bet> getWinners(){
+        return winners;
+    } 
+    
+    
 }

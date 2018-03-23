@@ -14,6 +14,6 @@ import java.util.ArrayList;
 public interface IBettingCentre_Broker {
     Bet acceptTheBets();
     void honourTheBets();
-    //boolean areThereAnyWinners(ArrayList<Bet> bets);
+    boolean areThereAnyWinners(ArrayList<Bet> winners);
     void entertainTheGuests();
 }

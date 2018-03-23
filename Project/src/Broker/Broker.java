@@ -64,15 +64,19 @@ public class Broker extends Thread{
             do {
                 i++;
                 bet = bcBroker.acceptTheBets();
+                System.out.print("OLA" + bet.getSpectatorID() +", "+ bet.getHorseID());
                 bets = betsByHorses.get(bet.getHorseID());
                 if (bets != null) {
                     bets.add(bet);
-                } else {
+                } 
+                else if (bets == null) {
                     bets = new ArrayList<>();
                     bets.add(bet);
                 }
                 betsByHorses.put(bet.getHorseID(), bets);
             } while (i != gr.getnSpectator());
+            
+            
 
             state = BrokerStates.SUPERVISING_THE_RACE;
             rtBroker.startTheRace();
@@ -98,10 +102,16 @@ public class Broker extends Thread{
                
             }
             
-            if (ccBroker.areThereAnyWinners()){
+            
+            if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinner()))){
+                for (int l = 0; l < bets.size(); l++) {
+                    System.out.print("VENCEDORES1:" + bets.get(l).getSpectatorID());
+                }
+                
                 state = BrokerStates.SETTLING_ACCOUNTS;        
                 bcBroker.honourTheBets();
             }
+            System.out.print("FIM BROKER!");
         }
         
         // ENTERTAIN THE GUESTS (FORA DO FOR)
