@@ -27,7 +27,7 @@ public class AfternoonAtTheRaces {
     public static void main(String[] args) throws InterruptedException {
         int nHorses = 4;
         int nSpectators = 4;
-        int nRaces = 4;
+        int nRaces = 3;
         int distance = 20;
         
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);

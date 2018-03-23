@@ -46,7 +46,8 @@ public class Broker extends Thread{
     
     @Override
     public void run() {
-        for (int k = 0; k < gr.getnRaces(); k++){
+        for (int k = 0; k <= gr.getnRaces(); k++){
+            System.out.print(gr.getnRaces());
             state = BrokerStates.OPENING_THE_EVENT;
         
             System.out.print("\nBroker iniciado.");
@@ -77,19 +78,19 @@ public class Broker extends Thread{
             state = BrokerStates.SUPERVISING_THE_RACE;
             rtBroker.startTheRace();
 
-            //a corrida acabou, por isso diminuimos o numero de corridas
-            nRaces--;
+            /*nRaces--;
             gr.setnRaces(nRaces);
+            */
             System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
 
             //reportar cavalo vencedor
             if (betsByHorses.get(gr.getHorseWinner()) == null){
                 bets = null;
                 ccBroker.reportResults(bets);
-                 
             }
             else{
                 bets = betsByHorses.get(gr.getHorseWinner());
+                gr.setnWinners(bets.size());
                 //calcular valor das bets
                 for (int j = 0; j < bets.size(); j++) {
                     moneyBet = (int) (moneyBet + bets.get(j).getBetvalue());

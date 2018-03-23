@@ -84,17 +84,17 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
     public synchronized void honourTheBets() {
         System.out.print("\nBroker paga.");
         
-        if (finalCollect == false){
+        while (finalCollect == false) {
             hounourTheBets = true;
             notifyAll();
-        }
-        while (finalCollect == false) {            
             try {
+                
                 wait();
             } catch (InterruptedException ex) {
 
             }
         }
+        
         hounourTheBets = false;
         finalCollect = false;
         nCollects = 0;
