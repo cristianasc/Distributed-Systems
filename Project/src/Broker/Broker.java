@@ -20,12 +20,12 @@ import java.util.HashMap;
 public class Broker extends Thread{
     
     private BrokerStates state;
-    private IStable_Broker stBroker;
-    private IRacingTrack_Broker rtBroker;
-    private IControlCentre_Broker ccBroker;
-    private IBettingCentre_Broker bcBroker;
-    private GeneralRepository gr;
-    private int nRaces, winnerHorse, moneyBet;
+    private final IStable_Broker stBroker;
+    private final IRacingTrack_Broker rtBroker;
+    private final IControlCentre_Broker ccBroker;
+    private final IBettingCentre_Broker bcBroker;
+    private final GeneralRepository gr;
+    private int nRaces, moneyBet;
     private Bet bet;
     private ArrayList<Bet> bets;
     private HashMap<Integer, ArrayList<Bet>> betsByHorses;
@@ -61,9 +61,12 @@ public class Broker extends Thread{
 
             state = BrokerStates.WAITING_FOR_BETS;
             gr.setBrokerState(state);
+            
             bets = new ArrayList<>();
             betsByHorses = new HashMap<>();
             int i = 0;
+            
+            //adicionar as bets de dos espetadores
             do {
                 i++;
                 bet = bcBroker.acceptTheBets();
@@ -86,7 +89,7 @@ public class Broker extends Thread{
             System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
             
             
-            //reportar cavalo vencedor
+            //reportar cavalo vencedor 
             if (betsByHorses.get(gr.getHorseWinner()) == null){
                 bets = null;
                 ccBroker.reportResults(bets);
@@ -100,6 +103,8 @@ public class Broker extends Thread{
                 }
                 ccBroker.reportResults(bets);
             }
+            
+            
             if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinner()))){
                 state = BrokerStates.SETTLING_ACCOUNTS; 
                 gr.setBrokerState(state);

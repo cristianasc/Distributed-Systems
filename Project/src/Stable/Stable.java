@@ -28,15 +28,16 @@ public class Stable implements IStable_Horses, IStable_Broker{
     }
 
     /**
-     * Método é bloqueado enquanto o broker não chamar os cavalos, ou seja os 
-     * cavalos ficam no Stable até o broker os chamar
+     * Método para chamar os cavalos para o estábulo.
+     * Os cavalos são bloqueados enquanto o Broker não tiver chamados todos,
+     * após ter chamado todos estes são acordados.
      *
+     * @param horseID: ID do cavalo
      */
     @Override
     public synchronized void proceedToStable(int horseID) {
-        //notifyAll();
-        
         System.out.print("\nO cavalo "+ horseID + " está no estábulo.");
+        
         while (!callHorses) {
             try {
                 wait();

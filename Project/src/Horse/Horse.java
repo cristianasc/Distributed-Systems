@@ -17,11 +17,11 @@ import GeneralRepository.*;
 public class Horse extends Thread{
     
     private HorseStates state;
-    private IStable_Horses stHorses;
-    private IControlCentre_Horses ccHorses;
-    private IPaddock_Horses padHorses;
-    private IRacingTrack_Horses rtHorses;
-    private GeneralRepository gr;
+    private final IStable_Horses stHorses;
+    private final IControlCentre_Horses ccHorses;
+    private final IPaddock_Horses padHorses;
+    private final IRacingTrack_Horses rtHorses;
+    private final GeneralRepository gr;
     private int horseID, nRaces, move;
     
     public Horse(IRacingTrack_Horses rtHorses, IPaddock_Horses padHorses, IStable_Horses stHorses, IControlCentre_Horses ccHorses, int horseID, int move, GeneralRepository gr){

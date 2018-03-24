@@ -36,11 +36,18 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         this.nHorses = 0;
     }
 
+    /**
+     * Método que vai acordar os espectadores para irem para o Paddock
+     * quando o último cavalo chegar ao Paddock. Indica também qual o 
+     * cavalo que já está a ir para o Paddock.
+     * 
+     * @param horseID: ID do cavalo.
+     */
     @Override
     public synchronized void proceedToPaddock(int horseID) {
         System.out.print("\nO cavalo "+ horseID +" vai para o paddock.");
+        
         nHorses++;
-        System.out.print(nHorses);
         if(nHorses==gr.getnHorses()){
             lastHorseToPaddock = true;
             System.out.print("\nTodos os cavalos estão no Paddock.");

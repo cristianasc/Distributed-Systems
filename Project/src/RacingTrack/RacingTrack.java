@@ -16,7 +16,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
     
     private boolean makeAMove;
     private boolean lastHorse;
-    private final GeneralRepository gn;
+    private final GeneralRepository gr;
     private HashMap<Integer, Integer> positions;
     private int next, nHorses, position, nHorsesInRace;
     
@@ -24,15 +24,19 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
      * Construtor da classe
      * @param gr: General Repository
      */
-    public RacingTrack(GeneralRepository gn){
-        this.gn = gn;
-        this.nHorses = gn.getnHorses();
+    public RacingTrack(GeneralRepository gr){
+        this.gr = gr;
+        this.nHorses = gr.getnHorses();
         next = 0;
         makeAMove = false;
         positions = new HashMap<>();
-        nHorsesInRace = gn.getnHorses();
+        nHorsesInRace = gr.getnHorses();
     }
     
+    /**
+     * Método que vai bloquear os cavalos até que a corrida comece.
+     * @param horseID: ID do cavalo
+     */
     @Override
     public synchronized void proceedToStartLine(int horseID) {
         while (!makeAMove) {
@@ -43,6 +47,16 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         }         
     }
 
+    /**
+     * Método que bloqueia o cavalo até que seja a sua vez de se mover e calcula
+     * o movimento que o cavalo irá efetuar sempre que se quiser mover. Este movimento
+     * é Random mas sempre tendo em consideração a agilidade (passada) do cavalo.
+     * Quando o cavalo passa a meta é eliminado da corrida e quando todos passarem 
+     * a meta então a corrida termina.
+     * 
+     * @param horse: ID do cavalo
+     * @param move: agilidade do cavalo (passada)
+     */
     @Override
     public synchronized void makeAMove(int horse, int move){
         //cavalo espera até ser a sua vez de se mover
@@ -63,14 +77,14 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         position += move;
         positions.put(horse, position);
        
-        gn.sethorsePositions(horse, position);
+        gr.sethorsePositions(horse, position);
         System.out.print("\nCavalo " + horse+ " mexeu-se " + move + ", fica na posição " + position);
         
-        if (position >= gn.getDistance()){
+        if (position >= gr.getDistance()){
             System.out.print("\nCavalo " + horse+ " passou a meta.");
             
-            if(nHorsesInRace == gn.getnHorses())
-                gn.setHorseWinner(horse);
+            if(nHorsesInRace == gr.getnHorses())
+                gr.setHorseWinner(horse);
             
             if (positions.containsKey(horse))
                 positions.remove(horse);
@@ -95,12 +109,17 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         notifyAll();        
     }
 
+    /**
+     * Método que indica se um cavalo já terminou ou não a corrida. Se ainda
+     * estiver na lista de posições da corrida, então ainda não a terminou.
+     * 
+     * @param horseID
+     * @return True se já não estiver na lista de posições e False se ainda 
+     * estiver.
+     */
     @Override
     public synchronized boolean hasFinishLineBeenCrossed(int horseID) {
-        if(!positions.containsKey(horseID))
-            return true;
-        else
-            return false;
+        return !positions.containsKey(horseID);
     }
 
     /**
@@ -115,16 +134,16 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         
         next = 1;
         makeAMove = true;
-        nHorsesInRace = gn.getnHorses();
+        nHorsesInRace = gr.getnHorses();
         
         //posições iniciais dos cavalos
-        for (int i = 0; i < gn.getnHorses(); i++) {
+        for (int i = 0; i < gr.getnHorses(); i++) {
             positions.put((i + 1), 0);
         }
         
         //Acordar os cavalos
         notifyAll();
-        for (int i = 0; i < gn.getnHorses(); i++){
+        for (int i = 0; i < gr.getnHorses(); i++){
             System.out.print("\nCavalo " + (i+1) + " na posição " + positions.get(i+1));
         }
         
