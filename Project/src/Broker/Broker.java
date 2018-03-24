@@ -53,6 +53,7 @@ public class Broker extends Thread{
             System.out.print("\nBroker iniciado.");
             System.out.print("\nBroker está no Control Centre.");
             state = BrokerStates.ANNOUNCING_NEXT_RACE;
+            gr.setBrokerState(state);
 
             //chamar os cavalos para o paddock
             stBroker.summonHorsesToPaddock();
@@ -60,6 +61,7 @@ public class Broker extends Thread{
             ccBroker.summonHorsesToPaddock();
 
             state = BrokerStates.WAITING_FOR_BETS;
+            gr.setBrokerState(state);
             bets = new ArrayList<>();
             betsByHorses = new HashMap<>();
             int i = 0;
@@ -80,6 +82,7 @@ public class Broker extends Thread{
             } while (i != gr.getnSpectator());
 
             state = BrokerStates.SUPERVISING_THE_RACE;
+            gr.setBrokerState(state);
             rtBroker.startTheRace();
 
             /*nRaces--;
@@ -105,7 +108,8 @@ public class Broker extends Thread{
                 ccBroker.reportResults(bets);
             }
             if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinner()))){
-                state = BrokerStates.SETTLING_ACCOUNTS;        
+                state = BrokerStates.SETTLING_ACCOUNTS; 
+                gr.setBrokerState(state);
                 bcBroker.honourTheBets();
             }
             System.out.print("FIM BROKER!");
@@ -113,6 +117,7 @@ public class Broker extends Thread{
         
         // ENTERTAIN THE GUESTS (FORA DO FOR)
         state = BrokerStates.PLAYING_HOST_AT_THE_BAR;
+        gr.setBrokerState(state);
         bcBroker.entertainTheGuests();
     }
 }

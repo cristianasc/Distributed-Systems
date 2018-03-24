@@ -35,10 +35,10 @@ public class GeneralRepository {
     private final File log;
     private GeneralRepository gr;
     private BrokerStates BrokerState;
-    private SpectatorStates[] SpectatorStates;
+    private SpectatorStates[] statesSpectator;
     private int[] SpectatorMoney;
     //private int[] SpectatorMoney;
-    private HorseStates[] HorseStates;
+    private HorseStates[] statesHorses;
     private int[] HorseAgility;
     
     /**
@@ -59,14 +59,32 @@ public class GeneralRepository {
         this.horsePositions = new HashMap<>();
         this.horseSkills = new HashMap<>();
         this.betsPerSpectator = new HashMap<>();
+        this.currentRace = 0;
         
         
         this.gr = gr;
         this.BrokerState = BrokerStates.OPENING_THE_EVENT;
-        this.SpectatorStates = new SpectatorStates[nSpectators];
-        this.HorseStates = new HorseStates[nHorses];
+        this.statesSpectator = new SpectatorStates[nSpectators];
+        this.statesHorses = new HorseStates[nHorses];
         this.SpectatorMoney = new int[nSpectators];
         this.HorseAgility = new int[nHorses];
+        
+        
+        for (int i = 0; i < nHorses; i++) {
+            statesHorses[i] = HorseStates.AT_THE_STABLE;
+        }
+        
+        for (int i = 0; i < nSpectators; i++) {
+            statesSpectator[i] = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
+        }
+        
+        for (int i = 0; i < SpectatorMoney.length; i++) {
+            SpectatorMoney[i] = 0;            
+        }
+        
+        for (int i = 0; i < nHorses; i++) {
+            HorseAgility[i] = 0;            
+        }
 
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -78,25 +96,42 @@ public class GeneralRepository {
     }
     
     public synchronized void FirstLine(){
-       
-        
-        pw.printf("\n%2s", BrokerState.toString());
+        pw.printf("\t%4s\t", BrokerState.toString());
         System.err.println(BrokerState);
         
         for (int i=0; i < nSpectators; i++){
-            if (SpectatorStates[i] != null) {
-                pw.printf(" %2s %2s %2d ", SpectatorStates[i].toString(), SpectatorMoney[i], currentRace);
+            if (statesSpectator[i] != null) {
+                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
             }            
         }
-        
+        pw.printf("%2d   ", currentRace);  
         for (int i=0; i < nHorses; i++){
-            if (HorseStates[i] != null) {
-                pw.printf(" %2s %2d ",  HorseStates[i].toString(), HorseAgility[i]);
+            if (statesHorses[i] != null) {
+                pw.printf(" %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
             }            
         }
         pw.println();
         pw.flush();
         //SecondLine();
+    }
+    
+    public synchronized void SecondLine(){
+        pw.printf("\t%4s\t", BrokerState.toString());
+        System.err.println(BrokerState);
+        
+        for (int i=0; i < nSpectators; i++){
+            if (statesSpectator[i] != null) {
+                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
+            }            
+        }
+        
+        for (int i=0; i < nHorses; i++){
+            if (statesHorses[i] != null) {
+                pw.printf(" %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
+            }            
+        }
+        pw.println();
+        pw.flush();
     }
     
      private void writeInit(){
@@ -105,7 +140,17 @@ public class GeneralRepository {
             pw.println();
             pw.println("                               AFTERNOON AT THE RACE TRACK - Description of the internal state of the problem ");
             pw.println();
-            pw.println("                               MAN/BRK SPECTATOR/BETTER HORSE/JOCKEY PAIR at Race RN");
+            pw.println("\tMAN/BRK\t\t  SPECTATOR/BETTER\t\t     HORSE/JOCKEY PAIR at Race RN");
+            
+            pw.print("\tStat\t");
+            for (int i=0; i < nSpectators; i++){
+                pw.printf("St%d  Am%d  ",i,i);
+            }
+            
+            pw.print(" RN   ");
+            for (int i=0; i < nHorses; i++){
+                pw.printf("Hj%d  Len%d  ",i,i);
+            }
             pw.println();           
                         
             pw.flush();
@@ -200,13 +245,13 @@ public class GeneralRepository {
     }
 
     public void setSpectatorState(int spectID,SpectatorStates state,int money) {
-        SpectatorStates[spectID-1] = state;
+        statesSpectator[spectID-1] = state;
         SpectatorMoney[spectID-1] = money;
         FirstLine();        
     }    
 
     public void setHorseState(int ID,HorseStates state,int move) {
-        HorseStates[ID-1] = state;
+        statesHorses[ID-1] = state;
         HorseAgility[ID-1] = move;
         FirstLine();
     }
