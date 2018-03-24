@@ -30,13 +30,14 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
     
     @Override
     public synchronized void proceedToPaddock(int horseID) {
-        
         while (!goCheckHorses) {
             try {
-                wait();
+                wait();      
             } catch (InterruptedException ex) {
+                
             }
         }
+        
         
         System.out.print("\nCavalo " + horseID + " a ir para a StartLine.");
         nHorse++;

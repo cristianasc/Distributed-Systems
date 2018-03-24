@@ -13,6 +13,10 @@ import Stable.*;
 import BettingCentre.*;
 import ControlCentre.*;
 import Paddock.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -27,8 +31,9 @@ public class AfternoonAtTheRaces {
     public static void main(String[] args) throws InterruptedException {
         int nHorses = 4;
         int nSpectators = 4;
-        int nRaces = 2;
-        int distance = 20;
+        int nRaces = 3;
+        int distance = 10;
+        
         
         GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
         BettingCentre bc = new BettingCentre(gr);

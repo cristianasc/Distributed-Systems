@@ -48,6 +48,7 @@ public class Broker extends Thread{
     public void run() {
         for (int k = 1; k <= gr.getnRaces(); k++){
             state = BrokerStates.OPENING_THE_EVENT;
+            gr.setBrokerState(state);
         
             System.out.print("\nBroker iniciado.");
             System.out.print("\nBroker está no Control Centre.");
@@ -64,19 +65,21 @@ public class Broker extends Thread{
             do {
                 i++;
                 bet = bcBroker.acceptTheBets();
-                System.out.print("OLA" + bet.getSpectatorID() +", "+ bet.getHorseID());
+                System.out.print("\nOLA espectador " + bet.getSpectatorID() +", "+ bet.getHorseID());
                 bets = betsByHorses.get(bet.getHorseID());
-                if (bets != null) {
+                // AQUIIIIIIII - VERIFICAR ISTO
+                if (bets != null && bets.contains(bet.getSpectatorID())) {
+                    System.err.println("Apostassssssssa aqqudfsd");
+                    System.out.println(bets);
                     bets.add(bet);
-                } 
+                }
                 else if (bets == null) {
+                    //System.err.println("Apostassssssssa aqqudfsd");
                     bets = new ArrayList<>();
                     bets.add(bet);
                 }
                 betsByHorses.put(bet.getHorseID(), bets);
             } while (i != gr.getnSpectator());
-            
-            
 
             state = BrokerStates.SUPERVISING_THE_RACE;
             rtBroker.startTheRace();
@@ -99,13 +102,11 @@ public class Broker extends Thread{
                     moneyBet = (int) (moneyBet + bets.get(j).getBetvalue());
                 }
                 ccBroker.reportResults(bets);
-               
             }
-            
             
             if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinner()))){
                 for (int l = 0; l < bets.size(); l++) {
-                    System.out.print("VENCEDORES1:" + bets.get(l).getSpectatorID());
+                    System.out.print("\nVENCEDORES:" + bets.get(l).getSpectatorID());
                 }
                 
                 state = BrokerStates.SETTLING_ACCOUNTS;        

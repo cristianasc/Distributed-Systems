@@ -32,7 +32,17 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         nCollects = 0;
         totalValue = 0;
     }
-
+    
+    /**
+     * Método que aceita apostas de um dado espectador, sobre um certo cavalo num dado valor.
+     * A thread spectator fica em wait enquanto não estiverem feitas todas
+     * as apostas, e acorda os espetadores após estarem concluidas todas as
+     * apostas.
+     *
+     * @param punterID - ID do apostador
+     * @param value - Valor da aposta
+     * @param horseID - ID do cavalo a apostar
+     */
     public synchronized void placeABet(int spectatorID, int value, int horseID) {
         while (!brokerAcceptingBets) {
             try {
@@ -45,6 +55,7 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         bet.setSpectatorID(spectatorID);
         bet.setBetvalue(value);
         bet.setHorseID(horseID);
+        gr.getBetsPerSpectator(spectatorID);
         gr.setBetsPerSpectator(spectatorID, bet);
 
         newBet = true;
@@ -60,6 +71,13 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         System.out.print("\nApostador " + spectatorID + " apostou"  + " no cavalo " + horseID +", " + (int) value + " €.");
     }
     
+   /**
+     * Método para recolher as apostas. A thread acorda os espectadores para
+     * apostarem e entra em wait enquanto não forem feitas apostas, ou não for feita
+     * a ultima aposta do ultimo apostador.
+     *
+     * @return bet - valor total das apostas
+     */
     @Override
     public synchronized Bet acceptTheBets() {
         brokerAcceptingBets = true;
@@ -80,6 +98,14 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         return bet;
     }
 
+    /**
+     * Método responsável por chamar os espectadores e pagar os respetivos
+     * lucros das apostas conforme o resultado da corrida. O método  acorda os espetadores para irem receber e
+     * a thread entra em wait enquanto não forem entregues os dividendos a todos
+     * os apostadores vencedores.
+     *
+     * @param betList - lista de apostadores vencedores
+     */
     @Override
     public synchronized void honourTheBets() {
         System.out.print("\nBroker paga.");
@@ -99,6 +125,13 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         nCollects = 0;
     }
     
+    /**
+     * Método que acorda um dado espectador (spectatorID) para que este possa levantar o seu lucro da aposta caso tenha ganho.
+     * A thread entra em wait enquanto não for pago o devido montante aos
+     * apostadores vencedores. O espectador é acordado pelo broker assim que a transação seja completada.
+     *
+     * @param spectatorID - ID do espectador
+     */
     @Override
     public synchronized void goCollectTheGains(int spectatorID) {
         System.out.print("\nApostador " + spectatorID + " vai receber prémio.");
@@ -113,7 +146,7 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         notifyAll();
         nCollects++;
         
-        System.out.print(gr.getnWinners() + ", " + nCollects);
+        System.out.print("\n ->"+gr.getnWinners() + ", " + nCollects);
         
         if (nCollects == gr.getnWinners()) {
             finalCollect = true;

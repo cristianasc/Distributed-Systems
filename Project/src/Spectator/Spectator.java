@@ -40,6 +40,7 @@ public class Spectator extends Thread{
     @Override
     public void run() {
         state = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
+        gr.setSpectatorState(spectatorID,state);
         waitForTheNextRace();   
     }
     
@@ -66,7 +67,7 @@ public class Spectator extends Thread{
         else{
             bet = (int) ((money - 1) * Math.random()) + 1 ; //+1 para ser no minimo 1€.
         }
-        
+
         bcSpectator.placeABet(spectatorID, bet, bestHorse);
         money = money - bet; 
         goWatchTheRace();
@@ -76,6 +77,7 @@ public class Spectator extends Thread{
         state = SpectatorStates.WATCHING_A_RACE;
         ccSpectator.goWatchTheRace(spectatorID);
         nRaces--;
+        gr.setActualRace(nRaces);
         
         if (ccSpectator.haveIWon(spectatorID)) {
             state = SpectatorStates.COLLECTING_THE_GAINS;
@@ -97,14 +99,11 @@ public class Spectator extends Thread{
         if (nRaces != 0) {
             state = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
             waitForTheNextRace();
-        } 
+        }
         else {
             //RELAX A BIT
             state = SpectatorStates.CELEBRATING;
             bcSpectator.relaxABit(spectatorID,money);
-        }   
-        
+        }
     }
-    
-    
 }
