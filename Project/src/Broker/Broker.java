@@ -60,16 +60,14 @@ public class Broker extends Thread{
             ccBroker.summonHorsesToPaddock();
 
             state = BrokerStates.WAITING_FOR_BETS;
-
+            bets = new ArrayList<>();
+            betsByHorses = new HashMap<>();
             int i = 0;
             do {
                 i++;
                 bet = bcBroker.acceptTheBets();
-                System.out.print("\nOLA espectador " + bet.getSpectatorID() +", "+ bet.getHorseID());
                 bets = betsByHorses.get(bet.getHorseID());
-                // AQUIIIIIIII - VERIFICAR ISTO
-                if (bets != null && bets.contains(bet.getSpectatorID())) {
-                    System.err.println("Apostassssssssa aqqudfsd");
+                if (bets != null) {
                     System.out.println(bets);
                     bets.add(bet);
                 }
@@ -88,7 +86,10 @@ public class Broker extends Thread{
             gr.setnRaces(nRaces);
             */
             System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
-
+            for (int l = 1; l < betsByHorses.size(); l++) {
+                    System.out.print("\nVENCEDORES:" + betsByHorses.get(i));
+                }
+            
             //reportar cavalo vencedor
             if (betsByHorses.get(gr.getHorseWinner()) == null){
                 bets = null;
@@ -103,12 +104,7 @@ public class Broker extends Thread{
                 }
                 ccBroker.reportResults(bets);
             }
-            
             if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinner()))){
-                for (int l = 0; l < bets.size(); l++) {
-                    System.out.print("\nVENCEDORES:" + bets.get(l).getSpectatorID());
-                }
-                
                 state = BrokerStates.SETTLING_ACCOUNTS;        
                 bcBroker.honourTheBets();
             }
