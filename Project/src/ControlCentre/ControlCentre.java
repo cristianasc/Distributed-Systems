@@ -6,7 +6,6 @@
 package ControlCentre;
 
 import GeneralRepository.*;
-import Paddock.*;
 import java.util.ArrayList;
 import GeneralRepository.Bet;
 
@@ -17,13 +16,15 @@ import GeneralRepository.Bet;
 public class ControlCentre implements IControlCentre_Horses, IControlCentre_Broker,
         IControlCentre_Spectator{
     
-    private GeneralRepository gr;
-    private Paddock pad;
+    private final GeneralRepository gr;
     private boolean lastHorseToPaddock, lastSpectator, reportResults, allReportResults;
     private int nSpectators, nHorses, spec;
     private ArrayList<Bet> winners;
     
-    
+    /**
+     * Construtor da classe
+     * @param gr: General Repository
+     */
     public ControlCentre(GeneralRepository gr){
         this.gr = gr;
         lastHorseToPaddock = false;
@@ -47,6 +48,12 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         }
     }
 
+    /**
+     * Método que acorda os espectadores que estão no Watching Stand.
+     * O Broker é bloqueado enquanto não forem reportados todos os resultados.
+     * 
+     * @param betlist: ArrayList do tipo Bet com todos os apostadores que ganham.
+     */
     @Override
     public synchronized void reportResults(ArrayList<Bet> betlist) {
         
@@ -69,6 +76,10 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
 
     }
 
+    /**
+     * Método que bloqueia o broker até que o último espectador chegue 
+     * ao paddock.
+     */
     @Override
     public synchronized void summonHorsesToPaddock() {
         while (!lastSpectator) {

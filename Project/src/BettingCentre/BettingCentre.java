@@ -1,29 +1,33 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package BettingCentre;
 
 import GeneralRepository.Bet;
 import GeneralRepository.GeneralRepository;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+/**
+ *
+ * @author cristianacarvalho
+ */
 public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spectator {
     
-    public boolean finalBet;
-    private GeneralRepository gr;
+    
+    private final GeneralRepository gr;
     private int spectatorCount, nCollects;
-    private boolean brokerAcceptingBets;
+    private boolean brokerAcceptingBets, finalBet, newBet, hounourTheBets, finalCollect;
     private Bet bet;
-    private boolean newBet;
-    private ArrayList<Bet> losers;
-    private ArrayList< ArrayList<Bet>> loserList;
-    private boolean hounourTheBets;
-    private boolean finalCollect;
     private double totalValue;
     
+    /**
+     * Construtor da classe
+     * @param gr: General Repository
+     */
     public BettingCentre(GeneralRepository gr) {
         this.gr = gr;
-        losers = new ArrayList<>();
-        loserList = new ArrayList<ArrayList<Bet>>();
         brokerAcceptingBets = false;
         newBet = false;
         hounourTheBets = false;
@@ -72,11 +76,12 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
     }
     
    /**
-     * Método para recolher as apostas. A thread acorda os espectadores para
-     * apostarem e entra em wait enquanto não forem feitas apostas, ou não for feita
-     * a ultima aposta do ultimo apostador.
+     * Método que aceita as apostas. 
+     * O Broker acorda os espectadores para apostarem. 
+     * Enquanto não forem feita uma nova aposta, ou não for feita
+     * a última aposta do ultimo espectador/apostador.
      *
-     * @return bet - valor total das apostas
+     * @return bet - valor total das apostas feitas por um espectador
      */
     @Override
     public synchronized Bet acceptTheBets() {
@@ -93,18 +98,13 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
 
         newBet = false;
         finalBet = false;
-        losers = new ArrayList<>();
         totalValue = 0;
         return bet;
     }
 
     /**
-     * Método responsável por chamar os espectadores e pagar os respetivos
-     * lucros das apostas conforme o resultado da corrida. O método  acorda os espetadores para irem receber e
-     * a thread entra em wait enquanto não forem entregues os dividendos a todos
-     * os apostadores vencedores.
-     *
-     * @param betList - lista de apostadores vencedores
+     * Método acorda os espectadores para serem pagos pelas suas apostas.
+     * O Broker fica bloqueado enquanto não todos os vencedores não forem pagos.
      */
     @Override
     public synchronized void honourTheBets() {
@@ -154,14 +154,20 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         }
     }
     
+    /**
+     * Método boolean que indica se existem vencedores.
+     * @param winners: lista de vencedores
+     * @return True se a lista de vencedores não for vazia, ou False se for.
+     */
     @Override
     public synchronized boolean areThereAnyWinners(ArrayList<Bet> winners) {
-        if (winners == null) {
-            return false;
-        }
-        return true;
+        return winners != null;
     }
 
+    /**
+     * Método que indica apenas o que está a acontecer no último estado do ciclo
+     * de vida do Broker.
+     */
     @Override
     public synchronized void entertainTheGuests() {
         System.out.println("Os convidados estão-se a divertir! ");

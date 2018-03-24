@@ -21,7 +21,6 @@ public class Broker extends Thread{
     
     private BrokerStates state;
     private IStable_Broker stBroker;
-    private IStable_Horses stHorses;
     private IRacingTrack_Broker rtBroker;
     private IControlCentre_Broker ccBroker;
     private IBettingCentre_Broker bcBroker;
@@ -74,7 +73,6 @@ public class Broker extends Thread{
                     bets.add(bet);
                 }
                 else if (bets == null) {
-                    //System.err.println("Apostassssssssa aqqudfsd");
                     bets = new ArrayList<>();
                     bets.add(bet);
                 }
@@ -84,14 +82,9 @@ public class Broker extends Thread{
             state = BrokerStates.SUPERVISING_THE_RACE;
             gr.setBrokerState(state);
             rtBroker.startTheRace();
-
-            /*nRaces--;
-            gr.setnRaces(nRaces);
-            */
+            
             System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
-            for (int l = 1; l < betsByHorses.size(); l++) {
-                    System.out.print("\nVENCEDORES:" + betsByHorses.get(i));
-                }
+            
             
             //reportar cavalo vencedor
             if (betsByHorses.get(gr.getHorseWinner()) == null){
@@ -112,10 +105,8 @@ public class Broker extends Thread{
                 gr.setBrokerState(state);
                 bcBroker.honourTheBets();
             }
-            System.out.print("FIM BROKER!");
         }
         
-        // ENTERTAIN THE GUESTS (FORA DO FOR)
         state = BrokerStates.PLAYING_HOST_AT_THE_BAR;
         gr.setBrokerState(state);
         bcBroker.entertainTheGuests();

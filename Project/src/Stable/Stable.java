@@ -5,7 +5,6 @@
  */
 package Stable;
 
-import Stable.*;
 import GeneralRepository.*;
 
 /**
@@ -16,8 +15,12 @@ public class Stable implements IStable_Horses, IStable_Broker{
     
     private int horseId;
     private boolean callHorses;
-    private GeneralRepository gr;
+    private final GeneralRepository gr;
     
+    /**
+     * Construtor da classe
+     * @param gr: General Repository
+     */
     public Stable(GeneralRepository gr){
         horseId = 0;
         callHorses = false;
@@ -46,8 +49,9 @@ public class Stable implements IStable_Horses, IStable_Broker{
     }
     
     /**
-     *
-     * 
+     * Método para chamar os cavalos para o paddock. Os cavalos são acordados 
+     * pelo broker. Enquanto não chamar os cavalos todos o broker fica 
+     * em espera.
      */
     @Override
     public synchronized void summonHorsesToPaddock() {

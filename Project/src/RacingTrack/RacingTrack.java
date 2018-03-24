@@ -6,7 +6,6 @@
 package RacingTrack;
 
 import GeneralRepository.GeneralRepository;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -15,17 +14,21 @@ import java.util.HashMap;
  */
 public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
     
-    private boolean makeAMove, reportResults, lastHorse;
-    private GeneralRepository gn;
+    private boolean makeAMove;
+    private boolean lastHorse;
+    private final GeneralRepository gn;
     private HashMap<Integer, Integer> positions;
     private int next, nHorses, position, nHorsesInRace;
     
+    /**
+     * Construtor da classe
+     * @param gr: General Repository
+     */
     public RacingTrack(GeneralRepository gn){
         this.gn = gn;
         this.nHorses = gn.getnHorses();
         next = 0;
         makeAMove = false;
-        reportResults = false;
         positions = new HashMap<>();
         nHorsesInRace = gn.getnHorses();
     }
@@ -100,6 +103,12 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
             return false;
     }
 
+    /**
+     * Método que inicia a corrida de cavalos.
+     * Os cavalos começam todos na posição 0 e vão ser acordados pelo Broker.
+     * O Broker fica bloqueado e a corrida só acaba quando o útlimo cavalo
+     * chegar ao fim da meta.
+     */
     @Override
     public synchronized void startTheRace() {
         System.out.print("\nCOMEÇA A CORRIDA");
@@ -110,7 +119,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         
         //posições iniciais dos cavalos
         for (int i = 0; i < gn.getnHorses(); i++) {
-            positions.put((i + 1), 0);          // repoe posições dos cavalos a zero
+            positions.put((i + 1), 0);
         }
         
         //Acordar os cavalos
