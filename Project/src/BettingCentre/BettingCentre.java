@@ -42,7 +42,7 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
      * O espetador fica bloqueado enquanto não tiveram as apostas todas feitas e 
      * acorda-os quando estiverem todas concluídas.
      *
-     * @param punterID - ID do apostador
+     * @param spectatorID - ID do apostador
      * @param value - Valor da aposta
      * @param horseID - ID do cavalo a apostar
      */
@@ -145,7 +145,6 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         notifyAll();
         nCollects++;
         
-        System.out.print("\n ->"+gr.getnWinners() + ", " + nCollects);
         
         if (nCollects == gr.getnWinners()) {
             finalCollect = true;
@@ -169,10 +168,15 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
      */
     @Override
     public synchronized void entertainTheGuests() {
-        System.out.println("Os convidados estão-se a divertir! ");
+        System.out.print("\nOs convidados estão-se a divertir! ");
     }
-
+    
+    /**
+     * Método que indica apenas o que está a acontecer no último estado do ciclo
+     * de vida do Espectador.
+     */
     @Override
-    public synchronized void relaxABit(int spectatorID, int money) {
-        System.out.println("\nApostador " + spectatorID + " vai relaxar..Acabou com " + money + "€.");    }
+    public synchronized void relaxABit(int spectatorID) {
+        System.out.print("\nApostador " + spectatorID + " vai relaxar.");    
     }
+}

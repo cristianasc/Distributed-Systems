@@ -72,7 +72,6 @@ public class Broker extends Thread{
                 bet = bcBroker.acceptTheBets();
                 bets = betsByHorses.get(bet.getHorseID());
                 if (bets != null) {
-                    System.out.println(bets);
                     bets.add(bet);
                 }
                 else if (bets == null) {

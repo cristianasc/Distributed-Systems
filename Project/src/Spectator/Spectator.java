@@ -88,15 +88,6 @@ public class Spectator extends Thread{
             bcSpectator.goCollectTheGains(spectatorID);
             gr.setSpectatorState(spectatorID,state,money);
             
-            
-            //for (int j = 0; j < bets.size(); j++) {
-            //    total = (int) (total + bets.get(j).getBetvalue());
-            //}
-            
-            //double ganho = (bet / totalApostasVencedor) * totalApostadoPerdido;
-            //money = (int) (money + bet + ganho);
-            //System.out.println("\nApostador " + spectatorID + " ganhou : " + (int) ganho + " fica com: " + (int) money);
-
         } else {
             System.out.print("\nApostador " + spectatorID + " perdeu.");
         }
@@ -109,7 +100,7 @@ public class Spectator extends Thread{
         else {
             //RELAX A BIT
             state = SpectatorStates.CELEBRATING;
-            bcSpectator.relaxABit(spectatorID,money);
+            bcSpectator.relaxABit(spectatorID);
             gr.setSpectatorState(spectatorID,state,money);
         }
     }
