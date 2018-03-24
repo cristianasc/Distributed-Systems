@@ -10,5 +10,15 @@ package Horse;
  * @author cristianacarvalho
  */
 public enum HorseStates {
-    AT_THE_STABLE, AT_THE_PADDOCK, AT_THE_START_LINE, RUNNING, AT_THE_FINISH_LINE;
+    AT_THE_STABLE("STB"), AT_THE_PADDOCK("PDK"), AT_THE_START_LINE("ASL"), RUNNING("RUN"), AT_THE_FINISH_LINE("AFL");
+    private String state;
+    
+    private HorseStates(String state){
+        this.state = state;
+    }
+    
+    @Override
+    public String toString(){
+        return state;
+    }
 }

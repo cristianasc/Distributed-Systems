@@ -10,6 +10,17 @@ package Spectator;
  * @author cristianacarvalho
  */
 public enum SpectatorStates {
-    WAITING_FOR_A_RACE_TO_START, APPRAISING_THE_HORSES, PLACING_A_BET,
-    WATCHING_A_RACE, COLLECTING_THE_GAINS, CELEBRATING;
+    WAITING_FOR_A_RACE_TO_START("WFRS"), APPRAISING_THE_HORSES("ATH"), PLACING_A_BET("P_B"),
+    WATCHING_A_RACE("WAR"), COLLECTING_THE_GAINS("CTG"), CELEBRATING("CEL");
+    
+    private String state;
+    
+    private SpectatorStates(String state){
+        this.state = state;
+    }
+    
+    @Override
+    public String toString(){
+        return state;
+    }
 }

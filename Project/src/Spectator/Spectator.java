@@ -40,7 +40,7 @@ public class Spectator extends Thread{
     @Override
     public void run() {
         state = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
-        gr.setSpectatorState(spectatorID,state);
+        gr.setSpectatorState(spectatorID,state,money);
         waitForTheNextRace();   
     }
     

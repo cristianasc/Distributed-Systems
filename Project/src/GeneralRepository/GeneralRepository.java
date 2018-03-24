@@ -35,9 +35,11 @@ public class GeneralRepository {
     private final File log;
     private GeneralRepository gr;
     private BrokerStates BrokerState;
-    private HashMap<Integer,SpectatorStates> SpectatorStates;
+    private SpectatorStates[] SpectatorStates;
     private int[] SpectatorMoney;
+    //private int[] SpectatorMoney;
     private HorseStates[] HorseStates;
+    private int[] HorseAgility;
     
     /**
      * Construtor da classe
@@ -54,15 +56,17 @@ public class GeneralRepository {
         this.nSpectators = nSpectators;
         this.nRaces = nRaces;
         this.distance = distance;
-        horsePositions = new HashMap<>();
-        horseSkills = new HashMap<>();
-        betsPerSpectator = new HashMap<>();
+        this.horsePositions = new HashMap<>();
+        this.horseSkills = new HashMap<>();
+        this.betsPerSpectator = new HashMap<>();
+        
         
         this.gr = gr;
         this.BrokerState = BrokerStates.OPENING_THE_EVENT;
-        this.SpectatorStates = new HashMap();
+        this.SpectatorStates = new SpectatorStates[nSpectators];
         this.HorseStates = new HorseStates[nHorses];
         this.SpectatorMoney = new int[nSpectators];
+        this.HorseAgility = new int[nHorses];
 
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -74,11 +78,21 @@ public class GeneralRepository {
     }
     
     public synchronized void FirstLine(){
-        pw.printf("\n%4s", BrokerState);
+       
+        
+        pw.printf("\n%2s", BrokerState.toString());
         System.err.println(BrokerState);
         
         for (int i=0; i < nSpectators; i++){
-            pw.printf("  %s", SpectatorStates.get(i));
+            if (SpectatorStates[i] != null) {
+                pw.printf(" %2s %2s %2d ", SpectatorStates[i].toString(), SpectatorMoney[i], currentRace);
+            }            
+        }
+        
+        for (int i=0; i < nHorses; i++){
+            if (HorseStates[i] != null) {
+                pw.printf(" %2s %2d ",  HorseStates[i].toString(), HorseAgility[i]);
+            }            
         }
         pw.println();
         pw.flush();
@@ -91,7 +105,7 @@ public class GeneralRepository {
             pw.println();
             pw.println("                               AFTERNOON AT THE RACE TRACK - Description of the internal state of the problem ");
             pw.println();
-            pw.println("                               MAN/BRK SPECTATOR/BETTER HORSE/JOCKEY PAIR at Race R -> "+currentRace);
+            pw.println("                               MAN/BRK SPECTATOR/BETTER HORSE/JOCKEY PAIR at Race RN");
             pw.println();           
                         
             pw.flush();
@@ -185,8 +199,15 @@ public class GeneralRepository {
         FirstLine();        
     }
 
-    public void setSpectatorState(int spectID,SpectatorStates state) {
-        SpectatorStates.put(spectID,state);
-        //FirstLine();        
+    public void setSpectatorState(int spectID,SpectatorStates state,int money) {
+        SpectatorStates[spectID-1] = state;
+        SpectatorMoney[spectID-1] = money;
+        FirstLine();        
     }    
+
+    public void setHorseState(int ID,HorseStates state,int move) {
+        HorseStates[ID-1] = state;
+        HorseAgility[ID-1] = move;
+        FirstLine();
+    }
 }
