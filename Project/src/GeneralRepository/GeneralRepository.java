@@ -8,11 +8,8 @@ package GeneralRepository;
 import Broker.BrokerStates;
 import Horse.HorseStates;
 import Spectator.SpectatorStates;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -97,22 +94,24 @@ public class GeneralRepository {
     
     public synchronized void FirstLine(){
         pw.printf("\t%4s\t", BrokerState.toString());
+        
         System.err.println(BrokerState);
         
         for (int i=0; i < nSpectators; i++){
             if (statesSpectator[i] != null) {
-                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
+                pw.printf("oLA1 %3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
             }            
         }
         pw.printf("%2d   ", currentRace);  
         for (int i=0; i < nHorses; i++){
             if (statesHorses[i] != null) {
-                pw.printf(" %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
+                pw.printf("oLA1 %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
             }            
         }
         pw.println();
         pw.flush();
-        //SecondLine();
+        
+        SecondLine();
     }
     
     public synchronized void SecondLine(){
@@ -121,13 +120,13 @@ public class GeneralRepository {
         
         for (int i=0; i < nSpectators; i++){
             if (statesSpectator[i] != null) {
-                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
+                pw.printf("oLA2 %3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
             }            
         }
         
         for (int i=0; i < nHorses; i++){
             if (statesHorses[i] != null) {
-                pw.printf(" %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
+                pw.printf("oLA2 %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
             }            
         }
         pw.println();
