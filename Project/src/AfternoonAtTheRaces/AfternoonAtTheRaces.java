@@ -54,10 +54,9 @@ public class AfternoonAtTheRaces {
             spectator.start();
         }
         
-        // verificar move!!
         
         for (int i=1; i<= nHorses; i++){
-            horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (10 + Math.random() * 5), gr);
+            horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (2+ Math.random() * 5), gr);
             horses.add(horse);
             horse.start();
         }
@@ -67,14 +66,12 @@ public class AfternoonAtTheRaces {
                 (IControlCentre_Broker) cc, gr);
         br.start();
         br.join();
-        System.out.print("AQUI!");
         
         
         for (int i = 0; i < spectators.size(); i++) {
             try {
                 spectator = spectators.get(i);
                 spectator.join();
-                System.out.print("AQUI!");
             } 
             catch (InterruptedException ex) {
             }

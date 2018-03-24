@@ -38,10 +38,9 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
     }
     
     /**
-     * Método que aceita apostas de um dado espectador, sobre um certo cavalo num dado valor.
-     * A thread spectator fica em wait enquanto não estiverem feitas todas
-     * as apostas, e acorda os espetadores após estarem concluidas todas as
-     * apostas.
+     * Método para fazer as apostas de um dado espectador.
+     * O espetador fica bloqueado enquanto não tiveram as apostas todas feitas e 
+     * acorda-os quando estiverem todas concluídas.
      *
      * @param punterID - ID do apostador
      * @param value - Valor da aposta
@@ -126,9 +125,9 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
     }
     
     /**
-     * Método que acorda um dado espectador (spectatorID) para que este possa levantar o seu lucro da aposta caso tenha ganho.
-     * A thread entra em wait enquanto não for pago o devido montante aos
-     * apostadores vencedores. O espectador é acordado pelo broker assim que a transação seja completada.
+     * Método que acorda um dado espectador para ir buscar o valor ganho.
+     * O espectador fica bloqueanto enquanto não for pago o valor aos vencedores.
+     * O espectador é acordado assim que estiver tudo completo.
      *
      * @param spectatorID - ID do espectador
      */

@@ -17,6 +17,11 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
     private boolean goCheckHorses, goToStartLine;
     private final GeneralRepository gr;
     
+    
+    /**
+     * Construtor da classe
+     * @param gr: General Repository
+     */
     public Paddock(GeneralRepository gr){
         this.gr = gr;
         horseNTotal = gr.getnHorses();
@@ -48,12 +53,20 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
         nHorse++;
     }
 
+    /**
+     * Método que acorda os espectadores e os cavalos 
+     * quando estes estiverem todos no Paddock.
+     * O espectador fica bloqueado até os cavalos não sairem todos do paddock.
+     * Após isto, os espectadores podem apostar.
+     * 
+     * @param spectatorID
+     */
     @Override
     public synchronized void goCheckHorses(int spectatorID) {
         spectator++;
         if(spectator == spectatorNTotal){
             goCheckHorses = true;
-            //acorda todos os cavalos 
+             
             notifyAll();
             System.out.print("\nOs espetadores estão no paddock.");
         }
@@ -71,6 +84,7 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
         if (spectatorToBet == spectatorNTotal){
             spectatorToBet = 0;
             spectator = 0;
+            goToStartLine = false;
         } 
     }
 

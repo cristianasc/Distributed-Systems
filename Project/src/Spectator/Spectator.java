@@ -18,10 +18,10 @@ import java.util.Random;
 public class Spectator extends Thread{
     
     private SpectatorStates state;
-    private IControlCentre_Spectator ccSpectator;
-    private IPaddock_Spectator padSpectator;
-    private IBettingCentre_Spectator bcSpectator;
-    private GeneralRepository gr;
+    private final IControlCentre_Spectator ccSpectator;
+    private final IPaddock_Spectator padSpectator;
+    private final IBettingCentre_Spectator bcSpectator;
+    private final GeneralRepository gr;
     private int spectatorID, bestHorse, money, total, bet,nRaces;
     private Bet aposta;
     private ArrayList<Bet> bets;
@@ -54,6 +54,7 @@ public class Spectator extends Thread{
         state = SpectatorStates.APPRAISING_THE_HORSES;
         padSpectator.goCheckHorses(spectatorID);
         gr.setSpectatorState(spectatorID,state,money);
+        
         //escolher um cavalo
         Random r = new Random();
         bestHorse = 1 + r.nextInt(gr.getnHorses()); 

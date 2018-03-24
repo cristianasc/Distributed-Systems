@@ -101,6 +101,11 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         nSpectators = 0;
     }
 
+    /**
+     * Método que bloqueia o espectador enquanto não forem reportados os resultados
+     * pelo Broker. Após isto, são acordados.
+     * @param spectatorID: ID do espectador
+     */
     @Override
     public synchronized void goWatchTheRace(int spectatorID) {
          System.out.print("\nApostador " + spectatorID + " vai para a Watching Stand.");
@@ -113,12 +118,19 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
          
         spec++;
         if (spec == gr.getnSpectator()) {
-            allReportResults = true;
+            allReportResults = true;  
         }
-        
         notifyAll();
+        
     }
 
+    /**
+     *Médoto que bloqueia o espectador enquanto não tiverem chegado todos os 
+     *cavalos ao Paddock. Quando chegarem todos os cavalos e apostadores ao Paddock
+     *os espectadores são acordados.
+     * 
+     * @param spectatorID: ID do espectador
+     */
     @Override
     public synchronized void waitForTheNextRace(int spectatorID) {
         
@@ -138,6 +150,11 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         }
     }
 
+    /**
+     * Método para verificar se determinado espectador
+     * @param spectator: ID do espectador
+     * @return True se o espectador for um vencedor, False caso contrário
+     */
     @Override
     public synchronized boolean haveIWon(int spectator) {
         if (winners == null){
@@ -151,6 +168,10 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
         return false;
     }
     
+    /**
+     *Método para obter a lista de vencedores.
+     * @return winners: ArrayList do tipo Bet
+     */
     @Override
     public ArrayList<Bet> getWinners(){
         return winners;
