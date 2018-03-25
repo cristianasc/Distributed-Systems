@@ -27,7 +27,7 @@ public class AfternoonAtTheRaces {
     public static void main(String[] args) throws InterruptedException {
         int nHorses = 4;
         int nSpectators = 4;
-        int nRaces = 2;
+        int nRaces = 5;
         int distance = 10;
         
         
