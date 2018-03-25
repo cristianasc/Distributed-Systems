@@ -93,50 +93,52 @@ public class GeneralRepository {
     }
     
     public synchronized void FirstLine(){
+        
         pw.printf("\t%4s\t", BrokerState.toString());
         
         System.err.println(BrokerState);
         
         for (int i=0; i < nSpectators; i++){
             if (statesSpectator[i] != null) {
-                pw.printf("oLA1 %3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
+                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
             }            
         }
         pw.printf("%2d   ", currentRace);  
         for (int i=0; i < nHorses; i++){
             if (statesHorses[i] != null) {
-                pw.printf("oLA1 %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
+                pw.printf("%3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
             }            
         }
         pw.println();
         pw.flush();
         
-        SecondLine();
+        //SecondLine();
     }
-    
+    /*
     public synchronized void SecondLine(){
+        
         pw.printf("\t%4s\t", BrokerState.toString());
         System.err.println(BrokerState);
         
         for (int i=0; i < nSpectators; i++){
             if (statesSpectator[i] != null) {
-                pw.printf("oLA2 %3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
+                pw.printf(" %3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
             }            
         }
         
         for (int i=0; i < nHorses; i++){
             if (statesHorses[i] != null) {
-                pw.printf("oLA2 %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
+                pw.printf(" %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
             }            
         }
         pw.println();
         pw.flush();
-    }
+    }*/
     
      private void writeInit(){
         try{
             pw = new PrintWriter(log);
-            pw.println();
+            
             pw.println("                               AFTERNOON AT THE RACE TRACK - Description of the internal state of the problem ");
             pw.println();
             pw.println("\tMAN/BRK\t\t  SPECTATOR/BETTER\t\t     HORSE/JOCKEY PAIR at Race RN");
@@ -150,8 +152,14 @@ public class GeneralRepository {
             for (int i=0; i < nHorses; i++){
                 pw.printf("Hj%d  Len%d  ",i,i);
             }
-            pw.println();           
-                        
+            pw.println();
+            pw.print("\t\t                                Race RN Status                            ");
+            pw.println();
+            pw.print("\tRn  Dist");
+            for (int i=0; i < nSpectators; i++){
+                pw.printf(" BS%d BA%d Od%d N%d Ps%d SD%d",i,i,i,i,i,i);
+            }
+            pw.println();            
             pw.flush();
         } catch (FileNotFoundException ex) {
             //Logger.getLogger(Logging.class.getName()).log(Level.SEVERE, null, ex);
