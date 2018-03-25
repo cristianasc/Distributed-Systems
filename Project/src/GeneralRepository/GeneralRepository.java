@@ -24,7 +24,6 @@ import java.util.HashMap;
 public class GeneralRepository {
     private int nHorses, nSpectators, nRaces, nWinners, distance, horseWinner;
     private HashMap<Integer, Integer> horsePositions;
-    private HashMap<Integer, Integer> horseSkills;
     private HashMap<Integer, Bet> betsPerSpectator;
     private int currentRace;
     
@@ -55,7 +54,6 @@ public class GeneralRepository {
         this.nRaces = nRaces;
         this.distance = distance;
         this.horsePositions = new HashMap<>();
-        this.horseSkills = new HashMap<>();
         this.betsPerSpectator = new HashMap<>();
         this.currentRace = 0;        
         
@@ -120,24 +118,29 @@ public class GeneralRepository {
             pw.printf(" %d   %d  ", spectatorBet[i], spectatorMoney[i]);
         }
         
-        int t = getTotalAgility();        
         
+        int totalAgility = 0;
         for (int i = 0; i < nHorses; i++) {
-            pw.printf(" %d   %d  %d  %d  ",t,t,t,t );
+            System.err.println("dsfsdgfsdgdfghdsfg -> "+HorseAgility[i]);
+            totalAgility += HorseAgility[i];
+        }
+        int agility;
+        for (int i = 0; i < nHorses; i++) {
+            if (HorseAgility[i] != 0 && totalAgility != 0){
+                agility =  HorseAgility[i]/totalAgility;
+            }else{
+                agility = 0;
+            }
+            
+            System.err.println("\t\t\t "+agility);
+            pw.printf(" %d   %d  %d  %d  ",i,i,i,i);
         }
         
         pw.println();
         pw.flush();
     }
     
-    private int getTotalAgility(){
-        int totalAgility = 0;
-        for (int i = 0; i < horseSkills.size(); i++) {
-            totalAgility += horseSkills.get(i);
-        }
-        
-        return totalAgility;
-    }
+
  
      private void writeInit(){
         try{
@@ -187,8 +190,9 @@ public class GeneralRepository {
         return distance;
     }
     
-    public void setDistance(int distance){
+    public synchronized void setDistance(int distance){
         this.distance = distance;
+        FirstLine();
     }
     
     public int getnHorses(){
@@ -215,14 +219,6 @@ public class GeneralRepository {
         this.nRaces = nRaces;
     }
     
-    public int getHorseSkills(int id) {
-        return horseSkills.get(id);
-    }
-    
-    public void setHorseSkills(int id, int skiil) {
-        horseSkills.put(id, skiil);
-    }
-    
     public void gethorsePositions(int id) {
         horsePositions.get(id);
     }
@@ -231,8 +227,10 @@ public class GeneralRepository {
         horsePositions.put(id, position);
     }
     
-    public void setBetsPerSpectator(int ID, Bet bet) {
+    public synchronized void setBetsPerSpectator(int ID, Bet bet) {
         betsPerSpectator.put(ID, bet);
+        setSpectatorBet(ID,bet.getHorseID());
+        setSpectatorMoney(ID,bet.getBetvalue());
     }
     
     public Bet getBetsPerSpectator(int ID) {
@@ -260,12 +258,12 @@ public class GeneralRepository {
         FirstLine();        
     }
 
-    public void setSpectatorState(int spectID,SpectatorStates state) {
+    public synchronized void setSpectatorState(int spectID,SpectatorStates state) {
         statesSpectator[spectID-1] = state;
         FirstLine();        
     }    
 
-    public void setHorseState(int ID,HorseStates state,int move) {
+    public synchronized void setHorseState(int ID,HorseStates state,int move) {
         statesHorses[ID-1] = state;
         HorseAgility[ID-1] = move;
         FirstLine();

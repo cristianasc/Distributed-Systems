@@ -38,7 +38,7 @@ public class Horse extends Thread{
     @Override
     public void run() {
         state = HorseStates.AT_THE_STABLE;
-        gr.setHorseState(horseID,state,move);        
+        gr.setHorseState(horseID,state,move);
         proceedToStable();
     }
      

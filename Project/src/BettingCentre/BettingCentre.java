@@ -58,8 +58,6 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
         bet.setSpectatorID(spectatorID);
         bet.setBetvalue(value);
         bet.setHorseID(horseID);
-        gr.getBetsPerSpectator(spectatorID);
-        gr.setBetsPerSpectator(spectatorID, bet);
 
         newBet = true;
         notifyAll();
@@ -139,12 +137,10 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
             try {
                 wait();
             } catch (InterruptedException ex) {
-
             }
         }
         notifyAll();
-        nCollects++;
-        
+        nCollects++;        
         
         if (nCollects == gr.getnWinners()) {
             finalCollect = true;
