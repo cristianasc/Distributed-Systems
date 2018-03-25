@@ -11,6 +11,7 @@ import Spectator.SpectatorStates;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -116,24 +117,24 @@ public class GeneralRepository {
         
         for (int i = 0; i < nSpectators; i++) {
             pw.printf(" %d   %d  ", spectatorBet[i], spectatorMoney[i]);
-        }
-        
+        }        
         
         int totalAgility = 0;
         for (int i = 0; i < nHorses; i++) {
-            System.err.println("dsfsdgfsdgdfghdsfg -> "+HorseAgility[i]);
             totalAgility += HorseAgility[i];
         }
-        int agility;
+        
+        double agility;
         for (int i = 0; i < nHorses; i++) {
-            if (HorseAgility[i] != 0 && totalAgility != 0){
-                agility =  HorseAgility[i]/totalAgility;
-            }else{
-                agility = 0;
+            //System.err.println("AGILIDADE TOTAL -> "+totalAgility);
+            //System.err.println("\t\t\t "+HorseAgility[i]);
+            if (HorseAgility[i] == 0 || totalAgility == 0){
+                agility = 0.0;
+            }else{                
+                agility =  ((double) HorseAgility[i]/(double) totalAgility) * 100;
+                //System.out.printf("\t AGILIDADE dentro do if-> %.2f"+agility);
             }
-            
-            System.err.println("\t\t\t "+agility);
-            pw.printf(" %d   %d  %d  %d  ",i,i,i,i);
+            pw.printf(" %d %d  %d  %d  ",(int) agility,i,i,i);
         }
         
         pw.println();
@@ -223,8 +224,9 @@ public class GeneralRepository {
         horsePositions.get(id);
     }
     
-    public void sethorsePositions(int id, int position) {
+    public synchronized void sethorsePositions(int id, int position) {
         horsePositions.put(id, position);
+        FirstLine();
     }
     
     public synchronized void setBetsPerSpectator(int ID, Bet bet) {
