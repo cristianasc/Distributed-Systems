@@ -38,6 +38,8 @@ public class GeneralRepository {
     //private int[] SpectatorMoney;
     private HorseStates[] statesHorses;
     private int[] HorseAgility;
+    private int[] count;
+    private HashMap<Integer,Integer> pos;
     
     /**
      * Construtor da classe
@@ -56,7 +58,8 @@ public class GeneralRepository {
         this.distance = distance;
         this.horsePositions = new HashMap<>();
         this.betsPerSpectator = new HashMap<>();
-        this.currentRace = 0;        
+        this.currentRace = 0;
+        this.pos = new HashMap();
         
         this.gr = gr;
         this.BrokerState = BrokerStates.OPENING_THE_EVENT;
@@ -66,7 +69,7 @@ public class GeneralRepository {
         this.HorseAgility = new int[nHorses];
         this.spectatorMoney = new int[nSpectators];
         this.spectatorBet = new int[nSpectators];
-        
+        this.count = new int[nHorses];        
         
         for (int i = 0; i < nHorses; i++) {
             statesHorses[i] = HorseStates.AT_THE_STABLE;
@@ -89,8 +92,7 @@ public class GeneralRepository {
         String filename = "assignment1T1G7_" + date.format(today) + ".txt";
 
         this.log = new File(filename);
-        writeInit();
-          
+        writeInit();          
     }
     
     public synchronized void FirstLine(){
@@ -123,18 +125,22 @@ public class GeneralRepository {
         for (int i = 0; i < nHorses; i++) {
             totalAgility += HorseAgility[i];
         }
-        
+        int aux;
         double agility;
         for (int i = 0; i < nHorses; i++) {
-            //System.err.println("AGILIDADE TOTAL -> "+totalAgility);
-            //System.err.println("\t\t\t "+HorseAgility[i]);
             if (HorseAgility[i] == 0 || totalAgility == 0){
                 agility = 0.0;
             }else{                
                 agility =  ((double) HorseAgility[i]/(double) totalAgility) * 100;
-                //System.out.printf("\t AGILIDADE dentro do if-> %.2f"+agility);
             }
-            pw.printf(" %d %d  %d  %d  ",(int) agility,i,i,i);
+            if (horsePositions.get(i) != null) {
+                if (!pos.containsKey(i)){
+                    pw.printf(" %d %d  %d  %d  ",(int) agility,i,horsePositions.get(i),i);
+                }else{
+                    aux = 0;
+                    pw.printf(" %d %d  %d  %d  ",(int) agility,i,horsePositions.get(i),aux);
+                }
+            }
         }
         
         pw.println();
@@ -279,5 +285,15 @@ public class GeneralRepository {
     public synchronized void setSpectatorMoney(int spectID, int money) {
         spectatorMoney[spectID-1] = money;
         FirstLine();
+    }
+
+    public synchronized void setArrayPosition(HashMap<Integer,Integer> pos) {
+        this.pos = pos;
+        FirstLine();
+    }
+
+    public synchronized void setCount(int horse, int contagem) {
+        System.err.print(horse);
+        count[horse] = contagem;
     }
 }

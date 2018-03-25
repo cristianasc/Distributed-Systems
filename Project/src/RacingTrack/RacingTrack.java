@@ -58,7 +58,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
      * @param move: agilidade do cavalo (passada)
      */
     @Override
-    public synchronized void makeAMove(int horse, int move){
+    public synchronized void makeAMove(int horse, int move,int count){
         //cavalo espera até ser a sua vez de se mover
         while (horse != next) {
             try {
@@ -78,6 +78,9 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
         positions.put(horse, position);
        
         gr.sethorsePositions(horse, position);
+        gr.setArrayPosition(positions);
+        gr.setCount(horse,count);
+        
         System.out.print("\nCavalo " + horse+ " mexeu-se " + move + ", fica na posição " + position);
         
         if (position >= gr.getDistance()){
@@ -91,6 +94,8 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
             
             nHorsesInRace--; 
         }
+        
+        gr.setArrayPosition(positions);
         
         if (nHorsesInRace != 0){
             next = ((next % nHorses) + 1);

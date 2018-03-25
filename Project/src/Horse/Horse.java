@@ -64,19 +64,21 @@ public class Horse extends Thread{
     }
 
     public void makeAMove(){
-      state = HorseStates.RUNNING;
-      gr.setHorseState(horseID,state,move);
+        state = HorseStates.RUNNING;
+        gr.setHorseState(horseID,state,move);
+        int count = 0;
 
-      do {
-        rtHorses.makeAMove(horseID, move);
-      } while (!rtHorses.hasFinishLineBeenCrossed(horseID));
+        do {
+            count++;
+            rtHorses.makeAMove(horseID, move,count);
+        } while (!rtHorses.hasFinishLineBeenCrossed(horseID));
 
 
-      System.out.print("\nCavalo " + horseID + " sai da corrida!");
+        System.out.print("\nCavalo " + horseID + " sai da corrida!");
 
-      state = HorseStates.AT_THE_STABLE;
-      gr.setHorseState(horseID,state,move);
-      proceedToStable();
+        state = HorseStates.AT_THE_STABLE;
+        gr.setHorseState(horseID,state,move);
+        proceedToStable();
     }
        
 }
