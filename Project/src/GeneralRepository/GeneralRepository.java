@@ -109,8 +109,16 @@ public class GeneralRepository {
                 pw.printf("%3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
             }            
         }
+        
         pw.println();
         pw.flush();
+        
+        pw.printf("\t%d %d %d", currentRace,distance,horseWinner);
+        
+        pw.println();
+        pw.flush();
+        
+        
         
         //SecondLine();
     }
@@ -118,17 +126,18 @@ public class GeneralRepository {
     public synchronized void SecondLine(){
         
         pw.printf("\t%4s\t", BrokerState.toString());
+        
         System.err.println(BrokerState);
         
         for (int i=0; i < nSpectators; i++){
             if (statesSpectator[i] != null) {
-                pw.printf(" %3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
+                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
             }            
         }
-        
+        pw.printf("%2d   ", currentRace);  
         for (int i=0; i < nHorses; i++){
             if (statesHorses[i] != null) {
-                pw.printf(" %3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
+                pw.printf("%3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
             }            
         }
         pw.println();
