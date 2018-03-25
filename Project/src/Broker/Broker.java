@@ -30,7 +30,6 @@ public class Broker extends Thread{
     private ArrayList<Bet> bets;
     private HashMap<Integer, ArrayList<Bet>> betsByHorses;
     
-    
     public Broker(IBettingCentre_Broker bcBroker, IStable_Broker stBroker, IStable_Horses stHorses, IRacingTrack_Broker rtBroker, IControlCentre_Broker ccBroker, GeneralRepository gr){
         this.stBroker = stBroker;
         this.rtBroker = rtBroker;
@@ -86,7 +85,6 @@ public class Broker extends Thread{
             rtBroker.startTheRace();
             
             System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
-            
             
             //reportar cavalo vencedor 
             if (betsByHorses.get(gr.getHorseWinner()) == null){

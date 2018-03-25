@@ -49,6 +49,7 @@ public class Horse extends Thread{
 
     public void proceedToPaddock(){
       state = HorseStates.AT_THE_PADDOCK;
+      gr.setHorseState(horseID,state,move);
       ccHorses.proceedToPaddock(horseID);
       padHorses.proceedToPaddock(horseID);
       proceedToStartLine();
@@ -56,6 +57,7 @@ public class Horse extends Thread{
 
     public void proceedToStartLine(){
       state = HorseStates.AT_THE_START_LINE;
+      gr.setHorseState(horseID,state,move);
       padHorses.proceedToStartLine();
       rtHorses.proceedToStartLine(horseID);
       makeAMove();
@@ -63,6 +65,7 @@ public class Horse extends Thread{
 
     public void makeAMove(){
       state = HorseStates.RUNNING;
+      gr.setHorseState(horseID,state,move);
 
       do {
         rtHorses.makeAMove(horseID, move);
@@ -72,6 +75,7 @@ public class Horse extends Thread{
       System.out.print("\nCavalo " + horseID + " sai da corrida!");
 
       state = HorseStates.AT_THE_STABLE;
+      gr.setHorseState(horseID,state,move);
       proceedToStable();
     }
        

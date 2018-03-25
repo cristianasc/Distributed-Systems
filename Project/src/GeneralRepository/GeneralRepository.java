@@ -57,8 +57,7 @@ public class GeneralRepository {
         this.horsePositions = new HashMap<>();
         this.horseSkills = new HashMap<>();
         this.betsPerSpectator = new HashMap<>();
-        this.currentRace = 0;
-        
+        this.currentRace = 0;        
         
         this.gr = gr;
         this.BrokerState = BrokerStates.OPENING_THE_EVENT;
@@ -96,7 +95,6 @@ public class GeneralRepository {
     }
     
     public synchronized void FirstLine(){
-        
         pw.printf("\t%4s\t", BrokerState.toString());
         
         for (int i=0; i < nSpectators; i++){
@@ -104,6 +102,7 @@ public class GeneralRepository {
                 pw.printf("%3s %3d   ", statesSpectator[i].toString(), spectatorMoney[i]);
             }            
         }
+        
         pw.printf("%2d   ", currentRace);  
         for (int i=0; i < nHorses; i++){
             if (statesHorses[i] != null) {
@@ -111,24 +110,33 @@ public class GeneralRepository {
             }            
         }
         
-        
         //Second part of logger
         pw.println();
         pw.flush();
         
-        pw.printf("\t%d %d ", currentRace,distance);
+        pw.printf("\t%d   %d   ", currentRace,distance);
         
         for (int i = 0; i < nSpectators; i++) {
-            pw.printf("\t%d %d ", spectatorBet[i],spectatorMoney[i]);
+            pw.printf(" %d   %d  ", spectatorBet[i], spectatorMoney[i]);
         }
         
+        int t = getTotalAgility();        
+        
         for (int i = 0; i < nHorses; i++) {
-            pw.printf("\t%d %d ", currentRace,distance);
+            pw.printf(" %d   %d  %d  %d  ",t,t,t,t );
         }
         
         pw.println();
         pw.flush();
+    }
+    
+    private int getTotalAgility(){
+        int totalAgility = 0;
+        for (int i = 0; i < horseSkills.size(); i++) {
+            totalAgility += horseSkills.get(i);
+        }
         
+        return totalAgility;
     }
  
      private void writeInit(){
@@ -151,9 +159,9 @@ public class GeneralRepository {
             pw.println();
             pw.print("\t\t                                Race RN Status                            ");
             pw.println();
-            pw.print("\tRn  Dist");
+            pw.print("\tRn  Dist ");
             for (int i=0; i < nSpectators; i++){
-                pw.printf(" BS%d BA%d ",i,i);
+                pw.printf(" BS%d BA%d",i,i);
             }
             for (int i=0; i < nHorses; i++){
                 pw.printf(" Od%d N%d Ps%d SD%d",i,i,i,i);
@@ -166,8 +174,9 @@ public class GeneralRepository {
         }
     }
     
-    public void setActualRace(int race){
+    public synchronized void setActualRace(int race){
         this.currentRace = race;
+        FirstLine();
     }
     
     public int getCurrentRace(){
@@ -178,7 +187,7 @@ public class GeneralRepository {
         return distance;
     }
     
-    public void setDistance(){
+    public void setDistance(int distance){
         this.distance = distance;
     }
     
@@ -251,16 +260,24 @@ public class GeneralRepository {
         FirstLine();        
     }
 
-    public void setSpectatorState(int spectID,SpectatorStates state,int money,int bet) {
+    public void setSpectatorState(int spectID,SpectatorStates state) {
         statesSpectator[spectID-1] = state;
-        spectatorMoney[spectID-1] = money;
-        spectatorBet[spectID-1] = bet;
         FirstLine();        
     }    
 
     public void setHorseState(int ID,HorseStates state,int move) {
         statesHorses[ID-1] = state;
         HorseAgility[ID-1] = move;
+        FirstLine();
+    }
+
+    public synchronized void setSpectatorBet(int spectID, int bet) {
+        spectatorBet[spectID-1] = bet;
+        FirstLine();
+    }
+
+    public synchronized void setSpectatorMoney(int spectID, int money) {
+        spectatorMoney[spectID-1] = money;
         FirstLine();
     }
 }
