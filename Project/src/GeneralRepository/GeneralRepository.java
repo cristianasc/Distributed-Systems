@@ -150,6 +150,15 @@ public class GeneralRepository {
                     pw.printf(" %d %d  %d  %d  ",(int) agility,count[i],horsePositions.get(i),aux);
                 }
             }
+            else{
+                aux = 0;
+                if (!pos.containsKey(i)){
+                    pw.printf(" %d %d  %d  %d  ",(int) agility,count[i],aux,i);
+                }else{
+                    aux = 0;
+                    pw.printf(" %d %d  %d  %d  ",(int) agility,count[i],aux,aux);
+                }
+            }
         }
         
         pw.println();
