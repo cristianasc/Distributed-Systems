@@ -33,7 +33,8 @@ public class GeneralRepository {
     private GeneralRepository gr;
     private BrokerStates BrokerState;
     private SpectatorStates[] statesSpectator;
-    private int[] SpectatorMoney;
+    private int[] spectatorMoney;
+    private int[] spectatorBet;
     //private int[] SpectatorMoney;
     private HorseStates[] statesHorses;
     private int[] HorseAgility;
@@ -63,8 +64,10 @@ public class GeneralRepository {
         this.BrokerState = BrokerStates.OPENING_THE_EVENT;
         this.statesSpectator = new SpectatorStates[nSpectators];
         this.statesHorses = new HorseStates[nHorses];
-        this.SpectatorMoney = new int[nSpectators];
+        this.spectatorMoney = new int[nSpectators];
         this.HorseAgility = new int[nHorses];
+        this.spectatorMoney = new int[nSpectators];
+        this.spectatorBet = new int[nSpectators];
         
         
         for (int i = 0; i < nHorses; i++) {
@@ -75,8 +78,8 @@ public class GeneralRepository {
             statesSpectator[i] = SpectatorStates.WAITING_FOR_A_RACE_TO_START;
         }
         
-        for (int i = 0; i < SpectatorMoney.length; i++) {
-            SpectatorMoney[i] = 0;            
+        for (int i = 0; i < spectatorMoney.length; i++) {
+            spectatorMoney[i] = 0;            
         }
         
         for (int i = 0; i < nHorses; i++) {
@@ -96,11 +99,9 @@ public class GeneralRepository {
         
         pw.printf("\t%4s\t", BrokerState.toString());
         
-        System.err.println(BrokerState);
-        
         for (int i=0; i < nSpectators; i++){
             if (statesSpectator[i] != null) {
-                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
+                pw.printf("%3s %3d   ", statesSpectator[i].toString(), spectatorMoney[i]);
             }            
         }
         pw.printf("%2d   ", currentRace);  
@@ -110,40 +111,26 @@ public class GeneralRepository {
             }            
         }
         
+        
+        //Second part of logger
         pw.println();
         pw.flush();
         
-        pw.printf("\t%d %d %d", currentRace,distance,horseWinner);
+        pw.printf("\t%d %d ", currentRace,distance);
+        
+        for (int i = 0; i < nSpectators; i++) {
+            pw.printf("\t%d %d ", spectatorBet[i],spectatorMoney[i]);
+        }
+        
+        for (int i = 0; i < nHorses; i++) {
+            pw.printf("\t%d %d ", currentRace,distance);
+        }
         
         pw.println();
         pw.flush();
         
-        
-        
-        //SecondLine();
     }
-    /*
-    public synchronized void SecondLine(){
-        
-        pw.printf("\t%4s\t", BrokerState.toString());
-        
-        System.err.println(BrokerState);
-        
-        for (int i=0; i < nSpectators; i++){
-            if (statesSpectator[i] != null) {
-                pw.printf("%3s %3d   ", statesSpectator[i].toString(), SpectatorMoney[i]);
-            }            
-        }
-        pw.printf("%2d   ", currentRace);  
-        for (int i=0; i < nHorses; i++){
-            if (statesHorses[i] != null) {
-                pw.printf("%3s  %4d ",  statesHorses[i].toString(), HorseAgility[i]);
-            }            
-        }
-        pw.println();
-        pw.flush();
-    }*/
-    
+ 
      private void writeInit(){
         try{
             pw = new PrintWriter(log);
@@ -166,8 +153,12 @@ public class GeneralRepository {
             pw.println();
             pw.print("\tRn  Dist");
             for (int i=0; i < nSpectators; i++){
-                pw.printf(" BS%d BA%d Od%d N%d Ps%d SD%d",i,i,i,i,i,i);
+                pw.printf(" BS%d BA%d ",i,i);
             }
+            for (int i=0; i < nHorses; i++){
+                pw.printf(" Od%d N%d Ps%d SD%d",i,i,i,i);
+            }
+                
             pw.println();            
             pw.flush();
         } catch (FileNotFoundException ex) {
@@ -255,14 +246,15 @@ public class GeneralRepository {
         this.horseWinner = horseID;
     }
 
-    public void setBrokerState(BrokerStates state) {
+    public synchronized void setBrokerState(BrokerStates state) {
         BrokerState = state;
         FirstLine();        
     }
 
-    public void setSpectatorState(int spectID,SpectatorStates state,int money) {
+    public void setSpectatorState(int spectID,SpectatorStates state,int money,int bet) {
         statesSpectator[spectID-1] = state;
-        SpectatorMoney[spectID-1] = money;
+        spectatorMoney[spectID-1] = money;
+        spectatorBet[spectID-1] = bet;
         FirstLine();        
     }    
 
