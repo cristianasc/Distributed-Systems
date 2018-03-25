@@ -35,7 +35,6 @@ public class GeneralRepository {
     private SpectatorStates[] statesSpectator;
     private int[] spectatorMoney;
     private int[] spectatorBet;
-    //private int[] SpectatorMoney;
     private HorseStates[] statesHorses;
     private int[] HorseAgility;
     private int[] count;
@@ -86,6 +85,16 @@ public class GeneralRepository {
         for (int i = 0; i < nHorses; i++) {
             HorseAgility[i] = 0;            
         }
+        
+        for (int i = 0; i < nHorses; i++) {
+            count[i] = 0;
+        }
+        
+        for (int i = 0; i < nSpectators; i++) {
+            spectatorBet[i] = 0;
+        }
+        
+        
 
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -135,10 +144,10 @@ public class GeneralRepository {
             }
             if (horsePositions.get(i) != null) {
                 if (!pos.containsKey(i)){
-                    pw.printf(" %d %d  %d  %d  ",(int) agility,i,horsePositions.get(i),i);
+                    pw.printf(" %d %d  %d  %d  ",(int) agility,count[i],horsePositions.get(i),i);
                 }else{
                     aux = 0;
-                    pw.printf(" %d %d  %d  %d  ",(int) agility,i,horsePositions.get(i),aux);
+                    pw.printf(" %d %d  %d  %d  ",(int) agility,count[i],horsePositions.get(i),aux);
                 }
             }
         }
@@ -293,7 +302,6 @@ public class GeneralRepository {
     }
 
     public synchronized void setCount(int horse, int contagem) {
-        System.err.print(horse);
-        count[horse] = contagem;
+        count[horse-1] = contagem;
     }
 }
