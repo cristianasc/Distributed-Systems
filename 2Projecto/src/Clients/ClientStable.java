@@ -44,7 +44,7 @@ public class ClientStable extends ClientSend implements IStable, IStable_Broker,
      */
     @Override
     public void summonHorsesToPaddock() {
-        sendMessage(MsgType.CALLTOPADDOCK, null);    
+        sendMessage(MsgType.SUMMONHORSESTOPADDOCKBROKER, null);    
     }
 
     /**

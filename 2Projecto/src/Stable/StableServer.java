@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Servidor para recepção das mensagens enviadas pelos clientes
@@ -141,6 +143,7 @@ public class StableServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
+            } catch (ClassNotFoundException ex) {
             }
         }
     }
