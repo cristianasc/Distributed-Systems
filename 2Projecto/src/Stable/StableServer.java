@@ -1,11 +1,8 @@
-/**
- *
- */
 package Stable;
 
-import Utils.Msg;
-import Utils.MsgType;
-import static Utils.MsgType.CLOSE;
+import Clients.Msg;
+import Clients.MsgType;
+import static Clients.MsgType.CLOSE;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,7 +14,7 @@ import java.util.ArrayList;
  * Servidor para recepção das mensagens enviadas pelos clientes
  * (Cavalo,Apostador,Manager) relacionadas com o Stable
  *
- * @author Tiago Marques
+ * @author cristianacarvalho
  */
 public class StableServer extends Thread {
 
@@ -26,19 +23,26 @@ public class StableServer extends Thread {
     private int port;
     private boolean run = true;
     private IStable stable;
+    private IStable_Broker stBroker;
+    private IStable_Horses stHorses;
+    
 
     /**
      * Construtor da classe servidor para o Stable, recebe como parâmetro uma
-     * instancia da interface stable, e uma porta por onde o servidor vai
+     * instancia da interface IStable, IStable_Broker e IStable_Horses, e uma porta por onde o servidor vai
      * receber as mensagens
      *
      * @param stable Instancia da interface IStable que toma o valor de StableLocal
+     * @param stBroker Instancia da interface IStable_Broker
+     * @param stHorses Instancia da interface IStable_Horses
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public StableServer(IStable stable, int port) {
+    public StableServer(IStable stable, IStable_Broker stBroker, IStable_Horses stHorses, int port) {
         this.stable = stable;
+        this.stBroker = stBroker;
+        this.stHorses = stHorses;
         this.port = port;
-        System.out.printf("\nCRIOU STABLE SERVER\n");
+        System.out.printf("\nSTABLE SERVER\n");
     }
 
     /**
@@ -46,16 +50,20 @@ public class StableServer extends Thread {
      */
     @Override
     public void run() {
-        super.run();
+        super.start();
+        StableServerConnection connection;
+        
         try {
             sSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
         }
+        
+        
         while (run) {
             try {
                 cSocket = sSocket.accept();
-                new StableServerConnection(cSocket).start();
+                connection = new StableServerConnection(cSocket);
+                connection.start();
             } catch (IOException e) {
             }
 
@@ -106,17 +114,18 @@ public class StableServer extends Thread {
             try {
                 in = new ObjectInputStream(cSocket.getInputStream());
                 out = new ObjectOutputStream(cSocket.getOutputStream());
+                
                 msgOut = (Msg) in.readObject();
-                //msgOut = new MsgOut();
                 type = msgOut.getType();
                 param = msgOut.getParam();
+                
                 switch (type) {
-                    case CALLTOPADDOCK:
-                        stable.callToPaddock();
+                    case SUMMONHORSESTOPADDOCKBROKER:
+                        stBroker.summonHorsesToPaddock();
                         break;
                     case PROCEEDTOSTABLE:
                         int horseID = (int) param.get(0);
-                        stable.proceedToStable(horseID);
+                        stHorses.proceedToStable(horseID);
                         break;
                     case CLOSE:
                         close();
@@ -124,7 +133,7 @@ public class StableServer extends Thread {
 
                 }
                 
-                // responde com a msma mensagem que recebeu
+                // responde com a mesma mensagem que recebeu
                 out.writeObject(msgOut);
                 out.flush();
                 out.close();
@@ -132,9 +141,6 @@ public class StableServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
     }

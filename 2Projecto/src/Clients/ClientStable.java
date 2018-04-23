@@ -1,6 +1,6 @@
-package Utils;
+package Clients;
 
-import Stable.IStable;
+import Stable.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Tiago Marques
  *
  */
-public class ClientStable extends ClientSend implements IStable {
+public class ClientStable extends ClientSend implements IStable, IStable_Broker, IStable_Horses {
 
     /**
      * Construtor da classe, que vai criar um Stable remoto. Recebe como
@@ -22,7 +22,7 @@ public class ClientStable extends ClientSend implements IStable {
      */
     public ClientStable(InetAddress address, int port) {
         super(address, port);
-        System.out.printf("\nCRIOU STABLE REMOTE\n");
+        System.out.printf("\nSTABLE REMOTE\n");
     }
 
     /**
@@ -40,12 +40,11 @@ public class ClientStable extends ClientSend implements IStable {
     }
 
     /**
-     * Método para chamar a função callToPaddock no servidor. Esta função vai
-     * reencaminhar os cavalos para o paddock.
+     * Esta função vai reencaminhar os cavalos para o paddock.
      */
     @Override
-    public void callToPaddock() {
-        sendMessage(MsgType.CALLTOPADDOCK, null);
+    public void summonHorsesToPaddock() {
+        sendMessage(MsgType.CALLTOPADDOCK, null);    
     }
 
     /**
@@ -55,3 +54,5 @@ public class ClientStable extends ClientSend implements IStable {
         sendMessage(MsgType.CLOSE, null);
     }
 }
+
+    
