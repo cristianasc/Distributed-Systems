@@ -11,7 +11,7 @@ import GeneralRepository.*;
  *
  * @author cristianacarvalho
  */
-public class Stable implements IStable_Horses, IStable_Broker, IStable{
+public class Stable implements IStable_Horses, IStable_Broker{
     
     private int horseId;
     private boolean callHorses;
@@ -74,8 +74,4 @@ public class Stable implements IStable_Horses, IStable_Broker, IStable{
         callHorses = false;
     }
 
-    @Override
-    public void close() {
-        
-    }
 }

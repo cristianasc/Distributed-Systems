@@ -7,10 +7,10 @@ import java.util.ArrayList;
 /**
  * Classe para envio de mensagens relacionados com o Stable, para o servidor.
  *
- * @author Tiago Marques
+ * @author cristianacarvalho
  *
  */
-public class ClientStable extends ClientSend implements IStable, IStable_Broker, IStable_Horses {
+public class ClientStable extends ClientSend implements IStable_Broker, IStable_Horses {
 
     /**
      * Construtor da classe, que vai criar um Stable remoto. Recebe como
@@ -22,7 +22,7 @@ public class ClientStable extends ClientSend implements IStable, IStable_Broker,
      */
     public ClientStable(InetAddress address, int port) {
         super(address, port);
-        System.out.printf("\nSTABLE REMOTE\n");
+        System.out.printf("\nSTABLE CLIENT\n");
     }
 
     /**

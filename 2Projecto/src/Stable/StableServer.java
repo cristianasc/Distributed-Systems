@@ -22,7 +22,6 @@ public class StableServer extends Thread {
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IStable stable;
     private IStable_Broker stBroker;
     private IStable_Horses stHorses;
     
@@ -37,8 +36,7 @@ public class StableServer extends Thread {
      * @param stHorses Instancia da interface IStable_Horses
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public StableServer(IStable stable, IStable_Broker stBroker, IStable_Horses stHorses, int port) {
-        this.stable = stable;
+    public StableServer(IStable_Broker stBroker, IStable_Horses stHorses, int port) {
         this.stBroker = stBroker;
         this.stHorses = stHorses;
         this.port = port;
