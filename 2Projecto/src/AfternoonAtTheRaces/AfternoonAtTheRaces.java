@@ -13,7 +13,10 @@ import Stable.*;
 import BettingCentre.*;
 import ControlCentre.*;
 import Paddock.*;
-import java.util.ArrayList;
+import Clients.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 /**
  *
@@ -21,22 +24,25 @@ import java.util.ArrayList;
  */
 public class AfternoonAtTheRaces {
 
-    /**
+     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException {
+    
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {
         int nHorses = 4;
         int nSpectators = 4;
         int nRaces = 5;
         int distance = 10;
-        
-        
-        GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
-        BettingCentre bc = new BettingCentre(gr);
-        ControlCentre cc = new ControlCentre(gr);
-        Paddock pad = new Paddock(gr);
-        Stable st = new Stable(gr);
-        RacingTrack rt = new RacingTrack(gr);
+        String[] tmp;
+        int stablePort = 0, paddockPort = 0;
+        InetAddress stableIP = null, paddockIP = null;
+        IGeneralRepository gr = null;
+        IStable_Broker stBroker = null;
+        IStable_Horses stHorses = null;
+        IPaddock_Horses pdHorses = null;
+        IPaddock_Spectator pdSpectator = null;
+        PaddockServer pdServer = null;
+        StableServer stableServer = null;
         
         Horse horse;
         Spectator spectator;
@@ -44,36 +50,53 @@ public class AfternoonAtTheRaces {
         ArrayList<Horse> horses = new ArrayList<>();
         ArrayList<Spectator> spectators = new ArrayList <>();
         
-        for (int i=1; i<= nSpectators; i++){
-            spectator = new Spectator((IBettingCentre_Spectator) bc, (IControlCentre_Spectator) cc, (IPaddock_Spectator) pad, i, gr);
-            spectators.add(spectator);
-            spectator.start();
-        }
+        Properties prop = new Properties();
         
-        
-        for (int i=1; i<= nHorses; i++){
-            horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (2+ Math.random() * 5), gr);
-            horses.add(horse);
-            horse.start();
-        }
-        
-        
-        Broker br = new Broker((IBettingCentre_Broker) bc, (IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
-                (IControlCentre_Broker) cc, gr);
-        br.start();
-        br.join();
-        
-        
-        for (int i = 0; i < spectators.size(); i++) {
-            try {
-                spectator = spectators.get(i);
-                spectator.join();
-            } 
-            catch (InterruptedException ex) {
+        try {
+            prop.load(new FileInputStream("config.properties"));
+            
+            
+            gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
+            
+            //STABLE
+            tmp = prop.getProperty("STABLE").split(":");
+            
+            stableIP = InetAddress.getByName(tmp[0]);
+            stablePort = Integer.parseInt(tmp[1]);
+            
+            if (NetworkInterface.getByInetAddress(stableIP) != null) {
+                stBroker = new Stable(gr);
+                stableServer = new StableServer(stBroker, stHorses, stablePort);
+                stableServer.start();
+            } else {
+                stBroker = new ClientStable(stableIP, stablePort);
             }
+            
+            
+            
+            
+            
+            
+            //fim dos apostadores
+            for (int i = 0; i < spectators.size(); i++) {
+                try {
+                    spectator = spectators.get(i);
+                    spectator.join();
+                } 
+                catch (InterruptedException ex) {
+                }
+            }
+            
+            //fim do broker
+            //br.join();
+
+            System.exit(0);
+            
+        
+        } catch (IOException ex) {
+            
+       
         }
-        
-        System.exit(0);
-        
-    }
+    }  
 }
+    

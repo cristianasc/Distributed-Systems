@@ -22,7 +22,7 @@ import java.util.HashMap;
  *
  * @author cristianacarvalho
  */
-public class GeneralRepository {
+public class GeneralRepository implements IGeneralRepository{
     private int nHorses, nSpectators, nRaces, nWinners, distance, horseWinner;
     private HashMap<Integer, Integer> horsePositions;
     private HashMap<Integer, Bet> betsPerSpectator;
