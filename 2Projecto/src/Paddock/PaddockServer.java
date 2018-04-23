@@ -1,57 +1,54 @@
-package Stable;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Paddock;
 
-import Clients.Msg;
-import Clients.MsgType;
-import static Clients.MsgType.CLOSE;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import Clients.*;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 
 /**
+ *
  * Servidor para recepção das mensagens enviadas pelos clientes
  * (Cavalo,Apostador,Manager) relacionadas com o Stable
  *
  * @author cristianacarvalho
  */
-public class StableServer extends Thread {
-
+public class PaddockServer extends Thread {
     private ServerSocket sSocket = null;
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IStable stable;
-    private IStable_Broker stBroker;
-    private IStable_Horses stHorses;
+    private IPaddock_Horses pdHorses;
+    private IPaddock_Spectator pdSpectator;
     
-
+    
     /**
-     * Construtor da classe servidor para o Stable, recebe como parâmetro uma
-     * instancia da interface IStable, IStable_Broker e IStable_Horses, e uma porta por onde o servidor vai
+     * Construtor da classe servidor para o Paddock, recebe como parâmetro uma
+     * instancia da interface IPaddock_Horses e IPaddock_Spectator, e uma porta por onde o servidor vai
      * receber as mensagens
      *
-     * @param stable Instancia da interface IStable que toma o valor de StableLocal
-     * @param stBroker Instancia da interface IStable_Broker
-     * @param stHorses Instancia da interface IStable_Horses
+     * @param pdSpectator Instancia da interface IPaddock_Horses
+     * @param pdHorses Instancia da interface IPaddock_Spectator
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public StableServer(IStable stable, IStable_Broker stBroker, IStable_Horses stHorses, int port) {
-        this.stable = stable;
-        this.stBroker = stBroker;
-        this.stHorses = stHorses;
+    public PaddockServer(IPaddock_Spectator pdSpectator, IPaddock_Horses pdHorses, int port) {
+        this.pdSpectator = pdSpectator;
+        this.pdHorses = pdHorses;
         this.port = port;
-        System.out.printf("\nSTABLE SERVER\n");
+        System.out.printf("\nPADDOCK SERVER\n");
     }
 
     /**
-     * Funcão que inicializa a thread do Stable
+     * Funcão que inicializa a thread do Paddock
      */
     @Override
     public void run() {
         super.start();
-        StableServerConnection connection;
+        PaddockServerConnection connection;
         
         try {
             sSocket = new ServerSocket(port);
@@ -62,7 +59,7 @@ public class StableServer extends Thread {
         while (run) {
             try {
                 cSocket = sSocket.accept();
-                connection = new StableServerConnection(cSocket);
+                connection = new PaddockServerConnection(cSocket);
                 connection.start();
             } catch (IOException e) {
             }
@@ -86,7 +83,7 @@ public class StableServer extends Thread {
     /**
      * Classe privada para lançar thread para tratar msg recebida
      */
-    private class StableServerConnection extends Thread {
+    private class PaddockServerConnection extends Thread {
 
         private ObjectInputStream in = null;
         private ObjectOutputStream out = null;
@@ -101,7 +98,7 @@ public class StableServer extends Thread {
          *
          * @param sock Mensagem recebida
          */
-        public StableServerConnection(Socket sock) {
+        public PaddockServerConnection(Socket sock) {
             cSocket = sock;
         }
 
@@ -120,12 +117,16 @@ public class StableServer extends Thread {
                 param = msgOut.getParam();
                 
                 switch (type) {
-                    case SUMMONHORSESTOPADDOCK:
-                        stBroker.summonHorsesToPaddock();
+                    case PROCEEDTOSTARTLINE:
+                        pdHorses.proceedToStartLine();
                         break;
-                    case PROCEEDTOSTABLE:
+                    case PROCEEDTOPADDOCK:
                         int horseID = (int) param.get(0);
-                        stHorses.proceedToStable(horseID);
+                        pdHorses.proceedToPaddock(horseID);
+                        break;
+                    case GOCHECKHORSES:
+                        int spectatorID = (int) param.get(0);
+                        pdSpectator.goCheckHorses(spectatorID);
                         break;
                     case CLOSE:
                         close();
