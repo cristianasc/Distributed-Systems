@@ -87,7 +87,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
             System.out.print("\nCavalo " + horse+ " passou a meta.");
             
             if(nHorsesInRace == gr.getnHorses())
-                gr.setHorseWinner(horse);
+                gr.setHorseWinnerID(horse);
             
             if (positions.containsKey(horse))
                 positions.remove(horse);

@@ -13,7 +13,7 @@ import GeneralRepository.Bet;
  *
  * @author cristianacarvalho
  */
-public class ControlCentre implements IControlCentre_Horses, IControlCentre_Broker,
+public class ControlCenter implements IControlCentre_Horses, IControlCentre_Broker,
         IControlCentre_Spectator{
     
     private final GeneralRepository gr;
@@ -25,7 +25,7 @@ public class ControlCentre implements IControlCentre_Horses, IControlCentre_Brok
      * Construtor da classe
      * @param gr: General Repository
      */
-    public ControlCentre(GeneralRepository gr){
+    public ControlCenter(GeneralRepository gr){
         this.gr = gr;
         lastHorseToPaddock = false;
         lastSpectator = false;

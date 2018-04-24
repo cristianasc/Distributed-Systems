@@ -84,15 +84,15 @@ public class Broker extends Thread{
             gr.setBrokerState(state);
             rtBroker.startTheRace();
             
-            System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinner() + ".");
+            System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinnerID() + ".");
             
             //reportar cavalo vencedor 
-            if (betsByHorses.get(gr.getHorseWinner()) == null){
+            if (betsByHorses.get(gr.getHorseWinnerID()) == null){
                 bets = null;
                 ccBroker.reportResults(bets);
             }
             else{
-                bets = betsByHorses.get(gr.getHorseWinner());
+                bets = betsByHorses.get(gr.getHorseWinnerID());
                 gr.setnWinners(bets.size());
                 //calcular valor das bets
                 for (int j = 0; j < bets.size(); j++) {
@@ -102,7 +102,7 @@ public class Broker extends Thread{
             }
             
             
-            if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinner()))){
+            if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinnerID()))){
                 state = BrokerStates.SETTLING_ACCOUNTS; 
                 gr.setBrokerState(state);
                 bcBroker.honourTheBets();

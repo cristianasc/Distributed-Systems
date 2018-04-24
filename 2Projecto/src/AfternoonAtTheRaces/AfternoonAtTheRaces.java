@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package AfternoonAtTheRaces;
+
+import Clients.ClientRepository;
 import Broker.*;
 import Horse.*;
 import Spectator.*;
@@ -34,15 +31,18 @@ public class AfternoonAtTheRaces {
         int nRaces = 5;
         int distance = 10;
         String[] tmp;
-        int stablePort = 0, paddockPort = 0;
-        InetAddress stableIP = null, paddockIP = null;
-        IGeneralRepository gr = null;
+        int stablePort = 0, paddockPort = 0, repositoryPort = 0;
+        InetAddress stableIP = null, paddockIP = null, repositoryIP = null;
+        GeneralRepository gr = null;
         IStable_Broker stBroker = null;
         IStable_Horses stHorses = null;
         IPaddock_Horses pdHorses = null;
         IPaddock_Spectator pdSpectator = null;
         PaddockServer pdServer = null;
         StableServer stableServer = null;
+        
+        IGeneralRepository rp = null;
+        GeneralRepositoryServer repoServer = null;
         
         Horse horse;
         Spectator spectator;
@@ -54,9 +54,23 @@ public class AfternoonAtTheRaces {
         
         try {
             prop.load(new FileInputStream("config.properties"));
-            
-            
+                        
             gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
+            
+            // Case REPOSITORY
+            tmp = prop.getProperty("GENERALREPOSITORY").split(":");
+            //System.err.print("\nValor lido no campo IP: "+tmp[0]);
+            repositoryIP = InetAddress.getByName(tmp[0]);
+            repositoryPort = Integer.parseInt(tmp[1]);
+            if (NetworkInterface.getByInetAddress(repositoryIP) != null) {
+                //isRepository=true;
+                //   System.err.print("\nESTA MAQUINA É REPO");
+                rp = new GeneralRepository(nSpectators, nHorses, nRaces, distance);
+                repoServer = new GeneralRepositoryServer(rp, repositoryPort);
+                repoServer.start();
+            } else {
+                rp = new ClientRepository(repositoryIP, repositoryPort);
+            }
             
             //STABLE
             tmp = prop.getProperty("STABLE").split(":");

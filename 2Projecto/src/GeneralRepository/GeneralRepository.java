@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GeneralRepository;
 
 import Broker.BrokerStates;
@@ -244,8 +239,8 @@ public class GeneralRepository implements IGeneralRepository{
         this.nRaces = nRaces;
     }
     
-    public void gethorsePositions(int id) {
-        horsePositions.get(id);
+    public int gethorsePosition(int id) {
+        return horsePositions.get(id);
     }
     
     public synchronized void sethorsePositions(int id, int position) {
@@ -271,11 +266,11 @@ public class GeneralRepository implements IGeneralRepository{
         this.nWinners = size;
     }
     
-    public int getHorseWinner() {
+    public int getHorseWinnerID() {
         return horseWinner;
     }
 
-    public void setHorseWinner(int horseID) {
+    public void setHorseWinnerID(int horseID) {
         this.horseWinner = horseID;
     }
 
@@ -312,5 +307,15 @@ public class GeneralRepository implements IGeneralRepository{
 
     public synchronized void setCount(int horse, int contagem) {
         count[horse-1] = contagem;
+    }
+
+    @Override
+    public int getHorseSkills(int horseID) {
+        return HorseAgility[horseID];
+    }
+
+    @Override
+    public void setHorseSkills(int horseID, int value) {
+        HorseAgility[horseID] = value;
     }
 }
