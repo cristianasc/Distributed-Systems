@@ -31,17 +31,20 @@ public class AfternoonAtTheRaces {
         int nRaces = 5;
         int distance = 10;
         String[] tmp;
-        int stablePort = 0, paddockPort = 0, repositoryPort = 0;
-        InetAddress stableIP = null, paddockIP = null, repositoryIP = null;
+        int stablePort = 0, paddockPort = 0, repositoryPort = 0, bcPort = 0;
+        InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null;
         GeneralRepository gr = null;
         IStable_Broker stBroker = null;
         IStable_Horses stHorses = null;
         IPaddock_Horses pdHorses = null;
         IPaddock_Spectator pdSpectator = null;
+        IBettingCentre_Broker bcBroker = null;
+        IBettingCentre_Spectator bcSpectator = null;
         PaddockServer pdServer = null;
         StableServer stableServer = null;
+        BettingCentreServer bcServer = null;
         
-        IGeneralRepository rp = null;
+        IGeneralRepository iGR = null;
         GeneralRepositoryServer repoServer = null;
         
         Horse horse;
@@ -55,22 +58,19 @@ public class AfternoonAtTheRaces {
         try {
             prop.load(new FileInputStream("config.properties"));
                         
-            gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
-            
-            // Case REPOSITORY
+            //REPOSITORY
             tmp = prop.getProperty("GENERALREPOSITORY").split(":");
-            //System.err.print("\nValor lido no campo IP: "+tmp[0]);
             repositoryIP = InetAddress.getByName(tmp[0]);
             repositoryPort = Integer.parseInt(tmp[1]);
+            
             if (NetworkInterface.getByInetAddress(repositoryIP) != null) {
-                //isRepository=true;
-                //   System.err.print("\nESTA MAQUINA É REPO");
-                rp = new GeneralRepository(nSpectators, nHorses, nRaces, distance);
-                repoServer = new GeneralRepositoryServer(rp, repositoryPort);
+                iGR = new GeneralRepository(nSpectators, nHorses, nRaces, distance);
+                repoServer = new GeneralRepositoryServer(iGR, repositoryPort);
                 repoServer.start();
             } else {
-                rp = new ClientRepository(repositoryIP, repositoryPort);
+                iGR = new ClientRepository(repositoryIP, repositoryPort);
             }
+            
             
             //STABLE
             tmp = prop.getProperty("STABLE").split(":");
@@ -80,13 +80,46 @@ public class AfternoonAtTheRaces {
             
             if (NetworkInterface.getByInetAddress(stableIP) != null) {
                 stBroker = new Stable(gr);
+                stHorses = new Stable(gr);
                 stableServer = new StableServer(stBroker, stHorses, stablePort);
                 stableServer.start();
             } else {
                 stBroker = new ClientStable(stableIP, stablePort);
+                stHorses = new ClientStable(stableIP, stablePort);
             }
             
+            //PADDOCK
+            tmp = prop.getProperty("PADDOCK").split(":");
             
+            paddockIP = InetAddress.getByName(tmp[0]);
+            paddockPort = Integer.parseInt(tmp[1]);
+            
+            if (NetworkInterface.getByInetAddress(paddockIP) != null) {
+                pdSpectator = new Paddock(gr);
+                pdHorses = new Paddock(gr);
+                pdServer = new PaddockServer(pdSpectator, pdHorses, paddockPort);
+                pdServer.start();
+            } else {
+                pdSpectator = new ClientPaddock(paddockIP, paddockPort);
+                pdHorses = new ClientPaddock(paddockIP, paddockPort);
+            } 
+            
+           
+            //BETTING CENTRE
+            tmp = prop.getProperty("BETTINGCENTRE").split(":");
+            
+            bcIP = InetAddress.getByName(tmp[0]);
+            bcPort = Integer.parseInt(tmp[1]);
+            
+            if (NetworkInterface.getByInetAddress(bcIP) != null) {
+                bcBroker = new BettingCentre(gr);
+                bcSpectator = new BettingCentre(gr);
+                bcServer = new BettingCentreServer(bcBroker, bcSpectator, bcPort);
+                pdServer.start();
+            } else {
+                bcBroker  = new ClientBettingCentre(paddockIP, paddockPort);
+                bcSpectator = new ClientBettingCentre(paddockIP, paddockPort);
+            }
             
             
             

@@ -23,7 +23,7 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
      */
     public ClientRepository(InetAddress address, int port) {
         super(address, port);
-        System.out.printf("\nCRIOU REPOSITÓRIO REMOTO\n");
+        System.out.printf("\nREPOSITÓRIO REMOTO\n");
     }
 
     /**
