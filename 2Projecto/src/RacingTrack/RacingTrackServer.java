@@ -1,6 +1,5 @@
-package ControlCentre;
+package RacingTrack;
 
-import GeneralRepository.*;
 import Clients.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,39 +10,35 @@ import java.util.ArrayList;
 
 /**
  * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Apostador,Manager) relacionadas com o Centro de Controlo.
+ * (Cavalo,Apostador,Manager) relacionadas com o RacingTrack
  *
- * @author Ricardo Martins
+ * @author Miguel Maia
  */
-public class ControlCenterServer extends Thread {
+public class RacingTrackServer extends Thread {
 
     private ServerSocket sSocket = null;
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IControlCentre_Horses ccH;
-    private IControlCentre_Broker ccB;
-    private IControlCentre_Spectator ccS;
+    private RacingTrack rt;
 
     /**
-     * Construtor da classe servidor para centro de controlo, recebe como
-     * parâmetro uma instancia da interface ControlCenter cc, e uma porta por
-     * onde o servidor vai receber as mensagens
+     * Construtor da classe servidor para o RacingTrack, recebe como parâmetro
+     * uma instancia da interface racingTrack rt, e uma porta por onde o
+     * servidor vai receber as mensagens
      *
-     * @param cc Instância da interface IControlCenter, que toma o valor
-     * ControlCenterLocal.
-     * @param port Porta onde o servidor fica a "escuta" das mensagens.
+     * @param rt Instância da interface IRacingTrack, que toma o valor
+     * RacingTrackLocal.
+     * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public ControlCenterServer(IControlCentre_Horses ccH,IControlCentre_Broker ccB,IControlCentre_Spectator ccS, int port) {
-        this.ccH = ccH;
-        this.ccB = ccB;
-        this.ccS = ccS;
+    public RacingTrackServer(RacingTrack rt, int port) {
+        this.rt = rt;
         this.port = port;
-        System.out.printf("\nCRIOU CONTROLCENTER SERVER\n");
+        System.out.printf("\nCRIOU RACINGTRACK SERVER\n");
     }
 
     /**
-     * Funcão que inicializa a thread do do Servidor.
+     * Funcão que inicializa a thread do Servidor.
      */
     @Override
     public void run() {
@@ -56,7 +51,7 @@ public class ControlCenterServer extends Thread {
         while (run) {
             try {
                 cSocket = sSocket.accept();
-                new ControlCenterServer.ControlCenterConnection(cSocket).start();
+                new RacingTrackServer.RacingTrackConnection(cSocket).start();
             } catch (IOException e) {
             }
 
@@ -73,13 +68,15 @@ public class ControlCenterServer extends Thread {
         try {
             sSocket.close();
         } catch (IOException e) {
+            // logger.log("AssaultGroup", "", "", "Sever", "",
+            // "AssaultGroupServer closed");
         }
     }
 
     /**
      * Classe privada para lançar thread para tratar msg recebida
      */
-    private class ControlCenterConnection extends Thread {
+    private class RacingTrackConnection extends Thread {
 
         private ObjectInputStream in = null;
         private ObjectOutputStream out = null;
@@ -94,7 +91,7 @@ public class ControlCenterServer extends Thread {
          *
          * @param sock Mensagem recebida
          */
-        public ControlCenterConnection(Socket sock) {
+        public RacingTrackConnection(Socket sock) {
             cSocket = sock;
         }
 
@@ -108,38 +105,30 @@ public class ControlCenterServer extends Thread {
                 in = new ObjectInputStream(cSocket.getInputStream());
                 out = new ObjectOutputStream(cSocket.getOutputStream());
                 msgOut = (Msg) in.readObject();
+                //msgOut = new MsgOut();
                 type = msgOut.getType();
                 param = msgOut.getParam();
-                int horseID, spectatorID;
+                int horseID;
                 ArrayList<Object> tmp = new ArrayList<>();
-                System.out.print("\nCONTROL SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "param" + param.toString());
+                System.out.print("\nRACINGTRACK SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "param" + param.toString());
                 switch (type) {
-                    //case GETRACEFINISHED:
-                        //boolean received = cc.getRaceFinished();
-                        //tmp.add(received);
-                        //break;
-                    case SETRACEFINISHED:
-                        // bc.setRaceFinished();
+                    case PROCEEDTOSTARTLINE:
+                        horseID = (int) param.get(0);
+                        rt.proceedToStartLine(horseID);
                         break;
-                    case WAITFORNEXTRACE:
-                        spectatorID = (int) param.get(0);
-                        ccS.waitForTheNextRace(spectatorID);
+                    case HASFINISHLINEBEENCROSSED:
+                        horseID = (int) param.get(0);
+                        boolean crossed = rt.hasFinishLineBeenCrossed(horseID);
+                        tmp.add(crossed);  //PERGUNTAR AO LUCONAS SE ISTO FICA SEMPRE NO INDICE 0
                         break;
-                    //case CALLPUNTERS:
-                        //cc.callPunters();
-                        //break;
-                    case WATCHTHERACE:
-                        spectatorID = (int) param.get(0);
-                        ccS.goWatchTheRace(spectatorID);
+                    case STARTTHERACE:
+                        rt.startTheRace();
                         break;
-                    case REPORTRESULTS:
-                        ArrayList<Bet> lista = (ArrayList<Bet>) param.get(0);
-                        ccB.reportResults(lista);
-                        break;
-                    case HAVEIWON:
-                        spectatorID = (int) param.get(0);
-                        boolean tmpbool = ccS.haveIWon(spectatorID);
-                        tmp.add(tmpbool);
+                    case MAKEAMOVE:
+                        horseID = (int) param.get(0);
+                        int maxJump = (int) param.get(1);
+                        int count = (int) param.get(2);
+                        rt.makeAMove(horseID, maxJump,count);
                         break;
                     case CLOSE:
                         close();

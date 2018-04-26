@@ -6,7 +6,6 @@ import Spectator.SpectatorStates;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +24,6 @@ public class GeneralRepository implements IGeneralRepository{
     
     private static PrintWriter pw;
     private final File log;
-    private GeneralRepository gr;
     private BrokerStates BrokerState;
     private SpectatorStates[] statesSpectator;
     private int[] spectatorMoney;
@@ -55,7 +53,6 @@ public class GeneralRepository implements IGeneralRepository{
         this.currentRace = 0;
         this.pos = new HashMap();
         
-        this.gr = gr;
         this.BrokerState = BrokerStates.OPENING_THE_EVENT;
         this.statesSpectator = new SpectatorStates[nSpectators];
         this.statesHorses = new HorseStates[nHorses];

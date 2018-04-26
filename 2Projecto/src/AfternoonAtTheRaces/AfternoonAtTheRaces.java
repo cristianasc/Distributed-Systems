@@ -31,8 +31,8 @@ public class AfternoonAtTheRaces {
         int nRaces = 5;
         int distance = 10;
         String[] tmp;
-        int stablePort = 0, paddockPort = 0, repositoryPort = 0, bcPort = 0;
-        InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null;
+        int stablePort = 0, paddockPort = 0, repositoryPort = 0, bcPort = 0, controlPort = 0;
+        InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null, controlCenterIP = null;
         GeneralRepository gr = null;
         IStable_Broker stBroker = null;
         IStable_Horses stHorses = null;
@@ -46,6 +46,12 @@ public class AfternoonAtTheRaces {
         
         IGeneralRepository iGR = null;
         GeneralRepositoryServer repoServer = null;
+        
+        IControlCentre_Broker ccB;
+        IControlCentre_Spectator ccS;
+        IControlCentre_Horses ccH;
+        ControlCenterServer controlServer = null;
+
         
         Horse horse;
         Spectator spectator;
@@ -122,6 +128,26 @@ public class AfternoonAtTheRaces {
             }
             
             
+            // Case CONTROLCENTER
+            tmp = prop.getProperty("CONTROLCENTER").split(":");
+            //System.err.print("\nValor lido no campo IP: "+tmp[0]);
+            controlCenterIP = InetAddress.getByName(tmp[0]);
+            controlPort = Integer.parseInt(tmp[1]);
+            if (NetworkInterface.getByInetAddress(controlCenterIP) != null) {
+                //isControl=true;
+                //System.err.print("\nESTA MAQUINA É CONTROL");
+                ccB = new ControlCenter(gr);
+                ccH = new ControlCenter(gr);
+                ccS = new ControlCenter(gr);
+                controlServer = new ControlCenterServer(ccH,ccB,ccS, controlPort);
+                controlServer.start();
+            } else {
+                ccB = new ClientControlCenter(controlCenterIP, controlPort);
+                ccH = new ClientControlCenter(controlCenterIP, controlPort);
+                ccS = new ClientControlCenter(controlCenterIP, controlPort);
+            }
+            
+            
             
             
             //fim dos apostadores
@@ -136,10 +162,8 @@ public class AfternoonAtTheRaces {
             
             //fim do broker
             //br.join();
-
-            System.exit(0);
             
-        
+            System.exit(0);
         } catch (IOException ex) {
             
        

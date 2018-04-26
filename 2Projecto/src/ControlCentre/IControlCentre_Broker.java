@@ -16,4 +16,5 @@ public interface IControlCentre_Broker {
     void reportResults(ArrayList<Bet> betlist);
     void summonHorsesToPaddock();
     ArrayList<Bet> getWinners();
+    void close();
 }
