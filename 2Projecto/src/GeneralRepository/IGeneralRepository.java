@@ -5,6 +5,8 @@
  */
 package GeneralRepository;
 
+import java.util.HashMap;
+
 /**
  *
  * @author cristianacarvalho
@@ -30,7 +32,8 @@ public interface IGeneralRepository {
     void setBetsPerSpectator(int ID, Bet bet);
     void sethorsePositions(int id, int position);
     int gethorsePosition(int id);
-    
+    void setArrayPosition(HashMap<Integer,Integer> pos);
+    void setCount(int horse, int count);   
     
     
     

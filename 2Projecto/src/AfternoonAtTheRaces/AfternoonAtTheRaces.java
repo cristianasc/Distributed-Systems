@@ -53,7 +53,8 @@ public class AfternoonAtTheRaces {
         ControlCenterServer controlServer = null;
 
         RacingTrackServer raceServer = null;
-        RacingTrack rt = null;
+        IRacingTrack_Broker rtB = null;
+        IRacingTrack_Horses rtH = null;
         ClientRacingTrack rtC = null;
         
         Horse horse;
@@ -156,11 +157,13 @@ public class AfternoonAtTheRaces {
             if (NetworkInterface.getByInetAddress(racingtrackIP) != null) {
                 //isRacingtrack=true;
                 //System.err.print("\nESTA MAQUINA É RACE TRACK");
-                rt = new RacingTrack(gr);
-                raceServer = new RacingTrackServer(rt, racingTrackPort);
+                rtH = new RacingTrack(iGR);
+                rtB = new RacingTrack(iGR);
+                raceServer = new RacingTrackServer(rtB,rtH, racingTrackPort);
                 raceServer.start();
             } else {
-                rtC = new ClientRacingTrack(racingtrackIP, racingTrackPort);
+                rtH = new ClientRacingTrack(racingtrackIP, racingTrackPort);
+                rtB = new ClientRacingTrack(racingtrackIP, racingTrackPort);
             }
             
             

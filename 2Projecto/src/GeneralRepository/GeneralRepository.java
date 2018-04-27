@@ -315,4 +315,5 @@ public class GeneralRepository implements IGeneralRepository{
     public void setHorseSkills(int horseID, int value) {
         HorseAgility[horseID] = value;
     }
+
 }

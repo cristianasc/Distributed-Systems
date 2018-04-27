@@ -6,6 +6,7 @@
 package RacingTrack;
 
 import GeneralRepository.GeneralRepository;
+import GeneralRepository.IGeneralRepository;
 import java.util.HashMap;
 
 /**
@@ -16,7 +17,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
     
     private boolean makeAMove;
     private boolean lastHorse;
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     private HashMap<Integer, Integer> positions;
     private int next, nHorses, position, nHorsesInRace;
     
@@ -24,7 +25,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
      * Construtor da classe
      * @param gr: General Repository
      */
-    public RacingTrack(GeneralRepository gr){
+    public RacingTrack(IGeneralRepository gr){
         this.gr = gr;
         this.nHorses = gr.getnHorses();
         next = 0;

@@ -20,7 +20,8 @@ public class RacingTrackServer extends Thread {
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private RacingTrack rt;
+    private IRacingTrack_Horses rtH;
+    private IRacingTrack_Broker rtB;
 
     /**
      * Construtor da classe servidor para o RacingTrack, recebe como parâmetro
@@ -31,8 +32,9 @@ public class RacingTrackServer extends Thread {
      * RacingTrackLocal.
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public RacingTrackServer(RacingTrack rt, int port) {
-        this.rt = rt;
+    public RacingTrackServer(IRacingTrack_Broker rtB, IRacingTrack_Horses rtH, int port) {
+        this.rtB = rtB;
+        this.rtH = rtH;
         this.port = port;
         System.out.printf("\nCRIOU RACINGTRACK SERVER\n");
     }
@@ -112,21 +114,21 @@ public class RacingTrackServer extends Thread {
                 switch (type) {
                     case PROCEEDTOSTARTLINE:
                         horseID = (int) param.get(0);
-                        rt.proceedToStartLine(horseID);
+                        rtH.proceedToStartLine(horseID);
                         break;
                     case HASFINISHLINEBEENCROSSED:
                         horseID = (int) param.get(0);
-                        boolean crossed = rt.hasFinishLineBeenCrossed(horseID);
+                        boolean crossed = rtH.hasFinishLineBeenCrossed(horseID);
                         tmp.add(crossed);  //PERGUNTAR AO LUCONAS SE ISTO FICA SEMPRE NO INDICE 0
                         break;
                     case STARTTHERACE:
-                        rt.startTheRace();
+                        rtB.startTheRace();
                         break;
                     case MAKEAMOVE:
                         horseID = (int) param.get(0);
                         int maxJump = (int) param.get(1);
                         int count = (int) param.get(2);
-                        rt.makeAMove(horseID, maxJump,count);
+                        rtH.makeAMove(horseID, maxJump,count);
                         break;
                     case CLOSE:
                         close();
