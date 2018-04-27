@@ -32,8 +32,14 @@ public class AfternoonAtTheRaces {
         int distance = 10;
         String[] tmp;
         int stablePort = 0, paddockPort = 0, repositoryPort = 0, bcPort = 0, controlPort = 0, racingTrackPort = 0;
-        InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null, controlCenterIP = null,racingtrackIP = null;
-        GeneralRepository gr = null;
+        InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null, controlCenterIP = null,racingtrackIP = null, horseIP=null, spectatorIP= null, brokerIP=null;
+        GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
+        BettingCentre bc = new BettingCentre(gr);
+        ControlCenter cc = new ControlCenter(gr);
+        Paddock pad = new Paddock(gr);
+        Stable st = new Stable(gr);
+        RacingTrack rt = new RacingTrack(gr);
+        
         IStable_Broker stBroker = null;
         IStable_Horses stHorses = null;
         IPaddock_Horses pdHorses = null;
@@ -57,11 +63,16 @@ public class AfternoonAtTheRaces {
         IRacingTrack_Horses rtH = null;
         ClientRacingTrack rtC = null;
         
-        Horse horse;
-        Spectator spectator;
+        Horse horse = null;
+        Spectator spectator = null;
+        Broker br = null;
         
         ArrayList<Horse> horses = new ArrayList<>();
         ArrayList<Spectator> spectators = new ArrayList <>();
+        
+        boolean Horse = false;
+        boolean broker=false;
+        boolean Spectator = false;
         
         Properties prop = new Properties();
         
@@ -149,14 +160,13 @@ public class AfternoonAtTheRaces {
                 ccS = new ClientControlCentre(controlCenterIP, controlPort);
             }
             
-            // Case RACINGTRACK
+            //RACINGTRACK
             tmp = prop.getProperty("RACETRACK").split(":");
-            //System.err.print("\nValor lido no campo IP: "+tmp[0]);
+            
             racingtrackIP = InetAddress.getByName(tmp[0]);
             racingTrackPort = Integer.parseInt(tmp[1]);
             if (NetworkInterface.getByInetAddress(racingtrackIP) != null) {
-                //isRacingtrack=true;
-                //System.err.print("\nESTA MAQUINA É RACE TRACK");
+                
                 rtH = new RacingTrack(iGR);
                 rtB = new RacingTrack(iGR);
                 raceServer = new RacingTrackServer(rtB,rtH, racingTrackPort);
@@ -167,7 +177,49 @@ public class AfternoonAtTheRaces {
             }
             
             
-            //fim dos apostadores
+            //CAVALO
+            horseIP = InetAddress.getByName(prop.getProperty("HORSE"));
+            if (NetworkInterface.getByInetAddress(horseIP) != null) {
+                
+                for (int i = 1; i <= nHorses; i++) {
+                    horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (2+ Math.random() * 5), gr);
+                    horses.add(horse);
+                    horse.start();
+                }
+            }
+
+            //APOSTADOR
+            spectatorIP = InetAddress.getByName(prop.getProperty("PUNTER"));
+            if (NetworkInterface.getByInetAddress(spectatorIP) != null) {
+                
+                for (int i = 1; i <= nSpectators; i++) {
+                    spectator = new Spectator((IBettingCentre_Spectator) bc, (IControlCentre_Spectator) cc, (IPaddock_Spectator) pad, i, gr);
+                    spectators.add(spectator);
+                    spectator.start();
+                    Spectator = true;
+                }
+            }
+            
+            //BROKER
+            brokerIP = InetAddress.getByName(prop.getProperty("MANAGER"));
+            if (NetworkInterface.getByInetAddress(brokerIP) != null) {
+                
+                br = new Broker((IBettingCentre_Broker) bc, (IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
+                (IControlCentre_Broker) cc, gr);
+                br.start();
+                
+                broker = true;
+            }
+            
+            
+            
+        } catch (IOException ex) {
+            
+        }
+        //fim do broker
+                br.join();
+        
+        //fim dos apostadores
             for (int i = 0; i < spectators.size(); i++) {
                 try {
                     spectator = spectators.get(i);
@@ -177,14 +229,7 @@ public class AfternoonAtTheRaces {
                 }
             }
             
-            //fim do broker
-            //br.join();
-            
             System.exit(0);
-        } catch (IOException ex) {
-            
-       
-        }
     }  
 }
     
