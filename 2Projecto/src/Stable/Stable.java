@@ -15,13 +15,13 @@ public class Stable implements IStable_Horses, IStable_Broker{
     
     private int horseId;
     private boolean callHorses;
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     
     /**
      * Construtor da classe
      * @param gr: General Repository
      */
-    public Stable(GeneralRepository gr){
+    public Stable(IGeneralRepository gr){
         horseId = 0;
         callHorses = false;
         this.gr = gr;

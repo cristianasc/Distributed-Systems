@@ -16,7 +16,7 @@ import GeneralRepository.Bet;
 public class ControlCenter implements IControlCentre_Horses, IControlCentre_Broker,
         IControlCentre_Spectator{
     
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     private boolean lastHorseToPaddock, lastSpectator, reportResults, allReportResults;
     private int nSpectators, nHorses, spec;
     private ArrayList<Bet> winners;
@@ -25,7 +25,7 @@ public class ControlCenter implements IControlCentre_Horses, IControlCentre_Brok
      * Construtor da classe
      * @param gr: General Repository
      */
-    public ControlCenter(GeneralRepository gr){
+    public ControlCenter(IGeneralRepository gr){
         this.gr = gr;
         lastHorseToPaddock = false;
         lastSpectator = false;

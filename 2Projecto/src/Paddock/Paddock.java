@@ -15,14 +15,14 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
     
     private int nHorse, horseNTotal, spectator, spectatorNTotal, spectatorToBet;
     private boolean goCheckHorses, goToStartLine;
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     
     
     /**
      * Construtor da classe
      * @param gr: General Repository
      */
-    public Paddock(GeneralRepository gr){
+    public Paddock(IGeneralRepository gr){
         this.gr = gr;
         horseNTotal = gr.getnHorses();
         spectatorNTotal = gr.getnSpectator();

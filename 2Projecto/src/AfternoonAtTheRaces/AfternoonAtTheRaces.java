@@ -85,8 +85,8 @@ public class AfternoonAtTheRaces {
             stablePort = Integer.parseInt(tmp[1]);
             
             if (NetworkInterface.getByInetAddress(stableIP) != null) {
-                stBroker = new Stable(gr);
-                stHorses = new Stable(gr);
+                stBroker = new Stable(iGR);
+                stHorses = new Stable(iGR);
                 stableServer = new StableServer(stBroker, stHorses, stablePort);
                 stableServer.start();
             } else {
@@ -101,8 +101,8 @@ public class AfternoonAtTheRaces {
             paddockPort = Integer.parseInt(tmp[1]);
             
             if (NetworkInterface.getByInetAddress(paddockIP) != null) {
-                pdSpectator = new Paddock(gr);
-                pdHorses = new Paddock(gr);
+                pdSpectator = new Paddock(iGR);
+                pdHorses = new Paddock(iGR);
                 pdServer = new PaddockServer(pdSpectator, pdHorses, paddockPort);
                 pdServer.start();
             } else {
@@ -118,8 +118,8 @@ public class AfternoonAtTheRaces {
             bcPort = Integer.parseInt(tmp[1]);
             
             if (NetworkInterface.getByInetAddress(bcIP) != null) {
-                bcBroker = new BettingCentre(gr);
-                bcSpectator = new BettingCentre(gr);
+                bcBroker = new BettingCentre(iGR);
+                bcSpectator = new BettingCentre(iGR);
                 bcServer = new BettingCentreServer(bcBroker, bcSpectator, bcPort);
                 pdServer.start();
             } else {
@@ -135,9 +135,9 @@ public class AfternoonAtTheRaces {
             controlPort = Integer.parseInt(tmp[1]);
             if (NetworkInterface.getByInetAddress(controlCenterIP) != null) {
                 
-                ccB = new ControlCenter(gr);
-                ccH = new ControlCenter(gr);
-                ccS = new ControlCenter(gr);
+                ccB = new ControlCenter(iGR);
+                ccH = new ControlCenter(iGR);
+                ccS = new ControlCenter(iGR);
                 controlServer = new ControlCenterServer(ccH,ccB,ccS, controlPort);
                 controlServer.start();
             } else {

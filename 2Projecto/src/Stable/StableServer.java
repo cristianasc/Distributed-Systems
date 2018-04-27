@@ -58,6 +58,7 @@ public class StableServer extends Thread {
         
         
         while (run) {
+            System.out.printf("\nSTABLE SERVER LISTENING..\n");
             try {
                 cSocket = sSocket.accept();
                 connection = new StableServerConnection(cSocket);

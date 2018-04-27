@@ -5,8 +5,7 @@
  */
 package BettingCentre;
 
-import GeneralRepository.Bet;
-import GeneralRepository.GeneralRepository;
+import GeneralRepository.*;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spectator {
     
     
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     private int spectatorCount, nCollects;
     private boolean brokerAcceptingBets, finalBet, newBet, hounourTheBets, finalCollect;
     private Bet bet;
@@ -26,7 +25,7 @@ public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spec
      * Construtor da classe
      * @param gr: General Repository
      */
-    public BettingCentre(GeneralRepository gr) {
+    public BettingCentre(IGeneralRepository gr) {
         this.gr = gr;
         brokerAcceptingBets = false;
         newBet = false;
