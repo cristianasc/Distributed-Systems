@@ -128,23 +128,22 @@ public class AfternoonAtTheRaces {
             }
             
             
-            // Case CONTROLCENTER
+            //CONTROLCENTER
             tmp = prop.getProperty("CONTROLCENTER").split(":");
-            //System.err.print("\nValor lido no campo IP: "+tmp[0]);
+            
             controlCenterIP = InetAddress.getByName(tmp[0]);
             controlPort = Integer.parseInt(tmp[1]);
             if (NetworkInterface.getByInetAddress(controlCenterIP) != null) {
-                //isControl=true;
-                //System.err.print("\nESTA MAQUINA É CONTROL");
+                
                 ccB = new ControlCenter(gr);
                 ccH = new ControlCenter(gr);
                 ccS = new ControlCenter(gr);
                 controlServer = new ControlCenterServer(ccH,ccB,ccS, controlPort);
                 controlServer.start();
             } else {
-                ccB = new ClientControlCenter(controlCenterIP, controlPort);
-                ccH = new ClientControlCenter(controlCenterIP, controlPort);
-                ccS = new ClientControlCenter(controlCenterIP, controlPort);
+                ccB = new ClientControlCentre(controlCenterIP, controlPort);
+                ccH = new ClientControlCentre(controlCenterIP, controlPort);
+                ccS = new ClientControlCentre(controlCenterIP, controlPort);
             }
             
             

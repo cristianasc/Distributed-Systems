@@ -68,8 +68,6 @@ public class RacingTrackServer extends Thread {
         try {
             sSocket.close();
         } catch (IOException e) {
-            // logger.log("AssaultGroup", "", "", "Sever", "",
-            // "AssaultGroupServer closed");
         }
     }
 

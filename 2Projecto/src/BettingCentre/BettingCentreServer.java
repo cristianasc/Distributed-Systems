@@ -118,7 +118,7 @@ public class BettingCentreServer extends Thread{
                 msgOut = (Msg) in.readObject();
                 type = msgOut.getType();
                 param = msgOut.getParam();
-                
+                ArrayList<Object> tmp = new ArrayList<>();
                 switch (type) {
                     case PLACEABET:
                         int spectatorID = (int) param.get(0);
@@ -152,8 +152,10 @@ public class BettingCentreServer extends Thread{
                         break;
 
                 }
+                       
+                msgOut.setType(type);
+                msgOut.setParam(tmp);
                 
-                // responde com a mesma mensagem que recebeu
                 out.writeObject(msgOut);
                 out.flush();
                 out.close();
