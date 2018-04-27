@@ -135,7 +135,8 @@ public class BettingCentreServer extends Thread{
                         bcSpectator.relaxABit(spect);
                         break;
                     case ACCEPTTHEBETS:
-                        bcBroker.acceptTheBets();
+                        Bet bet = bcBroker.acceptTheBets();
+                        tmp.add(bet);
                         break;
                     case HONOURTHEBETS:
                         bcBroker.honourTheBets();
