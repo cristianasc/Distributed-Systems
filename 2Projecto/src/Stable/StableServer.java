@@ -48,7 +48,7 @@ public class StableServer extends Thread {
      */
     @Override
     public void run() {
-        super.start();
+        super.run();
         StableServerConnection connection;
         
         try {

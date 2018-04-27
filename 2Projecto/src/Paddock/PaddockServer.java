@@ -47,7 +47,7 @@ public class PaddockServer extends Thread {
      */
     @Override
     public void run() {
-        super.start();
+        super.run();
         PaddockServerConnection connection;
         
         try {

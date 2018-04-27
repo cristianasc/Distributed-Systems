@@ -121,7 +121,7 @@ public class AfternoonAtTheRaces {
                 bcBroker = new BettingCentre(iGR);
                 bcSpectator = new BettingCentre(iGR);
                 bcServer = new BettingCentreServer(bcBroker, bcSpectator, bcPort);
-                pdServer.start();
+                bcServer.start();
             } else {
                 bcBroker  = new ClientBettingCentre(paddockIP, paddockPort);
                 bcSpectator = new ClientBettingCentre(paddockIP, paddockPort);

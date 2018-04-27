@@ -51,7 +51,7 @@ public class BettingCentreServer extends Thread{
      */
     @Override
     public void run() {
-        super.start();
+        super.run();
         BettingCentreServerConnection connection;
         
         try {
