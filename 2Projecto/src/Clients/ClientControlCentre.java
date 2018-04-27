@@ -12,7 +12,7 @@ import GeneralRepository.*;
  * @author Miguel Maia
  *
  */
-public class ClientControlCenter extends ClientSend implements IControlCentre_Broker, IControlCentre_Spectator,IControlCentre_Horses {
+public class ClientControlCentre extends ClientSend implements IControlCentre_Broker, IControlCentre_Spectator,IControlCentre_Horses {
 
     /**
      * Construtor da classe, que vai criar um centro de controlo remoto. Recebe
@@ -22,25 +22,11 @@ public class ClientControlCenter extends ClientSend implements IControlCentre_Br
      * @param address Endereço IP
      * @param port Porta para envio das mensagens
      */
-    public ClientControlCenter(InetAddress address, int port) {
+    public ClientControlCentre(InetAddress address, int port) {
         super(address, port);
         System.out.printf("\nCRIOU CONTROLCENTER REMOTE\n");
     }
-
-    /**
-     * Método para chamar a função watchTeerace no servidor, com o envio dos
-     * parametros adequados. Esta função diz respeito ao comportamento de um
-     * apostador Punter_ID durante uma corrida.
-     *
-     * @param Punter_ID ID do apostador
-     */
-    @Override
-    public void goWatchTheRace(int Punter_ID) {
-        ArrayList<Object> param = new ArrayList<Object>();
-        param.add(Punter_ID);
-        sendMessage(MsgType.WATCHTHERACE, param);
-    }
-
+    
     /**
      * Método para chamar a função reportResults no servidor, com o envio dos
      * parametros adequados. Esta função vai acordar os apostadores que estão a
@@ -53,6 +39,45 @@ public class ClientControlCenter extends ClientSend implements IControlCentre_Br
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(betlist);
         sendMessage(MsgType.REPORTRESULTS, param);
+    }
+    
+    @Override
+    public void summonHorsesToPaddock() {
+        sendMessage(MsgType.SUMMONHORSESTOPADDOCK, null);
+    }
+    
+    @Override
+    public ArrayList<Bet> getWinners() {
+        Msg msg = (Msg) sendMessage(MsgType.GETWINNERS, null); 
+        return (ArrayList<Bet>) msg.getParam().get(0);
+    }
+    
+    @Override
+    public void proceedToPaddock(int HorseID) {
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(HorseID);
+        sendMessage(MsgType.PROCEEDTOPADDOCK, param);
+    }
+    
+    /**
+     * Método para chamar a função watchTeerace no servidor, com o envio dos
+     * parametros adequados. Esta função diz respeito ao comportamento de um
+     * apostador Punter_ID durante uma corrida.
+     *
+     * @param Punter_ID ID do apostador
+     */
+    @Override
+    public void goWatchTheRace(int Punter_ID) {
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(Punter_ID);
+        sendMessage(MsgType.GOWATCHTHERACE, param);
+    }
+
+    @Override
+    public void waitForTheNextRace(int spectatorID) {
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(spectatorID);
+        sendMessage(MsgType.WAITFORNEXTRACE, param);
     }
 
     /**
@@ -80,23 +105,4 @@ public class ClientControlCenter extends ClientSend implements IControlCentre_Br
         sendMessage(MsgType.CLOSE, null);
     }
 
-    @Override
-    public void summonHorsesToPaddock() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Bet> getWinners() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void proceedToPaddock(int HorseID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void waitForTheNextRace(int spectatorID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
