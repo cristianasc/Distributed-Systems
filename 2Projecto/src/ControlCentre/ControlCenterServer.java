@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ControlCentre;
 
 import GeneralRepository.*;
@@ -10,10 +15,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Apostador,Manager) relacionadas com o Centro de Controlo.
  *
- * @author Ricardo Martins
+ * @author cristianacarvalho
  */
 public class ControlCenterServer extends Thread {
 
@@ -39,7 +42,7 @@ public class ControlCenterServer extends Thread {
         this.ccB = ccB;
         this.ccS = ccS;
         this.port = port;
-        System.out.printf("\nCRIOU CONTROLCENTER SERVER\n");
+        System.out.printf("\nCONTROLCENTER SERVER\n");
     }
 
     /**
@@ -107,34 +110,37 @@ public class ControlCenterServer extends Thread {
             try {
                 in = new ObjectInputStream(cSocket.getInputStream());
                 out = new ObjectOutputStream(cSocket.getOutputStream());
+                
                 msgOut = (Msg) in.readObject();
                 type = msgOut.getType();
                 param = msgOut.getParam();
+                
                 int horseID, spectatorID;
                 ArrayList<Object> tmp = new ArrayList<>();
-                System.out.print("\nCONTROL SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "param" + param.toString());
+                
                 switch (type) {
-                    //case GETRACEFINISHED:
-                        //boolean received = cc.getRaceFinished();
-                        //tmp.add(received);
-                        //break;
-                    case SETRACEFINISHED:
-                        // bc.setRaceFinished();
+                    case REPORTRESULTS:
+                        ArrayList<Bet> lista = (ArrayList<Bet>) param.get(0);
+                        ccB.reportResults(lista);
+                        break;
+                    case SUMMONHORSESTOPADDOCK:
+                        ccB.summonHorsesToPaddock();
+                        break;
+                    case GETWINNERS:
+                        ArrayList<Bet> winners = ccB.getWinners();
+                        tmp.add(winners);
+                        break;     
+                    case PROCEEDTOPADDOCK:
+                        horseID = (int) param.get(0);
+                        ccH.proceedToPaddock(horseID);
+                        break;
+                    case GOWATCHTHERACE:
+                        spectatorID = (int) param.get(0);
+                        ccS.goWatchTheRace(spectatorID);
                         break;
                     case WAITFORNEXTRACE:
                         spectatorID = (int) param.get(0);
                         ccS.waitForTheNextRace(spectatorID);
-                        break;
-                    //case CALLPUNTERS:
-                        //cc.callPunters();
-                        //break;
-                    case WATCHTHERACE:
-                        spectatorID = (int) param.get(0);
-                        ccS.goWatchTheRace(spectatorID);
-                        break;
-                    case REPORTRESULTS:
-                        ArrayList<Bet> lista = (ArrayList<Bet>) param.get(0);
-                        ccB.reportResults(lista);
                         break;
                     case HAVEIWON:
                         spectatorID = (int) param.get(0);
@@ -145,6 +151,7 @@ public class ControlCenterServer extends Thread {
                         close();
                         break;
                 }
+                
                 // responde com msg Out ou in          
                 msgOut.setType(type);
                 msgOut.setParam(tmp);
