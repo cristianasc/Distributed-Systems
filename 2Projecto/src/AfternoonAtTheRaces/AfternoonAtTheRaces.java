@@ -31,8 +31,8 @@ public class AfternoonAtTheRaces {
         int nRaces = 5;
         int distance = 10;
         String[] tmp;
-        int stablePort = 0, paddockPort = 0, repositoryPort = 0, bcPort = 0, controlPort = 0;
-        InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null, controlCenterIP = null;
+        int stablePort = 0, paddockPort = 0, repositoryPort = 0, bcPort = 0, controlPort = 0, racingTrackPort = 0;
+        InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null, controlCenterIP = null,racingtrackIP = null;
         GeneralRepository gr = null;
         IStable_Broker stBroker = null;
         IStable_Horses stHorses = null;
@@ -52,6 +52,9 @@ public class AfternoonAtTheRaces {
         IControlCentre_Horses ccH;
         ControlCenterServer controlServer = null;
 
+        RacingTrackServer raceServer = null;
+        RacingTrack rt = null;
+        ClientRacingTrack rtC = null;
         
         Horse horse;
         Spectator spectator;
@@ -108,8 +111,7 @@ public class AfternoonAtTheRaces {
             } else {
                 pdSpectator = new ClientPaddock(paddockIP, paddockPort);
                 pdHorses = new ClientPaddock(paddockIP, paddockPort);
-            } 
-            
+            }
            
             //BETTING CENTRE
             tmp = prop.getProperty("BETTINGCENTRE").split(":");
@@ -146,7 +148,20 @@ public class AfternoonAtTheRaces {
                 ccS = new ClientControlCentre(controlCenterIP, controlPort);
             }
             
-            
+            // Case RACINGTRACK
+            tmp = prop.getProperty("RACETRACK").split(":");
+            //System.err.print("\nValor lido no campo IP: "+tmp[0]);
+            racingtrackIP = InetAddress.getByName(tmp[0]);
+            racingTrackPort = Integer.parseInt(tmp[1]);
+            if (NetworkInterface.getByInetAddress(racingtrackIP) != null) {
+                //isRacingtrack=true;
+                //System.err.print("\nESTA MAQUINA É RACE TRACK");
+                rt = new RacingTrack(gr);
+                raceServer = new RacingTrackServer(rt, racingTrackPort);
+                raceServer.start();
+            } else {
+                rtC = new ClientRacingTrack(racingtrackIP, racingTrackPort);
+            }
             
             
             //fim dos apostadores
