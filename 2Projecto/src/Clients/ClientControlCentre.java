@@ -24,7 +24,7 @@ public class ClientControlCentre extends ClientSend implements IControlCentre_Br
      */
     public ClientControlCentre(InetAddress address, int port) {
         super(address, port);
-        System.out.printf("\nCRIOU CONTROLCENTER REMOTE\n");
+        System.out.printf("\nCONTROLCENTER CLIENT\n");
     }
     
     /**

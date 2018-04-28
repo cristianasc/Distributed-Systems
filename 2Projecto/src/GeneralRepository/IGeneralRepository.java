@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GeneralRepository;
 
 import java.util.HashMap;
@@ -33,8 +28,5 @@ public interface IGeneralRepository {
     void sethorsePositions(int id, int position);
     int gethorsePosition(int id);
     void setArrayPosition(HashMap<Integer,Integer> pos);
-    void setCount(int horse, int count);   
-    
-    
-    
+    void setCount(int horse, int count);    
 }

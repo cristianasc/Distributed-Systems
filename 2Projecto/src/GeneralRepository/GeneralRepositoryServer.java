@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 /**
  * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Apostador,Manager) relacionadas com o Repositorio
+ * (Cavalo,Espectador,Broker) relacionadas com o Repositorio
  *
  * @author Miguel Maia
  */

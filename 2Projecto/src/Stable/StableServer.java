@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Apostador,Manager) relacionadas com o Stable
+ * (Cavalo,Espectador,Broker) relacionadas com o Stable
  *
  * @author cristianacarvalho
  */
@@ -31,7 +31,6 @@ public class StableServer extends Thread {
      * instancia da interface IStable, IStable_Broker e IStable_Horses, e uma porta por onde o servidor vai
      * receber as mensagens
      *
-     * @param stable Instancia da interface IStable que toma o valor de StableLocal
      * @param stBroker Instancia da interface IStable_Broker
      * @param stHorses Instancia da interface IStable_Horses
      * @param port Porta onde o servidor fica a "escuta" das mensagens

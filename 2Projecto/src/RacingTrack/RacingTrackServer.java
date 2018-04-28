@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Apostador,Manager) relacionadas com o RacingTrack
+ * (Cavalo,Espectador, Broker) relacionadas com o RacingTrack
  *
  * @author Miguel Maia
  */
@@ -25,18 +25,18 @@ public class RacingTrackServer extends Thread {
 
     /**
      * Construtor da classe servidor para o RacingTrack, recebe como parâmetro
-     * uma instancia da interface racingTrack rt, e uma porta por onde o
-     * servidor vai receber as mensagens
+     * uma instancia da interface IRacingTrack_Broker rtB,uma instância da interface IRacingTrack_Horses rtH
+     * e uma porta por onde o servidor vai receber as mensagens.
      *
-     * @param rt Instância da interface IRacingTrack, que toma o valor
-     * RacingTrackLocal.
-     * @param port Porta onde o servidor fica a "escuta" das mensagens
+     * @param rtB Instância da interface IRacingTrack_Broker
+     * @param rtH Instância da interface IRacingTrack_Broker
+     * @param port Porta onde o servidor fica a "escuta" das mensagens 
      */
     public RacingTrackServer(IRacingTrack_Broker rtB, IRacingTrack_Horses rtH, int port) {
         this.rtB = rtB;
         this.rtH = rtH;
         this.port = port;
-        System.out.printf("\nCRIOU RACINGTRACK SERVER\n");
+        System.out.printf("\nRACINGTRACK SERVER\n");
     }
 
     /**
@@ -105,12 +105,11 @@ public class RacingTrackServer extends Thread {
                 in = new ObjectInputStream(cSocket.getInputStream());
                 out = new ObjectOutputStream(cSocket.getOutputStream());
                 msgOut = (Msg) in.readObject();
-                //msgOut = new MsgOut();
                 type = msgOut.getType();
                 param = msgOut.getParam();
                 int horseID;
                 ArrayList<Object> tmp = new ArrayList<>();
-                System.out.print("\nRACINGTRACK SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "param" + param.toString());
+                System.err.print("\nRACINGTRACK SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "param" + param.toString());
                 switch (type) {
                     case PROCEEDTOSTARTLINE:
                         horseID = (int) param.get(0);
@@ -119,7 +118,7 @@ public class RacingTrackServer extends Thread {
                     case HASFINISHLINEBEENCROSSED:
                         horseID = (int) param.get(0);
                         boolean crossed = rtH.hasFinishLineBeenCrossed(horseID);
-                        tmp.add(crossed);  //PERGUNTAR AO LUCONAS SE ISTO FICA SEMPRE NO INDICE 0
+                        tmp.add(crossed);
                         break;
                     case STARTTHERACE:
                         rtB.startTheRace();

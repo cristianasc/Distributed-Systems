@@ -137,6 +137,7 @@ public class AfternoonAtTheRaces {
                 bcServer = new BettingCentreServer(bcBroker, bcSpectator, bcPort);
                 bcServer.start();
             } else {
+                System.err.println("swsdfsdgfsafdgdfghdsfgsdfgdsfg");
                 bcBroker  = new ClientBettingCentre(paddockIP, paddockPort);
                 bcSpectator = new ClientBettingCentre(paddockIP, paddockPort);
             }
@@ -188,7 +189,7 @@ public class AfternoonAtTheRaces {
                 }
             }
 
-            //APOSTADOR
+            //ESPECTADOR
             spectatorIP = InetAddress.getByName(prop.getProperty("PUNTER"));
             if (NetworkInterface.getByInetAddress(spectatorIP) != null) {
                 
@@ -213,7 +214,7 @@ public class AfternoonAtTheRaces {
             
             
             
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             
         }
         //fim do broker

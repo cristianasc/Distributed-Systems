@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BettingCentre;
 
 import BettingCentre.*;
@@ -28,26 +23,25 @@ public class BettingCentreServer extends Thread{
     
 
     /**
-     * Construtor da classe servidor para o Stable, recebe como parâmetro uma
-     * instancia da interface IStable, IStable_Broker e IStable_Horses, e uma porta por onde o servidor vai
-     * receber as mensagens
+     * Construtor da classe servidor para o Betting Center, recebe como parâmetro uma
+     * instancia da interface IBettingCentre_Broker, IBettingCentre_Spectator e uma porta
+     * por onde o servidor vai receber as mensagens
      *
-     * @param stable Instancia da interface IStable que toma o valor de StableLocal
-     * @param stBroker Instancia da interface IStable_Broker
-     * @param stHorses Instancia da interface IStable_Horses
+     * @param bcBroker Instancia da interface IBettingCentre_Broker
+     * @param bcSpectator Instancia da interface IBettingCentre_Spectator
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
     public BettingCentreServer(IBettingCentre_Broker bcBroker, IBettingCentre_Spectator bcSpectator, int port) {
         this.bcBroker = bcBroker;
         this.bcSpectator = bcSpectator;
         this.port = port;
-        System.out.printf("\nPADDOCK SERVER\n");
+        System.out.printf("\nBETTING CENTER SERVER\n");
     }
     
     
     
     /**
-     * Funcão que inicializa a thread do Stable
+     * Funcão que inicializa a thread do Betting Center
      */
     @Override
     public void run() {

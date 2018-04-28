@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Paddock;
 
 import Clients.*;
@@ -13,7 +8,7 @@ import java.util.ArrayList;
 /**
  *
  * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Apostador,Manager) relacionadas com o Stable
+ * (Cavalo,Espectador,Broker) relacionadas com o Stable
  *
  * @author cristianacarvalho
  */
@@ -57,6 +52,7 @@ public class PaddockServer extends Thread {
         
         
         while (run) {
+            System.out.printf("\nPADDOCK SERVER LISTENING..\n");
             try {
                 cSocket = sSocket.accept();
                 connection = new PaddockServerConnection(cSocket);
