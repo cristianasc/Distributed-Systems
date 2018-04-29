@@ -114,7 +114,7 @@ public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
      * Método que indica se um cavalo já terminou ou não a corrida. Se ainda
      * estiver na lista de posições da corrida, então ainda não a terminou.
      * 
-     * @param horseID
+     * @param horseID ID do cavalo que se pretende saber se já terminou a corrida.
      * @return True se já não estiver na lista de posições e False se ainda 
      * estiver.
      */

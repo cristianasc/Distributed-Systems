@@ -76,7 +76,6 @@ public class ClientRacingTrack extends ClientSend implements IRacingTrack_Broker
      *
      * @param horseID ID do cavalo
      * @param maxMove Passada do cavalo
-     * @return O movimento do cavalo após uma iteração
      */
     @Override
     public void makeAMove(int horseID, int maxMove,int count) {

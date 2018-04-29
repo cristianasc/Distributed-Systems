@@ -33,8 +33,9 @@ public class ControlCenterServer extends Thread {
      * parâmetro uma instancia da interface ControlCenter cc, e uma porta por
      * onde o servidor vai receber as mensagens
      *
-     * @param cc Instância da interface IControlCenter, que toma o valor
-     * ControlCenterLocal.
+     * @param ccH Instância da interface IControlCentre_Horses.
+     * @param ccB Instância da interface IControlCentre_Broker.
+     * @param ccS Instância da interface IControlCentre_Spectator.
      * @param port Porta onde o servidor fica a "escuta" das mensagens.
      */
     public ControlCenterServer(IControlCentre_Horses ccH,IControlCentre_Broker ccB,IControlCentre_Spectator ccS, int port) {

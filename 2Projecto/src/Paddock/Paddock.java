@@ -54,7 +54,7 @@ public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
      * O espectador fica bloqueado até os cavalos não sairem todos do paddock.
      * Após isto, os espectadores podem apostar.
      * 
-     * @param spectatorID
+     * @param spectatorID variável que especifica qual o espectador.
      */
     @Override
     public synchronized void goCheckHorses(int spectatorID) {

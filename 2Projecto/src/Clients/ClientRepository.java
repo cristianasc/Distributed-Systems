@@ -77,7 +77,7 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
      * Método para chamar a função setnSpectates no servidor, com o envio dos
      * parametros adequados. Esta função vai atualizar o numero de espetadores
      *
-     * @param nSpectates Numero de espetadores
+     * @param nSpectators Numero de espetadores
      */
     @Override
     public void setnSpectator(int nSpectators) {
@@ -320,7 +320,8 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
      * dos parametros adequados. Esta função vai atualizar uma lista de posições
      * de um cavalo numa corrida
      *
-     * @param horsePos Lista de posições do cavalo
+     * @param id - id do cavalo
+     * @param position - posição do cavalo
      */
     @Override
     public void sethorsePositions(int id, int position) {

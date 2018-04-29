@@ -37,10 +37,9 @@ public class GeneralRepository implements IGeneralRepository{
      * Construtor da classe
      *
      * @param nHorses - Numero de cavalos
-     * @param nRaces - Numero de corridas
-     * @param distance - Distância da pista
-     * @param betsPerSpectator - HashMap, com Key= ID do apostador e Value= valor
-     * obtido no total de corridas
+     * @param nSpectators - Numero de espectadores
+     * @param nRaces - Número de corridas
+     * @param distance - Distância de cada corrida
      */
     
     public GeneralRepository(int nHorses, int nSpectators, int nRaces, int distance){
