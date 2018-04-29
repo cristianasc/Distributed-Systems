@@ -23,6 +23,8 @@ public class AfternoonAtTheRaces {
 
      /**
      * @param args the command line arguments
+     * @throws java.lang.InterruptedException InterruptedException
+     * @throws java.io.FileNotFoundException FileNotFoundException
      */
     
     public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException {

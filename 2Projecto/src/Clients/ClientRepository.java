@@ -241,13 +241,14 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
         param.add(race);
         sendMessage(MsgType.SETCURRENTRACE, param);
     }
-
+    
+    
     /**
      * Método para chamar a função getBetsPerPunter no servidor, recebendo do
      * servidor o valor de retorno da função. Esta função vai obter uma lista de
      * apostas por apostador
      *
-     * @return msgReceived.getParam().get(0) Lista de apostas de um apostador
+     * 
      */
     /*
     @Override

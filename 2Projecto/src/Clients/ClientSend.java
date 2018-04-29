@@ -35,6 +35,7 @@ public class ClientSend {
      *
      * @param type Tipo de mensagem a enviar, ou seja, função desejada
      * @return Resposta do mesmo tipo da mensagem enviada
+     * @throws java.lang.ClassNotFoundException ClassNotFoundException 
      */
     protected Object sendMessage(MsgType type) throws ClassNotFoundException {
         return sendMessage(type, null);
