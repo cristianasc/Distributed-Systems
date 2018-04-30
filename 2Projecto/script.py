@@ -48,7 +48,7 @@ machines = [{
   {
     "order": 10,
     "class": "Spectator.Spectator",
-    "machine": "l040101-ws19.ua.pt"
+    "machine": "l040101-ws10.ua.pt"
 }]
 
 COMMAND = 'java -cp %s:libs/* %s'
@@ -71,7 +71,7 @@ def executeServices():
         ssh.connect(s['machine'], username=USERNAME, password=PASSWORD)
         stdin, stdout, stderr = ssh.exec_command(COMMAND % ( FILENAME, s['class']))
         classname = s['class'].split('.')[-1]
-        if classname == 'GeneralRepositoryRun':
+        if classname == 'AfternoonAtTheRaces':
           grService = stdout.channel
         print("Executing %s in %s" % (classname, s['machine']))
 
