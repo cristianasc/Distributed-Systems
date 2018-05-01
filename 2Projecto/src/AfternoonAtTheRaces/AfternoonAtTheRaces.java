@@ -72,9 +72,9 @@ public class AfternoonAtTheRaces {
         ArrayList<Horse> horses = new ArrayList<>();
         ArrayList<Spectator> spectators = new ArrayList <>();
         
-        boolean Horse = false;
-        boolean broker=false;
-        boolean Spectator = false;
+        boolean horseBol = false;
+        boolean brokerBol = false;
+        boolean spectatorBol = false;
         
         Properties prop = new Properties();
         
@@ -139,7 +139,6 @@ public class AfternoonAtTheRaces {
                 bcServer = new BettingCentreServer(bcBroker, bcSpectator, bcPort);
                 bcServer.start();
             } else {
-                System.err.println("swsdfsdgfsafdgdfghdsfgsdfgdsfg");
                 bcBroker  = new ClientBettingCentre(paddockIP, paddockPort);
                 bcSpectator = new ClientBettingCentre(paddockIP, paddockPort);
             }
@@ -188,30 +187,31 @@ public class AfternoonAtTheRaces {
                     horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (2+ Math.random() * 5), gr);
                     horses.add(horse);
                     horse.start();
+                    horseBol = true;
                 }
             }
 
             //ESPECTADOR
-            spectatorIP = InetAddress.getByName(prop.getProperty("PUNTER"));
+            spectatorIP = InetAddress.getByName(prop.getProperty("SPECTATOR"));
             if (NetworkInterface.getByInetAddress(spectatorIP) != null) {
                 
                 for (int i = 1; i <= nSpectators; i++) {
                     spectator = new Spectator((IBettingCentre_Spectator) bc, (IControlCentre_Spectator) cc, (IPaddock_Spectator) pad, i, gr);
                     spectators.add(spectator);
                     spectator.start();
-                    Spectator = true;
+                    spectatorBol = true;
                 }
             }
             
             //BROKER
-            brokerIP = InetAddress.getByName(prop.getProperty("MANAGER"));
+            brokerIP = InetAddress.getByName(prop.getProperty("BROKER"));
             if (NetworkInterface.getByInetAddress(brokerIP) != null) {
                 
                 br = new Broker((IBettingCentre_Broker) bc, (IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
                 (IControlCentre_Broker) cc, gr);
                 br.start();
                 
-                broker = true;
+                brokerBol = true;
             }
             
             
@@ -219,20 +219,38 @@ public class AfternoonAtTheRaces {
         } catch (Exception ex) {
             
         }
-        //fim do broker
-                br.join();
-        
-        //fim dos apostadores
+
+        if (spectatorBol) {
             for (int i = 0; i < spectators.size(); i++) {
                 try {
                     spectator = spectators.get(i);
                     spectator.join();
-                } 
+                } catch (InterruptedException ex) {
+                }
+            }
+        }
+
+        if (horseBol) {
+            for (int i = 0; i < horses.size(); i++) {
+                try {
+                    horse = horses.get(i);
+                    horse.join();
+                } // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 catch (InterruptedException ex) {
                 }
             }
-            
+        }
+
+
+            //fim do broker
+        if (brokerBol) {
+            try {
+                br.join();
+            } catch (InterruptedException ex) {
+            }
+
             System.exit(0);
+        }
     }  
 }
     
