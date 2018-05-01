@@ -78,6 +78,8 @@ public class AfternoonAtTheRaces {
         
         Properties prop = new Properties();
         
+        System.out.print("GENERALREPOSITORY");
+        
         try {
             prop.load(new FileInputStream("config.properties"));
                         
