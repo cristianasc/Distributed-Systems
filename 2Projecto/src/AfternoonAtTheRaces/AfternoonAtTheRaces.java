@@ -78,8 +78,6 @@ public class AfternoonAtTheRaces {
         
         Properties prop = new Properties();
         
-        System.out.print("GENERALREPOSITORY");
-        
         try {
             prop.load(new FileInputStream("config.properties"));
                         
@@ -89,13 +87,13 @@ public class AfternoonAtTheRaces {
             repositoryPort = Integer.parseInt(tmp[1]);
             
             if (NetworkInterface.getByInetAddress(repositoryIP) != null) {
+                System.err.println("GENERAL REPOSITORY");
                 iGR = new GeneralRepository(nSpectators, nHorses, nRaces, distance);
                 repoServer = new GeneralRepositoryServer(iGR, repositoryPort);
                 repoServer.start();
             } else {
                 iGR = new ClientRepository(repositoryIP, repositoryPort);
             }
-            
             
             //STABLE
             tmp = prop.getProperty("STABLE").split(":");
@@ -216,12 +214,10 @@ public class AfternoonAtTheRaces {
                 brokerBol = true;
             }
             
-            
-            
         } catch (Exception ex) {
             
         }
-
+        
         if (spectatorBol) {
             for (int i = 0; i < spectators.size(); i++) {
                 try {
@@ -231,28 +227,17 @@ public class AfternoonAtTheRaces {
                 }
             }
         }
-
-        if (horseBol) {
-            for (int i = 0; i < horses.size(); i++) {
-                try {
-                    horse = horses.get(i);
-                    horse.join();
-                } // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                catch (InterruptedException ex) {
-                }
-            }
-        }
-
-
-            //fim do broker
+        
+        
         if (brokerBol) {
             try {
                 br.join();
             } catch (InterruptedException ex) {
             }
-
             System.exit(0);
         }
+        
+        
     }  
 }
     
