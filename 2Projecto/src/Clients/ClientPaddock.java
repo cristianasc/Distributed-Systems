@@ -25,14 +25,14 @@ public class ClientPaddock extends ClientSend implements IPaddock_Spectator, IPa
     public void goCheckHorses(int spectatorID) {
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(spectatorID);
-        sendMessage(MsgType.GOCHECKHORSES, null); 
+        sendMessage(MsgType.GOCHECKHORSES, param); 
     }
 
     @Override
     public void proceedToPaddock(int horseID) {
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(horseID);
-        sendMessage(MsgType.PROCEEDTOPADDOCK, null); 
+        sendMessage(MsgType.PROCEEDTOPADDOCK, param); 
     }
 
     @Override

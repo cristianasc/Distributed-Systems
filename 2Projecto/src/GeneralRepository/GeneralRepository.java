@@ -193,114 +193,139 @@ public class GeneralRepository implements IGeneralRepository{
         }
     }
     
+    @Override
     public synchronized void setActualRace(int race){
         this.currentRace = race;
         FirstLine();
     }
     
+    @Override
     public int getCurrentRace(){
         return currentRace;
     }
     
+    @Override
     public int getDistance(){
         return distance;
     }
     
+    @Override
     public synchronized void setDistance(int distance){
         this.distance = distance;
         FirstLine();
     }
     
+    @Override
     public int getnHorses(){
         return nHorses;
     }
     
+    @Override
     public void setnHorses(int nHorses) {
         this.nHorses = nHorses;
     }
     
+    @Override
     public int getnSpectator(){
         return nSpectators;
     }
     
+    @Override
     public void setnSpectator(int nSpectators) {
         this.nSpectators = nSpectators;
     }
     
+    @Override
     public int getnRaces(){
         return nRaces;
     }
     
+    @Override
     public void setnRaces(int nRaces) {
         this.nRaces = nRaces;
     }
     
+    @Override
     public int gethorsePosition(int id) {
         return horsePositions.get(id);
     }
     
+    @Override
     public synchronized void sethorsePositions(int id, int position) {
         horsePositions.put(id, position);
         FirstLine();
     }
     
+    @Override
     public synchronized void setBetsPerSpectator(int ID, Bet bet) {
         betsPerSpectator.put(ID, bet);
         setSpectatorBet(ID,bet.getHorseID());
         setSpectatorMoney(ID,bet.getBetvalue());
     }
     
+    @Override
     public Bet getBetsPerSpectator(int ID) {
         return betsPerSpectator.get(ID);
     }
     
+    @Override
     public int getnWinners() {
         return nWinners;
     }
 
+    @Override
     public void setnWinners(int size) {
         this.nWinners = size;
     }
     
+    @Override
     public int getHorseWinnerID() {
         return horseWinner;
     }
 
+    @Override
     public void setHorseWinnerID(int horseID) {
         this.horseWinner = horseID;
     }
 
+    @Override
     public synchronized void setBrokerState(BrokerStates state) {
         BrokerState = state;
         FirstLine();        
     }
 
+    @Override
     public synchronized void setSpectatorState(int spectID,SpectatorStates state) {
         statesSpectator[spectID-1] = state;
         FirstLine();        
     }    
 
+    @Override
     public synchronized void setHorseState(int ID,HorseStates state,int move) {
         statesHorses[ID-1] = state;
         HorseAgility[ID-1] = move;
         FirstLine();
     }
 
+    @Override
     public synchronized void setSpectatorBet(int spectID, int bet) {
         spectatorBet[spectID-1] = bet;
         FirstLine();
     }
 
+    @Override
     public synchronized void setSpectatorMoney(int spectID, int money) {
         spectatorMoney[spectID-1] = money;
         FirstLine();
     }
 
+    @Override
     public synchronized void setArrayPosition(HashMap<Integer,Integer> pos) {
         this.pos = pos;
         FirstLine();
     }
 
+    @Override
     public synchronized void setCount(int horse, int contagem) {
         count[horse-1] = contagem;
     }

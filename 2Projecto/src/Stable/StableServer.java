@@ -116,20 +116,19 @@ public class StableServer extends Thread {
                 msgOut = (Msg) in.readObject();
                 type = msgOut.getType();
                 param = msgOut.getParam();
-                System.err.print("\nSTABLE SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "param" + param.toString());
+                System.err.print("\nSTABLE SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "\nparam" + param.toString());
 
                 switch (type) {
-                    case SUMMONHORSESTOPADDOCK:
-                        stBroker.summonHorsesToPaddock();
-                        break;
                     case PROCEEDTOSTABLE:
                         int horseID = (int) param.get(0);
                         stHorses.proceedToStable(horseID);
                         break;
+                    case SUMMONHORSESTOPADDOCK:
+                        stBroker.summonHorsesToPaddock();
+                        break;
                     case CLOSE:
                         close();
                         break;
-
                 }
                 
                 // responde com a mesma mensagem que recebeu
@@ -140,7 +139,9 @@ public class StableServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
+                System.err.println("IOException stable server");
             } catch (ClassNotFoundException ex) {
+                System.err.println("ClassNotFoundException stable server");
             }
         }
     }

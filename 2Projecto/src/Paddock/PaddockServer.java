@@ -139,7 +139,9 @@ public class PaddockServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
+                System.err.println("IOException Paddock");
             } catch (ClassNotFoundException ex) {
+                System.err.println("ClassNotFoundException Paddock");
             }
         }
     }

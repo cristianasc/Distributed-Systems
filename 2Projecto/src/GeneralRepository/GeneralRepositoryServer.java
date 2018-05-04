@@ -1,6 +1,9 @@
 package GeneralRepository;
 
+import Broker.BrokerStates;
 import Clients.*;
+import Horse.HorseStates;
+import Spectator.SpectatorStates;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -110,7 +113,7 @@ public class GeneralRepositoryServer extends Thread {
                 param = msgOut.getParam();
                 int horseID;
                 int value;
-                int nspecs, nhorses, nRaces, distancia, winnerhorseID;
+                int nspecs, nhorses, nRaces, distancia, winnerhorseID,spectatorID;
                 ArrayList<Object> tmp = new ArrayList<>();
                 System.out.print("\nREPOSITORY SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name());
                 switch (type) {
@@ -186,24 +189,57 @@ public class GeneralRepositoryServer extends Thread {
                         tmp.add(mapa);
                         break;
                     */
-                    case SETBETSPERPUNTER:
-                        int punterID = (int) param.get(0);
+                    case SETBETSPERSPECTATOR:
+                        spectatorID = (int) param.get(0);
                         Bet bet = (Bet) param.get(1);
-                        rp.setBetsPerSpectator(punterID, bet);
+                        rp.setBetsPerSpectator(spectatorID, bet);
                         break;
-                    case GETBETBYPUNTERID:
-                        punterID = (int) param.get(0);
-                        Bet betX = rp.getBetsPerSpectator(punterID);
+                    case GETBETBYSPECTATORID:
+                        spectatorID = (int) param.get(0);
+                        Bet betX = rp.getBetsPerSpectator(spectatorID);
                         tmp.add(betX);
                         break;
-                    case GETHORSESPOSITIONS:
-                        int post = rp.gethorsePosition((int) param.get(0));
-                        tmp.add(post);
-                        break;
+                    //case GETHORSESPOSITIONS:
+                        //int post = rp.gethorsePosition((int) param.get(0));
+                        //tmp.add(post);
+                        //break;
                     case SETHORSESPOSITIONS:
                         horseID = (int) param.get(0);
                         int pos = (int) param.get(1);
                         rp.sethorsePositions(horseID, pos);
+                        break;
+                    case SETBROKERSTATE:
+                        BrokerStates Brokerstate = (BrokerStates) param.get(0);
+                        rp.setBrokerState(Brokerstate);
+                        break;
+                    case SETSPECTATORSTATE:
+                        SpectatorStates Spectatorstate = (SpectatorStates) param.get(1);
+                        spectatorID = (int) param.get(0);
+                        rp.setSpectatorState(spectatorID,Spectatorstate);
+                        break;
+                    case SETHORSESTATE:
+                        horseID = (int) param.get(0);
+                        HorseStates horseState = (HorseStates) param.get(1);
+                        int move = (int) param.get(2);
+                        rp.setHorseState(horseID,horseState,move);
+                        break;
+                    case SETSPECTATORMONEY:
+                        spectatorID = (int) param.get(0);
+                        int money = (int) param.get(1);
+                        rp.setSpectatorMoney(spectatorID, money);                        
+                        break;
+                    case GETHORSESPOSITION:
+                        int horsePosition = rp.gethorsePosition((int) param.get(0));
+                        tmp.add(horsePosition);
+                        break;
+                    case SETARRAYPOSITION:
+                        HashMap<Integer, Integer> positions = (HashMap<Integer, Integer>) param.get(0);
+                        rp.setArrayPosition(positions);
+                        break;
+                    case SETSPECTATORBET:
+                        spectatorID = (int) param.get(0);
+                        int betS = (int) param.get(1);
+                        rp.setSpectatorBet(spectatorID, betS);
                         break;
                     case CLOSE:
                         close();
@@ -222,8 +258,10 @@ public class GeneralRepositoryServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
+                System.err.println("IOException Repository");
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                System.err.println("ClassNotFoundException Repository");
                 e.printStackTrace();
             }
         }

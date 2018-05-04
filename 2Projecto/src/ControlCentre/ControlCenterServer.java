@@ -72,6 +72,7 @@ public class ControlCenterServer extends Thread {
         try {
             sSocket.close();
         } catch (IOException e) {
+            System.err.println("IOException");
         }
     }
 
@@ -119,7 +120,7 @@ public class ControlCenterServer extends Thread {
                         ArrayList<Bet> lista = (ArrayList<Bet>) param.get(0);
                         ccB.reportResults(lista);
                         break;
-                    case SUMMONHORSESTOPADDOCK:
+                    case SUMMONHORSESTOPADDOCKCC:
                         ccB.summonHorsesToPaddock();
                         break;
                     case GETWINNERS:
@@ -159,8 +160,10 @@ public class ControlCenterServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
+                System.err.println("IOException ");
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                System.err.println("ClassNotFoundException CC");
                 e.printStackTrace();
             }
         }

@@ -43,7 +43,7 @@ public class ClientControlCentre extends ClientSend implements IControlCentre_Br
     
     @Override
     public void summonHorsesToPaddock() {
-        sendMessage(MsgType.SUMMONHORSESTOPADDOCK, null);
+        sendMessage(MsgType.SUMMONHORSESTOPADDOCKCC, null);
     }
     
     @Override
@@ -64,12 +64,12 @@ public class ClientControlCentre extends ClientSend implements IControlCentre_Br
      * parametros adequados. Esta função diz respeito ao comportamento de um
      * apostador Punter_ID durante uma corrida.
      *
-     * @param Punter_ID ID do apostador
+     * @param spectatorID ID do apostador
      */
     @Override
-    public void goWatchTheRace(int Punter_ID) {
+    public void goWatchTheRace(int spectatorID) {
         ArrayList<Object> param = new ArrayList<Object>();
-        param.add(Punter_ID);
+        param.add(spectatorID);
         sendMessage(MsgType.GOWATCHTHERACE, param);
     }
 
@@ -85,14 +85,14 @@ public class ClientControlCentre extends ClientSend implements IControlCentre_Br
      * valor de retorno da função. Esta função vai verificar se o apostador
      * punterID ganhou a corrida.
      *
-     * @param punterID ID do apostador
+     * @param spectatorID ID do apostador
      *
      * @return Boolean indicando se o apostador punterID ganhou a corrida
      */
     @Override
-    public boolean haveIWon(int punterID) {
+    public boolean haveIWon(int spectatorID) {
         ArrayList<Object> param = new ArrayList<Object>();
-        param.add(punterID);
+        param.add(spectatorID);
         Msg msgReceive = (Msg) sendMessage(MsgType.HAVEIWON, param);
         return (boolean) msgReceive.getParam().get(0);
     }

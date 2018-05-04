@@ -146,8 +146,10 @@ public class RacingTrackServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
+                System.err.println("IOException RacingTrack");
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                System.err.println("ClassNotFoundException RacingTrack");
                 e.printStackTrace();
             }
         }

@@ -34,7 +34,7 @@ public class ClientStable extends ClientSend implements IStable_Broker, IStable_
      */
     @Override
     public void proceedToStable(int horseID) {
-        System.out.println("SUMMON HGORESSSSSSS PADOOOOOOOOCCCKKKK");
+        System.out.println("Proceed to stable - client Stable");
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(horseID);
         sendMessage(MsgType.PROCEEDTOSTABLE, param);

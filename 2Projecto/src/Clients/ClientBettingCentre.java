@@ -28,21 +28,21 @@ public class ClientBettingCentre extends ClientSend implements IBettingCentre_Sp
         param.add(spectatorID);
         param.add(value);
         param.add(horseID);
-        sendMessage(MsgType.PLACEABET, null); 
+        sendMessage(MsgType.PLACEABET, param); 
     }
 
     @Override
     public void goCollectTheGains(int SpectatorID) {
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(SpectatorID);
-        sendMessage(MsgType.GOCOLLECTTHEGAINS, null); 
+        sendMessage(MsgType.GOCOLLECTTHEGAINS, param); 
     }
 
     @Override
     public void relaxABit(int SpectatorID) {
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(SpectatorID);
-        sendMessage(MsgType.RELAXABIT, null); 
+        sendMessage(MsgType.RELAXABIT, param); 
     }
 
     @Override
@@ -58,7 +58,9 @@ public class ClientBettingCentre extends ClientSend implements IBettingCentre_Sp
 
     @Override
     public boolean areThereAnyWinners(ArrayList<Bet> winners) {
-        Msg msg = (Msg) sendMessage(MsgType.ARETHEREANYWINNERS, null); 
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(winners);
+        Msg msg = (Msg) sendMessage(MsgType.ARETHEREANYWINNERS, param); 
         return (boolean) msg.getParam().get(0);
     }
 

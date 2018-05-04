@@ -39,7 +39,6 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
      */
     @Override
     public int getHorseSkills(int ID) {
-
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(ID);
         Msg msgReceived = (Msg) sendMessage(MsgType.GETHORSEAGILITY, param);
@@ -56,7 +55,6 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
      */
     @Override
     public void setHorseSkills(int ID, int move) {
-
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(ID);
         param.add(move);
@@ -272,7 +270,7 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(ID);
         param.add(bet);
-        sendMessage(MsgType.SETBETSPERPUNTER, param);
+        sendMessage(MsgType.SETBETSPERSPECTATOR, param);
     }
 
     /**
@@ -289,7 +287,7 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
     public Bet getBetsPerSpectator(int ID) {
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(ID);
-        Msg msgReceived = (Msg) sendMessage(MsgType.GETBETBYPUNTERID, param);
+        Msg msgReceived = (Msg) sendMessage(MsgType.GETBETBYSPECTATORID, param);
         return (Bet) msgReceived.getParam().get(0);
     }
 
@@ -331,23 +329,21 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
         ArrayList<Object> param = new ArrayList<Object>();
         param.add(position);
         sendMessage(MsgType.SETHORSESPOSITIONS, param);
-    }
-
-    /**
-     * Método para terminar a ligação e fechar a classe
-     */
-    public void close() {
-        sendMessage(MsgType.CLOSE, null);
-    }
+    }    
 
     @Override
     public int gethorsePosition(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(id);
+        Msg msgReceived = (Msg) sendMessage(MsgType.GETHORSESPOSITION, param);
+        return (int) msgReceived.getParam().get(0);  
     }
 
     @Override
     public void setArrayPosition(HashMap<Integer, Integer> pos) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(pos);
+        sendMessage(MsgType.SETARRAYPOSITION, param);
     }
 
     @Override
@@ -357,26 +353,48 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
 
     @Override
     public void setHorseState(int horseID, HorseStates state, int move) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(horseID);
+        param.add(state);
+        param.add(move);
+        sendMessage(MsgType.SETHORSESTATE, param);
     }
 
     @Override
     public void setSpectatorState(int spectatorID, SpectatorStates state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(spectatorID);
+        param.add(state);
+        sendMessage(MsgType.SETSPECTATORSTATE, param);
     }
 
     @Override
     public void setSpectatorMoney(int spectatorID, int money) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(spectatorID);
+        param.add(money);
+        sendMessage(MsgType.SETSPECTATORMONEY, param);
     }
 
     @Override
     public void setSpectatorBet(int spectatorID, int bet) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(spectatorID);
+        param.add(bet);
+        sendMessage(MsgType.SETSPECTATORBET, param);
     }
 
     @Override
     public void setBrokerState(BrokerStates state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Object> param = new ArrayList<Object>();
+        param.add(state);
+        sendMessage(MsgType.SETBROKERSTATE, param);
+    }
+    
+    /**
+     * Método para terminar a ligação e fechar a classe
+     */
+    public void close() {
+        sendMessage(MsgType.CLOSE, null);
     }
 }

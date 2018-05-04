@@ -37,9 +37,7 @@ public class BettingCentreServer extends Thread{
         this.port = port;
         System.out.printf("\nBETTING CENTER SERVER\n");
     }
-    
-    
-    
+
     /**
      * Funcão que inicializa a thread do Betting Center
      */
@@ -140,7 +138,8 @@ public class BettingCentreServer extends Thread{
                         break;
                     case ARETHEREANYWINNERS:
                         ArrayList<Bet> winners = (ArrayList<Bet>) param.get(0);
-                        bcBroker.areThereAnyWinners(winners);
+                        boolean Bwinners = bcBroker.areThereAnyWinners(winners);
+                        tmp.add(Bwinners);
                         break;
                     case ENTERTAINTHEGUESTS:
                         bcBroker.entertainTheGuests();
@@ -148,7 +147,6 @@ public class BettingCentreServer extends Thread{
                     case CLOSE:
                         close();
                         break;
-
                 }
                        
                 msgOut.setType(type);
@@ -161,7 +159,9 @@ public class BettingCentreServer extends Thread{
                 cSocket.close();
 
             } catch (IOException e) {
+                System.err.println("IOException BC");
             } catch (ClassNotFoundException ex) {
+                System.err.println("ClassNotFoundException BC");
             }
         }
     }
