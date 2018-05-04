@@ -51,6 +51,7 @@ public class RacingTrackServer extends Thread {
             e.printStackTrace();
         }
         while (run) {
+            System.out.printf("\nRACINGTRACK SERVER LISTENING..\n");
             try {
                 cSocket = sSocket.accept();
                 new RacingTrackServer.RacingTrackConnection(cSocket).start();
@@ -58,6 +59,7 @@ public class RacingTrackServer extends Thread {
             }
 
         }
+        System.out.printf("\nRACINGTRACK SERVER OVER\n");
 
     }
 

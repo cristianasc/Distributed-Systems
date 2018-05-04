@@ -61,6 +61,7 @@ public class PaddockServer extends Thread {
             }
 
         }
+        System.out.printf("\nPADDOCK SERVER OVER\n");
 
     }
 
@@ -111,7 +112,7 @@ public class PaddockServer extends Thread {
                 msgOut = (Msg) in.readObject();
                 type = msgOut.getType();
                 param = msgOut.getParam();
-                
+                System.out.print("\nPADDOCK SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name());
                 switch (type) {
                     case PROCEEDTOSTARTLINE:
                         pdHorses.proceedToStartLine();

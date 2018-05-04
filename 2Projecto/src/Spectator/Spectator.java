@@ -21,12 +21,12 @@ public class Spectator extends Thread{
     private final IControlCentre_Spectator ccSpectator;
     private final IPaddock_Spectator padSpectator;
     private final IBettingCentre_Spectator bcSpectator;
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     private int spectatorID, bestHorse, money, total, bet,nRaces;
     private Bet aposta;
     private ArrayList<Bet> bets;
     
-    public Spectator(IBettingCentre_Spectator bcSpectator, IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, GeneralRepository gr){
+    public Spectator(IBettingCentre_Spectator bcSpectator, IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, IGeneralRepository gr){
         this.ccSpectator = ccSpectator;
         this.padSpectator = padSpectator;
         this.bcSpectator = bcSpectator;

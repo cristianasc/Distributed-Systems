@@ -53,12 +53,14 @@ public class ControlCenterServer extends Thread {
             e.printStackTrace();
         }
         while (run) {
+            System.out.printf("\nCONTROLCENTRE SERVER LISTENING..\n");
             try {
                 cSocket = sSocket.accept();
                 new ControlCenterServer.ControlCenterConnection(cSocket).start();
             } catch (IOException e) {
             }
         }
+        System.out.printf("\nCONTROLCENTRE SERVER OVER\n");
     }
 
     /**
@@ -111,7 +113,7 @@ public class ControlCenterServer extends Thread {
                 
                 int horseID, spectatorID;
                 ArrayList<Object> tmp = new ArrayList<>();
-                
+                System.out.print("\nCONTROLCENTRE SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name());
                 switch (type) {
                     case REPORTRESULTS:
                         ArrayList<Bet> lista = (ArrayList<Bet>) param.get(0);

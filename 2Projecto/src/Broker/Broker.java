@@ -24,13 +24,13 @@ public class Broker extends Thread{
     private final IRacingTrack_Broker rtBroker;
     private final IControlCentre_Broker ccBroker;
     private final IBettingCentre_Broker bcBroker;
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     private int nRaces, moneyBet;
     private Bet bet;
     private ArrayList<Bet> bets;
     private HashMap<Integer, ArrayList<Bet>> betsByHorses;
     
-    public Broker(IBettingCentre_Broker bcBroker, IStable_Broker stBroker, IStable_Horses stHorses, IRacingTrack_Broker rtBroker, IControlCentre_Broker ccBroker, GeneralRepository gr){
+    public Broker(IBettingCentre_Broker bcBroker, IStable_Broker stBroker, IStable_Horses stHorses, IRacingTrack_Broker rtBroker, IControlCentre_Broker ccBroker, IGeneralRepository gr){
         this.stBroker = stBroker;
         this.rtBroker = rtBroker;
         this.ccBroker = ccBroker;

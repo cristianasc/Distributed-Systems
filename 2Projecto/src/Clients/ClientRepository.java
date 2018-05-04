@@ -1,6 +1,9 @@
 package Clients;
 
+import Broker.BrokerStates;
 import GeneralRepository.*;
+import Horse.HorseStates;
+import Spectator.SpectatorStates;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +26,7 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
      */
     public ClientRepository(InetAddress address, int port) {
         super(address, port);
-        System.out.printf("\nCLIENT REPOSITÒRIO\n");
+        System.out.printf("\nCLIENT REPOSITORY\n");
     }
 
     /**
@@ -349,6 +352,31 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
 
     @Override
     public void setCount(int horse, int count) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setHorseState(int horseID, HorseStates state, int move) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSpectatorState(int spectatorID, SpectatorStates state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSpectatorMoney(int spectatorID, int money) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSpectatorBet(int spectatorID, int bet) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setBrokerState(BrokerStates state) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

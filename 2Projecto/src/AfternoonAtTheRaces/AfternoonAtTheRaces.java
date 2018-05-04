@@ -139,8 +139,8 @@ public class AfternoonAtTheRaces {
                 bcServer = new BettingCentreServer(bcBroker, bcSpectator, bcPort);
                 bcServer.start();
             } else {
-                bcBroker  = new ClientBettingCentre(paddockIP, paddockPort);
-                bcSpectator = new ClientBettingCentre(paddockIP, paddockPort);
+                bcBroker  = new ClientBettingCentre(bcIP, bcPort);
+                bcSpectator = new ClientBettingCentre(bcIP, bcPort);
             }
             
             
@@ -185,7 +185,7 @@ public class AfternoonAtTheRaces {
             if (NetworkInterface.getByInetAddress(horseIP) != null) {
                 
                 for (int i = 1; i <= nHorses; i++) {
-                    horse = new Horse((IRacingTrack_Horses) rt, (IPaddock_Horses) pad, (IStable_Horses) st, (IControlCentre_Horses) cc, i, (int) (2+ Math.random() * 5), gr);
+                    horse = new Horse(rtH, pdHorses, stHorses, ccH, i, (int) (2+ Math.random() * 5), iGR);
                     horses.add(horse);
                     horse.start();
                     horseBol = true;
@@ -197,7 +197,7 @@ public class AfternoonAtTheRaces {
             if (NetworkInterface.getByInetAddress(spectatorIP) != null) {
                 
                 for (int i = 1; i <= nSpectators; i++) {
-                    spectator = new Spectator((IBettingCentre_Spectator) bc, (IControlCentre_Spectator) cc, (IPaddock_Spectator) pad, i, gr);
+                    spectator = new Spectator(bcSpectator, ccS, pdSpectator, i, iGR);
                     spectators.add(spectator);
                     spectator.start();
                     spectatorBol = true;
@@ -208,8 +208,7 @@ public class AfternoonAtTheRaces {
             brokerIP = InetAddress.getByName(prop.getProperty("BROKER"));
             if (NetworkInterface.getByInetAddress(brokerIP) != null) {
                 
-                br = new Broker((IBettingCentre_Broker) bc, (IStable_Broker) st, (IStable_Horses) st, (IRacingTrack_Broker) rt,
-                (IControlCentre_Broker) cc, gr);
+                br = new Broker(bcBroker, stBroker, stHorses, rtB, ccB, iGR);
                 br.start();
                 
                 brokerBol = true;

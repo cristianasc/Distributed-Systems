@@ -21,10 +21,10 @@ public class Horse extends Thread{
     private final IControlCentre_Horses ccHorses;
     private final IPaddock_Horses padHorses;
     private final IRacingTrack_Horses rtHorses;
-    private final GeneralRepository gr;
+    private final IGeneralRepository gr;
     private int horseID, nRaces, move;
     
-    public Horse(IRacingTrack_Horses rtHorses, IPaddock_Horses padHorses, IStable_Horses stHorses, IControlCentre_Horses ccHorses, int horseID, int move, GeneralRepository gr){
+    public Horse(IRacingTrack_Horses rtHorses, IPaddock_Horses padHorses, IStable_Horses stHorses, IControlCentre_Horses ccHorses, int horseID, int move, IGeneralRepository gr){
         this.gr = gr;
         this.stHorses = stHorses;
         this.ccHorses = ccHorses;

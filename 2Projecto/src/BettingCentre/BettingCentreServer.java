@@ -55,6 +55,7 @@ public class BettingCentreServer extends Thread{
         
         
         while (run) {
+            System.out.printf("\nBETTINGCENTRE SERVER LISTENING..\n");
             try {
                 cSocket = sSocket.accept();
                 connection = new BettingCentreServerConnection(cSocket);
@@ -63,6 +64,7 @@ public class BettingCentreServer extends Thread{
             }
 
         }
+        System.out.printf("\nBETTING CENTRE SERVER OVER\n");
 
     }
 
@@ -113,6 +115,7 @@ public class BettingCentreServer extends Thread{
                 type = msgOut.getType();
                 param = msgOut.getParam();
                 ArrayList<Object> tmp = new ArrayList<>();
+                System.out.print("\nBETTINGCENTRE SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name());
                 switch (type) {
                     case PLACEABET:
                         int spectatorID = (int) param.get(0);

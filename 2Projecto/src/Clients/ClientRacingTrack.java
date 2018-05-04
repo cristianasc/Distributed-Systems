@@ -26,7 +26,7 @@ public class ClientRacingTrack extends ClientSend implements IRacingTrack_Broker
      */
     public ClientRacingTrack(InetAddress address, int port) {
         super(address, port);
-        System.out.printf("\n CLIENT RACINGTRACK \n");
+        System.out.printf("\nRACINGTRACK CLIENT \n");
     }
 
     /**

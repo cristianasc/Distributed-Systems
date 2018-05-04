@@ -116,7 +116,8 @@ public class StableServer extends Thread {
                 msgOut = (Msg) in.readObject();
                 type = msgOut.getType();
                 param = msgOut.getParam();
-                
+                System.err.print("\nSTABLE SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name() + "param" + param.toString());
+
                 switch (type) {
                     case SUMMONHORSESTOPADDOCK:
                         stBroker.summonHorsesToPaddock();

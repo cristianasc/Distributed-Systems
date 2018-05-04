@@ -50,7 +50,7 @@ public class GeneralRepositoryServer extends Thread {
             e.printStackTrace();
         }
         while (run) {
-                System.out.printf("\nGENERAL REPOSITORY SERVER LISTENING..\n");
+            System.out.printf("\nGENERAL REPOSITORY SERVER LISTENING..\n");
             try {
                 cSocket = sSocket.accept();
                 new GeneralRepositoryServer.RepositoryConnection(cSocket).start();
