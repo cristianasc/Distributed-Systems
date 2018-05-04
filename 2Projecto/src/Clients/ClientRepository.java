@@ -94,7 +94,6 @@ public class ClientRepository extends ClientSend implements IGeneralRepository {
      */
     @Override
     public int getnHorses() {
-
         Msg msgReceived = (Msg) sendMessage(MsgType.GETNHORSES, null);
         return (int) msgReceived.getParam().get(0);
     }

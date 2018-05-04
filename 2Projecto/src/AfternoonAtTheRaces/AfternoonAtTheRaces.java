@@ -167,6 +167,7 @@ public class AfternoonAtTheRaces {
             
             racingtrackIP = InetAddress.getByName(tmp[0]);
             racingTrackPort = Integer.parseInt(tmp[1]);
+            
             if (NetworkInterface.getByInetAddress(racingtrackIP) != null) {
                 
                 rtH = new RacingTrack(iGR);
