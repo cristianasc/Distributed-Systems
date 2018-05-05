@@ -14,26 +14,22 @@ import java.util.ArrayList;
  */
 public class ClientSend {
 
-    private InetAddress address;        // Ip da maquina com a entidade que realiza a função pretendida
-    private int port;                   // Porta da maquina com a entidade que realiza a função pretendida
+    private InetAddress address;        // Ip da maquina 
+    private int port;                   // Porta da maquina
 
     /**
-     * Construtor da classe, recebe como parametros um endereço IP address e uma
-     * porta port usada para o envio de mensagens
-     *
      * @param address Endereço IP
      * @param port Porta para envio das mensagens
      */
     public ClientSend(InetAddress address, int port) {
         this.address = address;
         this.port = port;
-        // System.out.printf("\nCRIOU REMOTESEND\n");
     }
 
     /**
      * Método que envia uma mensagem para o servidor
      *
-     * @param type Tipo de mensagem a enviar, ou seja, função desejada
+     * @param type Tipo de mensagem a enviar
      * @return Resposta do mesmo tipo da mensagem enviada
      * @throws java.lang.ClassNotFoundException ClassNotFoundException 
      */
@@ -44,20 +40,21 @@ public class ClientSend {
     /**
      * Método que envia uma mensagem para o servidor
      *
-     * @param type Tipo de mensagem a enviar, ou seja, função desejada
-     * @param param Parametros necessarios para mensagem do tipo type
+     * @param type Tipo de mensagem a enviar
+     * @param param Parametros da mensagem do tipo type, quando existem
      *
      * @return Mensagem de resposta do servidor
      */
     protected Object sendMessage(MsgType type, ArrayList<Object> param) {
         boolean done = false;
-        //Socket skt= null;
+        
         ObjectInputStream in;
         ObjectOutputStream out;
         Msg msgOut = new Msg();
+        
         while (!done) {
             try {
-                System.err.printf("\nCriar conexão com Servidor para enviar msg do tipo: " + type);
+                System.err.printf("\nA criar conexão com Servidor. Mensagem do tipo: " + type);
                 Socket skt = new Socket(address, port);
                 out = new ObjectOutputStream(skt.getOutputStream());
                 in = new ObjectInputStream(skt.getInputStream());
@@ -78,9 +75,7 @@ public class ClientSend {
                 skt.close();
                 done = true;
             } catch (IOException e) {
-                //System.err.printf("\nTentativa("+tryCount+" )para criar conexão com Servidor...");
             } catch (ClassNotFoundException ex) {
-                System.err.printf("\nERRO GRAVE!");
             }
         }
         return msgOut;

@@ -9,8 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Espectador, Broker) relacionadas com o RacingTrack
+ * Servidor RacingTrack.
  *
  * @author Miguel Maia
  */
@@ -23,10 +22,7 @@ public class RacingTrackServer extends Thread {
     private IRacingTrack rt;
 
     /**
-     * Construtor da classe servidor para o RacingTrack, recebe como parâmetro
- uma instancia da interface IRacingTrack rtB,uma instância da interface IRacingTrack_Horses rtH
- e uma porta por onde o servidor vai receber as mensagens.
-     *
+     * 
      * @param rt Instância da interface IRacingTrack
      * @param port Porta onde o servidor fica a "escuta" das mensagens 
      */
@@ -61,7 +57,7 @@ public class RacingTrackServer extends Thread {
     }
 
     /**
-     * Função que termina o ciclo de "escuta" do servidor e termina o código a
+     * Função que termina o ciclo do servidor e termina o código a
      * correr pela thread.
      */
     public void close() {
@@ -85,8 +81,6 @@ public class RacingTrackServer extends Thread {
         private ArrayList<Object> param;
 
         /**
-         * Construtor da classe interna para lançar thread que analisa o tipo de
-         * mensagem e trata do encaminhamento da mesma.
          *
          * @param sock Mensagem recebida
          */
@@ -95,7 +89,7 @@ public class RacingTrackServer extends Thread {
         }
 
         /**
-         * Funcão que inicializa a thread da classe para tratar mensagem
+         * Inicializa a thread da classe para tratar mensagem
          * recebida.
          */
         @Override
@@ -132,7 +126,7 @@ public class RacingTrackServer extends Thread {
                         close();
                         break;
                 }
-                // responde com msg Out ou in          
+                         
                 msgOut.setType(type);
                 msgOut.setParam(tmp);
 
@@ -143,11 +137,7 @@ public class RacingTrackServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
-                System.err.println("IOException RacingTrack");
-                e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                System.err.println("ClassNotFoundException RacingTrack");
-                e.printStackTrace();
             }
         }
     }

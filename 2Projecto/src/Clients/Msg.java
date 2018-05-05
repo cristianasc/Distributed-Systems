@@ -8,14 +8,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Classe que permite definir o tipo de mensagem a enviar e os parametros passados a essa mensagem
- * 
  * @author Miguel Maia
  */
 public class Msg implements Serializable {
 
-    private MsgType type;                   // Tipo de mensagem, ou seja, função desejada
-    private ArrayList<Object> param;        // Array de parametros a passar conforme o tipo de mensagem
+    private MsgType type;                   // Tipo de mensagem
+    private ArrayList<Object> param;        // Array de parametros 
 
     /**
      * Método para retornar tipo da mensagem

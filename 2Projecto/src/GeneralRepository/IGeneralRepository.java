@@ -32,14 +32,9 @@ public interface IGeneralRepository {
     int gethorsePosition(int id);
     void setArrayPosition(HashMap<Integer,Integer> pos);
     void setCount(int horse, int count);    
-
-    public void setHorseState(int horseID, HorseStates state, int move);
-
-    public void setSpectatorState(int spectatorID, SpectatorStates state);
-
-    public void setSpectatorMoney(int spectatorID, int money);
-
-    public void setSpectatorBet(int spectatorID, int bet);
-
-    public void setBrokerState(BrokerStates state);
+    void setHorseState(int horseID, HorseStates state, int move);
+    void setSpectatorState(int spectatorID, SpectatorStates state);
+    void setSpectatorMoney(int spectatorID, int money);
+    void setSpectatorBet(int spectatorID, int bet);
+    void setBrokerState(BrokerStates state);
 }

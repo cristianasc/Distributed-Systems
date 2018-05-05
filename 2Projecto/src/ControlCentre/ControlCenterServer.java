@@ -22,13 +22,7 @@ public class ControlCenterServer extends Thread {
     private IControlCentre cc;
 
     /**
-     * Construtor da classe servidor para centro de controlo, recebe como
-     * parâmetro uma instancia da interface ControlCenter cc, e uma porta por
-     * onde o servidor vai receber as mensagens
-     *
-     * @param ccH Instância da interface IControlCentre_Horses.
-     * @param ccB Instância da interface IControlCentre.
-     * @param ccS Instância da interface IControlCentre_Spectator.
+     * @param cc Instância da interface IControlCentre.
      * @param port Porta onde o servidor fica a "escuta" das mensagens.
      */
     public ControlCenterServer(IControlCentre cc, int port) {
@@ -38,7 +32,7 @@ public class ControlCenterServer extends Thread {
     }
 
     /**
-     * Funcão que inicializa a thread do do Servidor.
+     * Funcão que inicializa a thread do Servidor.
      */
     @Override
     public void run() {
@@ -60,7 +54,7 @@ public class ControlCenterServer extends Thread {
     }
 
     /**
-     * Função que termina o ciclo de "escuta" do servidor e termina o código a
+     * Função que termina o ciclo do servidor e termina o código a
      * correr pela thread.
      */
     public void close() {
@@ -85,9 +79,6 @@ public class ControlCenterServer extends Thread {
         private ArrayList<Object> param;
 
         /**
-         * Construtor da classe interna para lançar thread que analisa o tipo de
-         * mensagem e trata do encaminhamento da mesma.
-         *
          * @param sock Mensagem recebida
          */
         public ControlCenterConnection(Socket sock) {
@@ -95,7 +86,7 @@ public class ControlCenterServer extends Thread {
         }
 
         /**
-         * Funcão que inicializa a thread da classe para tratar mensagem
+         * Inicializa a thread da classe para tratar mensagem
          * recebida.
          */
         @Override
@@ -144,8 +135,7 @@ public class ControlCenterServer extends Thread {
                         close();
                         break;
                 }
-                
-                // responde com msg Out ou in          
+                        
                 msgOut.setType(type);
                 msgOut.setParam(tmp);
 
@@ -156,11 +146,7 @@ public class ControlCenterServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
-                System.err.println("IOException ");
-                e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                System.err.println("ClassNotFoundException CC");
-                e.printStackTrace();
             }
         }
     }

@@ -11,8 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Espectador,Broker) relacionadas com o Stable
+ * Servidor Stable
  *
  * @author cristianacarvalho
  */
@@ -26,9 +25,6 @@ public class StableServer extends Thread {
     
 
     /**
-     * Construtor da classe servidor para o Stable, recebe como parâmetro uma
- instancia da interface IStable, IStable e IStable_Horses, e uma porta por onde o servidor vai
- receber as mensagens
      *
      * @param st Instancia da interface IStable
      * @param port Porta onde o servidor fica a "escuta" das mensagens
@@ -40,7 +36,7 @@ public class StableServer extends Thread {
     }
 
     /**
-     * Funcão que inicializa a thread do Stable
+     * Funcão que inicializa a thread do Stable.
      */
     @Override
     public void run() {
@@ -67,7 +63,7 @@ public class StableServer extends Thread {
     }
 
     /**
-     * Função que termina o ciclo de "escuta" do servidor e termina o código a
+     * Função que termina o ciclo do servidor e termina o código a
      * correr pela thread.
      */
     public void close() {
@@ -91,8 +87,6 @@ public class StableServer extends Thread {
         private ArrayList<Object> param;
 
         /**
-         * Construtor da classe interna para lançar thread que analisa o tipo de
-         * mensagem e trata do encaminhamento da mesma.
          *
          * @param sock Mensagem recebida
          */
@@ -101,8 +95,7 @@ public class StableServer extends Thread {
         }
 
         /**
-         * Funcão que inicializa a thread da classe para tratar mensagem
-         * recebida.
+         * Inicializa a thread da classe para tratar mensagem recebida.
          */
         @Override
         public void run() {
@@ -128,7 +121,7 @@ public class StableServer extends Thread {
                         break;
                 }
                 
-                // responde com a mesma mensagem que recebeu
+                
                 out.writeObject(msgOut);
                 out.flush();
                 out.close();
@@ -136,9 +129,7 @@ public class StableServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
-                System.err.println("IOException stable server");
             } catch (ClassNotFoundException ex) {
-                System.err.println("ClassNotFoundException stable server");
             }
         }
     }

@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 /**
  *
- * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Espectador,Broker) relacionadas com o Stable
+ * Servidor Paddock
  *
  * @author cristianacarvalho
  */
@@ -21,12 +20,7 @@ public class PaddockServer extends Thread {
     
     
     /**
-     * Construtor da classe servidor para o Paddock, recebe como parâmetro uma
- instancia da interface IPaddock e IPaddock_Spectator, e uma porta por onde o servidor vai
- receber as mensagens
-     *
-     * @param pdSpectator Instancia da interface IPaddock
-     * @param pdHorses Instancia da interface IPaddock_Spectator
+     * @param pd Instancia da interface IPaddock
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
     public PaddockServer(IPaddock pd, int port) {
@@ -64,7 +58,7 @@ public class PaddockServer extends Thread {
     }
 
     /**
-     * Função que termina o ciclo de "escuta" do servidor e termina o código a
+     * Função que termina o ciclo do servidor e termina o código a
      * correr pela thread.
      */
     public void close() {
@@ -88,9 +82,6 @@ public class PaddockServer extends Thread {
         private ArrayList<Object> param;
 
         /**
-         * Construtor da classe interna para lançar thread que analisa o tipo de
-         * mensagem e trata do encaminhamento da mesma.
-         *
          * @param sock Mensagem recebida
          */
         public PaddockServerConnection(Socket sock) {
@@ -98,7 +89,7 @@ public class PaddockServer extends Thread {
         }
 
         /**
-         * Funcão que inicializa a thread da classe para tratar mensagem
+         * Inicializa a thread da classe para tratar mensagem
          * recebida.
          */
         @Override
@@ -129,7 +120,6 @@ public class PaddockServer extends Thread {
 
                 }
                 
-                // responde com a mesma mensagem que recebeu
                 out.writeObject(msgOut);
                 out.flush();
                 out.close();
@@ -137,9 +127,7 @@ public class PaddockServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
-                System.err.println("IOException Paddock");
             } catch (ClassNotFoundException ex) {
-                System.err.println("ClassNotFoundException Paddock");
             }
         }
     }

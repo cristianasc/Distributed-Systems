@@ -40,9 +40,6 @@ public class ClientPaddock extends ClientSend implements IPaddock {
         sendMessage(MsgType.PROCEEDTOSTARTLINE, null);  
     }
     
-    /**
-     * Método para terminar a ligação e fechar a classe
-     */
     public void close() {
         sendMessage(MsgType.CLOSE, null);
     }

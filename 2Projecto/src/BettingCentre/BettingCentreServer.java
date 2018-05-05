@@ -22,11 +22,7 @@ public class BettingCentreServer extends Thread{
     
 
     /**
-     * Construtor da classe servidor para o Betting Center, recebe como parâmetro uma
- instancia da interface IBettingCentre, IBettingCentre_Spectator e uma porta
- por onde o servidor vai receber as mensagens
-     *
-     * @param bcBroker Instancia da interface IBettingCentre
+     * @param bc Instancia da interface IBettingCentre
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
     public BettingCentreServer(IBettingCentre bc, int port) {
@@ -64,7 +60,7 @@ public class BettingCentreServer extends Thread{
     }
 
     /**
-     * Função que termina o ciclo de "escuta" do servidor e termina o código a
+     * Função que termina o ciclo do servidor e termina o código a
      * correr pela thread.
      */
     public void close() {
@@ -88,9 +84,6 @@ public class BettingCentreServer extends Thread{
         private ArrayList<Object> param;
 
         /**
-         * Construtor da classe interna para lançar thread que analisa o tipo de
-         * mensagem e trata do encaminhamento da mesma.
-         *
          * @param sock Mensagem recebida
          */
         public BettingCentreServerConnection (Socket sock) {
@@ -156,9 +149,7 @@ public class BettingCentreServer extends Thread{
                 cSocket.close();
 
             } catch (IOException e) {
-                System.err.println("IOException BC");
             } catch (ClassNotFoundException ex) {
-                System.err.println("ClassNotFoundException BC");
             }
         }
     }

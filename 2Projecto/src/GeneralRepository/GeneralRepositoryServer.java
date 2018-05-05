@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Servidor para recepção das mensagens enviadas pelos clientes
- * (Cavalo,Espectador,Broker) relacionadas com o Repositorio
+ * Servidor Repositorio
  *
  * @author Miguel Maia
  */
@@ -27,10 +26,6 @@ public class GeneralRepositoryServer extends Thread {
     private IGeneralRepository rp;
 
     /**
-     * Construtor da classe servidor para o Repositorio, recebe como parâmetro
-     * uma instancia da interface Repositorio rp, e uma porta por onde o
-     * servidor vai receber as mensagens
-     *
      * @param rp Instancia da interface IRepository, que toma o valor
      * RepositoryLocal
      * @param port Porta onde o servidor fica a "escuta" das mensagens
@@ -65,7 +60,7 @@ public class GeneralRepositoryServer extends Thread {
     }
 
     /**
-     * Função que termina o ciclo de "escuta" do servidor e termina o código a
+     * Função que termina o ciclo do servidor e termina o código a
      * correr pela thread.
      */
     public void close() {
@@ -89,9 +84,6 @@ public class GeneralRepositoryServer extends Thread {
         private ArrayList<Object> param;
 
         /**
-         * Construtor da classe interna para lançar thread que analisa o tipo de
-         * mensagem e trata do encaminhamento da mesma.
-         *
          * @param sock Mensagem recebida
          */
         public RepositoryConnection(Socket sock) {
@@ -99,7 +91,7 @@ public class GeneralRepositoryServer extends Thread {
         }
 
         /**
-         * Funcão que inicializa a thread da classe para tratar mensagem
+         * Inicializa a thread da classe para tratar mensagem
          * recebida.
          */
         @Override
@@ -108,7 +100,7 @@ public class GeneralRepositoryServer extends Thread {
                 in = new ObjectInputStream(cSocket.getInputStream());
                 out = new ObjectOutputStream(cSocket.getOutputStream());
                 msgOut = (Msg) in.readObject();
-                //msgOut = new MsgOut();
+                
                 type = msgOut.getType();
                 param = msgOut.getParam();
                 int horseID;
@@ -183,12 +175,6 @@ public class GeneralRepositoryServer extends Thread {
                         int raceNum = (int) param.get(1);
                         rp.setActualRace(raceNum);
                         break;
-                        /*
-                    case GETBETSPERPUNTER:
-                        HashMap<Integer, Bet> mapa = rp.getBetsPerPunter();
-                        tmp.add(mapa);
-                        break;
-                    */
                     case SETBETSPERSPECTATOR:
                         spectatorID = (int) param.get(0);
                         Bet bet = (Bet) param.get(1);
@@ -199,10 +185,10 @@ public class GeneralRepositoryServer extends Thread {
                         Bet betX = rp.getBetsPerSpectator(spectatorID);
                         tmp.add(betX);
                         break;
-                    //case GETHORSESPOSITIONS:
-                        //int post = rp.gethorsePosition((int) param.get(0));
-                        //tmp.add(post);
-                        //break;
+                    case GETHORSESPOSITIONS:
+                        int post = rp.gethorsePosition((int) param.get(0));
+                        tmp.add(post);
+                        break;
                     case SETHORSESPOSITIONS:
                         horseID = (int) param.get(0);
                         int pos = (int) param.get(1);
@@ -246,8 +232,7 @@ public class GeneralRepositoryServer extends Thread {
                         break;
 
                 }
-
-                // responde com msg Out ou in          
+        
                 msgOut.setType(type);
                 msgOut.setParam(tmp);
 
@@ -258,11 +243,7 @@ public class GeneralRepositoryServer extends Thread {
                 cSocket.close();
 
             } catch (IOException e) {
-                System.err.println("IOException Repository");
-                e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                System.err.println("ClassNotFoundException Repository");
-                e.printStackTrace();
             }
         }
     }

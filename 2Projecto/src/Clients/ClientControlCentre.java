@@ -6,34 +6,17 @@ import ControlCentre.*;
 import GeneralRepository.*;
 
 /**
- * Classe para envio de mensagens relacionados com o Centro de controlo, para o
- * servidor.
- *
+ * 
  * @author Miguel Maia
  *
  */
 public class ClientControlCentre extends ClientSend implements IControlCentre{
 
-    /**
-     * Construtor da classe, que vai criar um centro de controlo remoto. Recebe
-     * como parametros um endereço IP address e uma porta port usada para o
-     * envio de mensagens
-     *
-     * @param address Endereço IP
-     * @param port Porta para envio das mensagens
-     */
     public ClientControlCentre(InetAddress address, int port) {
         super(address, port);
         System.out.printf("\nCONTROLCENTER CLIENT\n");
     }
     
-    /**
-     * Método para chamar a função reportResults no servidor, com o envio dos
-     * parametros adequados. Esta função vai acordar os apostadores que estão a
-     * visualizar uma corrida.
-     *
-     * @param betlist Lista com os apostadores vencedores
-     */
     @Override
     public void reportResults(ArrayList<Bet> betlist) {
         ArrayList<Object> param = new ArrayList<Object>();
@@ -59,13 +42,6 @@ public class ClientControlCentre extends ClientSend implements IControlCentre{
         sendMessage(MsgType.PROCEEDTOPADDOCK, param);
     }
     
-    /**
-     * Método para chamar a função watchTeerace no servidor, com o envio dos
-     * parametros adequados. Esta função diz respeito ao comportamento de um
-     * apostador Punter_ID durante uma corrida.
-     *
-     * @param spectatorID ID do apostador
-     */
     @Override
     public void goWatchTheRace(int spectatorID) {
         ArrayList<Object> param = new ArrayList<Object>();
@@ -80,15 +56,6 @@ public class ClientControlCentre extends ClientSend implements IControlCentre{
         sendMessage(MsgType.WAITFORNEXTRACE, param);
     }
 
-    /**
-     * Método para chamar a função haveIWon no servidor, recebendo do servidor o
-     * valor de retorno da função. Esta função vai verificar se o apostador
-     * punterID ganhou a corrida.
-     *
-     * @param spectatorID ID do apostador
-     *
-     * @return Boolean indicando se o apostador punterID ganhou a corrida
-     */
     @Override
     public boolean haveIWon(int spectatorID) {
         ArrayList<Object> param = new ArrayList<Object>();
@@ -97,9 +64,7 @@ public class ClientControlCentre extends ClientSend implements IControlCentre{
         return (boolean) msgReceive.getParam().get(0);
     }
 
-    /**
-     * Método para terminar a ligação e fechar a classe
-     */
+    
     @Override
     public void close() {
         sendMessage(MsgType.CLOSE, null);

@@ -1,8 +1,6 @@
 package Clients;
 
 /**
- * Classe que define um enumerado constituido por todos as mensagens dos estados possiveis do
- * programa.
  * @author Miguel Maia
  */
 public enum MsgType {
@@ -42,7 +40,6 @@ public enum MsgType {
     GETRACEFINISHED,
     SETRACEFINISHED,
     WAITFORNEXTRACE,
-    CALLPUNTERS,
     GOWATCHTHERACE,
     REPORTRESULTS,
     HAVEIWON,
@@ -63,5 +60,6 @@ public enum MsgType {
     SETSPECTATORMONEY,
     SETARRAYPOSITION,
     SETSPECTATORBET,
-    SUMMONHORSESTOPADDOCKCC;
+    SUMMONHORSESTOPADDOCKCC,
+    GETHORSESPOSITIONS;
 }
