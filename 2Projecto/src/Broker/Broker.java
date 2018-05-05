@@ -20,21 +20,21 @@ import java.util.HashMap;
 public class Broker extends Thread{
     
     private BrokerStates state;
-    private final IStable_Broker stBroker;
-    private final IRacingTrack_Broker rtBroker;
-    private final IControlCentre_Broker ccBroker;
-    private final IBettingCentre_Broker bcBroker;
+    private final IStable st;
+    private final IRacingTrack rt;
+    private final IControlCentre cc;
+    private final IBettingCentre bc;
     private final IGeneralRepository gr;
     private int nRaces, moneyBet;
     private Bet bet;
     private ArrayList<Bet> bets;
     private HashMap<Integer, ArrayList<Bet>> betsByHorses;
     
-    public Broker(IBettingCentre_Broker bcBroker, IStable_Broker stBroker, IStable_Horses stHorses, IRacingTrack_Broker rtBroker, IControlCentre_Broker ccBroker, IGeneralRepository gr){
-        this.stBroker = stBroker;
-        this.rtBroker = rtBroker;
-        this.ccBroker = ccBroker;
-        this.bcBroker = bcBroker;
+    public Broker(IBettingCentre bc, IStable st, IRacingTrack rt, IControlCentre cc, IGeneralRepository gr){
+        this.st = st;
+        this.rt = rt;
+        this.cc = cc;
+        this.bc = bc;
         this.gr = gr;
         bet = new Bet();
         nRaces = gr.getnRaces();
@@ -54,9 +54,9 @@ public class Broker extends Thread{
             gr.setBrokerState(state);
 
             //chamar os cavalos para o paddock
-            stBroker.summonHorsesToPaddock();
+            st.summonHorsesToPaddock();
             //chamar os espectadores para o paddock
-            ccBroker.summonHorsesToPaddock();
+            cc.summonHorsesToPaddock();
 
             state = BrokerStates.WAITING_FOR_BETS;
             gr.setBrokerState(state);
@@ -68,7 +68,7 @@ public class Broker extends Thread{
             //adicionar as bets de dos espetadores
             do {
                 i++;
-                bet = bcBroker.acceptTheBets();
+                bet = bc.acceptTheBets();
                 bets = betsByHorses.get(bet.getHorseID());
                 if (bets != null) {
                     bets.add(bet);
@@ -82,14 +82,14 @@ public class Broker extends Thread{
 
             state = BrokerStates.SUPERVISING_THE_RACE;
             gr.setBrokerState(state);
-            rtBroker.startTheRace();
+            rt.startTheRace();
             
             System.out.print("\nCavalo vencedor: Cavalo " + gr.getHorseWinnerID() + ".");
             
             //reportar cavalo vencedor 
             if (betsByHorses.get(gr.getHorseWinnerID()) == null){
                 bets = null;
-                ccBroker.reportResults(bets);
+                cc.reportResults(bets);
             }
             else{
                 bets = betsByHorses.get(gr.getHorseWinnerID());
@@ -98,19 +98,19 @@ public class Broker extends Thread{
                 for (int j = 0; j < bets.size(); j++) {
                     moneyBet = (int) (moneyBet + bets.get(j).getBetvalue());
                 }
-                ccBroker.reportResults(bets);
+                cc.reportResults(bets);
             }
             
             
-            if (bcBroker.areThereAnyWinners(betsByHorses.get(gr.getHorseWinnerID()))){
+            if (bc.areThereAnyWinners(betsByHorses.get(gr.getHorseWinnerID()))){
                 state = BrokerStates.SETTLING_ACCOUNTS; 
                 gr.setBrokerState(state);
-                bcBroker.honourTheBets();
+                bc.honourTheBets();
             }
         }
         
         state = BrokerStates.PLAYING_HOST_AT_THE_BAR;
         gr.setBrokerState(state);
-        bcBroker.entertainTheGuests();
+        bc.entertainTheGuests();
     }
 }

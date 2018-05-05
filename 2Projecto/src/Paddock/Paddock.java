@@ -6,7 +6,7 @@ import GeneralRepository.*;
  *
  * @author cristianacarvalho
  */
-public class Paddock implements IPaddock_Horses, IPaddock_Spectator{
+public class Paddock implements IPaddock{
     
     private int nHorse, horseNTotal, spectator, spectatorNTotal, spectatorToBet;
     private boolean goCheckHorses, goToStartLine;

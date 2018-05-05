@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Miguel Maia
  */
-public class ClientRacingTrack extends ClientSend implements IRacingTrack_Broker,IRacingTrack_Horses {
+public class ClientRacingTrack extends ClientSend implements IRacingTrack {
 
     /**
      * Construtor da classe, que vai criar um RacingTrack remoto. Recebe como

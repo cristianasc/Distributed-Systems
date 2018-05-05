@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author cristianacarvalho
  */
-public class BettingCentre implements IBettingCentre_Broker, IBettingCentre_Spectator {
+public class BettingCentre implements IBettingCentre{
     
     
     private final IGeneralRepository gr;

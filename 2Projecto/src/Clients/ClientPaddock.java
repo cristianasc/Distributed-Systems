@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author cristianacarvalho
  */
-public class ClientPaddock extends ClientSend implements IPaddock_Spectator, IPaddock_Horses {
+public class ClientPaddock extends ClientSend implements IPaddock {
 
     public ClientPaddock(InetAddress address, int port) {
         super(address, port);

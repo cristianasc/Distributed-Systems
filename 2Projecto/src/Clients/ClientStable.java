@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author cristianacarvalho
  *
  */
-public class ClientStable extends ClientSend implements IStable_Broker, IStable_Horses {
+public class ClientStable extends ClientSend implements IStable {
 
     /**
      * Construtor da classe, que vai criar um Stable remoto. Recebe como

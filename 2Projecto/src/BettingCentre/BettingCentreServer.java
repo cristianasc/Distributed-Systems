@@ -18,22 +18,19 @@ public class BettingCentreServer extends Thread{
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IBettingCentre_Broker bcBroker;
-    private IBettingCentre_Spectator bcSpectator;
+    private IBettingCentre bc;
     
 
     /**
      * Construtor da classe servidor para o Betting Center, recebe como parâmetro uma
-     * instancia da interface IBettingCentre_Broker, IBettingCentre_Spectator e uma porta
-     * por onde o servidor vai receber as mensagens
+ instancia da interface IBettingCentre, IBettingCentre_Spectator e uma porta
+ por onde o servidor vai receber as mensagens
      *
-     * @param bcBroker Instancia da interface IBettingCentre_Broker
-     * @param bcSpectator Instancia da interface IBettingCentre_Spectator
+     * @param bcBroker Instancia da interface IBettingCentre
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public BettingCentreServer(IBettingCentre_Broker bcBroker, IBettingCentre_Spectator bcSpectator, int port) {
-        this.bcBroker = bcBroker;
-        this.bcSpectator = bcSpectator;
+    public BettingCentreServer(IBettingCentre bc, int port) {
+        this.bc = bc;
         this.port = port;
         System.out.printf("\nBETTING CENTER SERVER\n");
     }
@@ -119,30 +116,30 @@ public class BettingCentreServer extends Thread{
                         int spectatorID = (int) param.get(0);
                         int value = (int) param.get(1);
                         int horseID = (int) param.get(2);
-                        bcSpectator.placeABet(spectatorID, value, horseID);
+                        bc.placeABet(spectatorID, value, horseID);
                         break;
                     case GOCOLLECTTHEGAINS:
                         int spectator = (int) param.get(0);
-                        bcSpectator.goCollectTheGains(spectator);
+                        bc.goCollectTheGains(spectator);
                         break;
                     case RELAXABIT:
                         int spect = (int) param.get(0);
-                        bcSpectator.relaxABit(spect);
+                        bc.relaxABit(spect);
                         break;
                     case ACCEPTTHEBETS:
-                        Bet bet = bcBroker.acceptTheBets();
+                        Bet bet = bc.acceptTheBets();
                         tmp.add(bet);
                         break;
                     case HONOURTHEBETS:
-                        bcBroker.honourTheBets();
+                        bc.honourTheBets();
                         break;
                     case ARETHEREANYWINNERS:
                         ArrayList<Bet> winners = (ArrayList<Bet>) param.get(0);
-                        boolean Bwinners = bcBroker.areThereAnyWinners(winners);
+                        boolean Bwinners = bc.areThereAnyWinners(winners);
                         tmp.add(Bwinners);
                         break;
                     case ENTERTAINTHEGUESTS:
-                        bcBroker.entertainTheGuests();
+                        bc.entertainTheGuests();
                         break;
                     case CLOSE:
                         close();

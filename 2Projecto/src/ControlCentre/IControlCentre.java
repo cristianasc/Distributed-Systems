@@ -5,11 +5,19 @@
  */
 package ControlCentre;
 
+import GeneralRepository.Bet;
+import java.util.ArrayList;
+
 /**
  *
  * @author cristianacarvalho
  */
-public interface IControlCentre_Spectator {
+public interface IControlCentre {
+    void reportResults(ArrayList<Bet> betlist);
+    void summonHorsesToPaddock();
+    ArrayList<Bet> getWinners();
+    void close();
+    void proceedToPaddock(int HorseID);
     void goWatchTheRace(int spectatorID);
     void waitForTheNextRace(int spectatorID);
     boolean haveIWon(int spectatorID);

@@ -8,7 +8,7 @@ import java.util.HashMap;
  *
  * @author cristianacarvalho
  */
-public class RacingTrack implements IRacingTrack_Horses, IRacingTrack_Broker{
+public class RacingTrack implements IRacingTrack{
     
     private boolean makeAMove;
     private boolean lastHorse;

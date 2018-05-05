@@ -6,7 +6,7 @@ import GeneralRepository.*;
  *
  * @author cristianacarvalho
  */
-public class Stable implements IStable_Horses, IStable_Broker{
+public class Stable implements IStable {
     
     private int horseId;
     private boolean callHorses;
@@ -42,6 +42,7 @@ public class Stable implements IStable_Horses, IStable_Broker{
         //Cavalos em espera foram acordados
         horseId++;
         notifyAll();
+        
     }
     
     /**
@@ -57,13 +58,15 @@ public class Stable implements IStable_Horses, IStable_Broker{
         // todos os cavalos em espera (no estábulo) serão acordados
         notifyAll();
         
+        
         while (horseId != gr.getnHorses()) {
             try {
                 wait();
             } catch (InterruptedException ex) {
             }
         }
-              
+        
+            
         //horseId e callHorses voltam aos valores inicias
         horseId = 0;
         callHorses = false;

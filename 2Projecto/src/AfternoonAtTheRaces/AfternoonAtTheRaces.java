@@ -35,19 +35,11 @@ public class AfternoonAtTheRaces {
         String[] tmp;
         int stablePort = 0, paddockPort = 0, repositoryPort = 0, bcPort = 0, controlPort = 0, racingTrackPort = 0;
         InetAddress stableIP = null, paddockIP = null, repositoryIP = null, bcIP = null, controlCenterIP = null,racingtrackIP = null, horseIP=null, spectatorIP= null, brokerIP=null;
-        GeneralRepository gr = new GeneralRepository(nHorses, nSpectators, nRaces, distance);
-        BettingCentre bc = new BettingCentre(gr);
-        ControlCenter cc = new ControlCenter(gr);
-        Paddock pad = new Paddock(gr);
-        Stable st = new Stable(gr);
-        RacingTrack rt = new RacingTrack(gr);
         
-        IStable_Broker stBroker = null;
-        IStable_Horses stHorses = null;
-        IPaddock_Horses pdHorses = null;
-        IPaddock_Spectator pdSpectator = null;
-        IBettingCentre_Broker bcBroker = null;
-        IBettingCentre_Spectator bcSpectator = null;
+        IStable st = null;
+        IPaddock pd = null;
+        IBettingCentre bc = null;
+        
         PaddockServer pdServer = null;
         StableServer stableServer = null;
         BettingCentreServer bcServer = null;
@@ -55,15 +47,11 @@ public class AfternoonAtTheRaces {
         IGeneralRepository iGR = null;
         GeneralRepositoryServer repoServer = null;
         
-        IControlCentre_Broker ccB;
-        IControlCentre_Spectator ccS;
-        IControlCentre_Horses ccH;
+        IControlCentre cc = null;
         ControlCenterServer controlServer = null;
 
         RacingTrackServer raceServer = null;
-        IRacingTrack_Broker rtB = null;
-        IRacingTrack_Horses rtH = null;
-        ClientRacingTrack rtC = null;
+        IRacingTrack rt = null;
         
         Horse horse = null;
         Spectator spectator = null;
@@ -102,13 +90,11 @@ public class AfternoonAtTheRaces {
             stablePort = Integer.parseInt(tmp[1]);
             
             if (NetworkInterface.getByInetAddress(stableIP) != null) {
-                stBroker = new Stable(iGR);
-                stHorses = new Stable(iGR);
-                stableServer = new StableServer(stBroker, stHorses, stablePort);
+                st = new Stable(iGR);
+                stableServer = new StableServer(st, stablePort);
                 stableServer.start();
             } else {
-                stBroker = new ClientStable(stableIP, stablePort);
-                stHorses = new ClientStable(stableIP, stablePort);
+                st = new ClientStable(stableIP, stablePort);
             }
             
             //PADDOCK
@@ -118,13 +104,11 @@ public class AfternoonAtTheRaces {
             paddockPort = Integer.parseInt(tmp[1]);
             
             if (NetworkInterface.getByInetAddress(paddockIP) != null) {
-                pdSpectator = new Paddock(iGR);
-                pdHorses = new Paddock(iGR);
-                pdServer = new PaddockServer(pdSpectator, pdHorses, paddockPort);
+                pd = new Paddock(iGR);
+                pdServer = new PaddockServer(pd, paddockPort);
                 pdServer.start();
             } else {
-                pdSpectator = new ClientPaddock(paddockIP, paddockPort);
-                pdHorses = new ClientPaddock(paddockIP, paddockPort);
+                pd = new ClientPaddock(paddockIP, paddockPort);
             }
            
             //BETTING CENTRE
@@ -134,13 +118,11 @@ public class AfternoonAtTheRaces {
             bcPort = Integer.parseInt(tmp[1]);
             
             if (NetworkInterface.getByInetAddress(bcIP) != null) {
-                bcBroker = new BettingCentre(iGR);
-                bcSpectator = new BettingCentre(iGR);
-                bcServer = new BettingCentreServer(bcBroker, bcSpectator, bcPort);
+                bc = new BettingCentre(iGR);
+                bcServer = new BettingCentreServer(bc, bcPort);
                 bcServer.start();
             } else {
-                bcBroker  = new ClientBettingCentre(bcIP, bcPort);
-                bcSpectator = new ClientBettingCentre(bcIP, bcPort);
+                bc = new ClientBettingCentre(bcIP, bcPort);
             }
             
             
@@ -151,15 +133,11 @@ public class AfternoonAtTheRaces {
             controlPort = Integer.parseInt(tmp[1]);
             if (NetworkInterface.getByInetAddress(controlCenterIP) != null) {
                 
-                ccB = new ControlCenter(iGR);
-                ccH = new ControlCenter(iGR);
-                ccS = new ControlCenter(iGR);
-                controlServer = new ControlCenterServer(ccH,ccB,ccS, controlPort);
+                cc = new ControlCenter(iGR);
+                controlServer = new ControlCenterServer(cc, controlPort);
                 controlServer.start();
             } else {
-                ccB = new ClientControlCentre(controlCenterIP, controlPort);
-                ccH = new ClientControlCentre(controlCenterIP, controlPort);
-                ccS = new ClientControlCentre(controlCenterIP, controlPort);
+                cc = new ClientControlCentre(controlCenterIP, controlPort);
             }
             
             //RACINGTRACK
@@ -168,16 +146,14 @@ public class AfternoonAtTheRaces {
             racingtrackIP = InetAddress.getByName(tmp[0]);
             racingTrackPort = Integer.parseInt(tmp[1]);
             
-            if (NetworkInterface.getByInetAddress(racingtrackIP) != null) {
-                
-                rtH = new RacingTrack(iGR);
-                rtB = new RacingTrack(iGR);
-                raceServer = new RacingTrackServer(rtB,rtH, racingTrackPort);
+            if (NetworkInterface.getByInetAddress(racingtrackIP) != null) {  
+                rt = new RacingTrack(iGR);
+                raceServer = new RacingTrackServer(rt, racingTrackPort);
                 raceServer.start();
             } else {
-                rtH = new ClientRacingTrack(racingtrackIP, racingTrackPort);
-                rtB = new ClientRacingTrack(racingtrackIP, racingTrackPort);
+                rt = new ClientRacingTrack(racingtrackIP, racingTrackPort);
             }
+            
             
             
             //CAVALO
@@ -185,7 +161,7 @@ public class AfternoonAtTheRaces {
             if (NetworkInterface.getByInetAddress(horseIP) != null) {
                 
                 for (int i = 1; i <= nHorses; i++) {
-                    horse = new Horse(rtH, pdHorses, stHorses, ccH, i, (int) (2+ Math.random() * 5), iGR);
+                    horse = new Horse(rt, pd, st, cc, i, (int) (2+ Math.random() * 5), iGR);                    
                     horses.add(horse);
                     horse.start();
                     horseBol = true;
@@ -197,7 +173,7 @@ public class AfternoonAtTheRaces {
             if (NetworkInterface.getByInetAddress(spectatorIP) != null) {
                 
                 for (int i = 1; i <= nSpectators; i++) {
-                    spectator = new Spectator(bcSpectator, ccS, pdSpectator, i, iGR);
+                    spectator = new Spectator(bc, cc, pd, i, iGR);
                     spectators.add(spectator);
                     spectator.start();
                     spectatorBol = true;
@@ -206,9 +182,8 @@ public class AfternoonAtTheRaces {
             
             //BROKER
             brokerIP = InetAddress.getByName(prop.getProperty("BROKER"));
-            if (NetworkInterface.getByInetAddress(brokerIP) != null) {
-                
-                br = new Broker(bcBroker, stBroker, stHorses, rtB, ccB, iGR);
+            if (NetworkInterface.getByInetAddress(brokerIP) != null) {  
+                br = new Broker(bc, st ,rt, cc, iGR);                
                 br.start();
                 
                 brokerBol = true;

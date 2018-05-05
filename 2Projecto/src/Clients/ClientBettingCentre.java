@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *
  * @author cristianacarvalho
  */
-public class ClientBettingCentre extends ClientSend implements IBettingCentre_Spectator, IBettingCentre_Broker{
+public class ClientBettingCentre extends ClientSend implements IBettingCentre{
 
     public ClientBettingCentre(InetAddress address, int port) {
         super(address, port);

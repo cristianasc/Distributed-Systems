@@ -8,8 +8,7 @@ import GeneralRepository.Bet;
  *
  * @author cristianacarvalho
  */
-public class ControlCenter implements IControlCentre_Horses, IControlCentre_Broker,
-        IControlCentre_Spectator{
+public class ControlCenter implements IControlCentre{
     
     private final IGeneralRepository gr;
     private boolean lastHorseToPaddock, lastSpectator, reportResults, allReportResults;

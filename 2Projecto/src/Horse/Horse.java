@@ -17,19 +17,19 @@ import GeneralRepository.*;
 public class Horse extends Thread{
     
     private HorseStates state;
-    private final IStable_Horses stHorses;
-    private final IControlCentre_Horses ccHorses;
-    private final IPaddock_Horses padHorses;
-    private final IRacingTrack_Horses rtHorses;
+    private final IStable st;
+    private final IControlCentre cc;
+    private final IPaddock pad;
+    private final IRacingTrack rt;
     private final IGeneralRepository gr;
     private int horseID, nRaces, move;
     
-    public Horse(IRacingTrack_Horses rtHorses, IPaddock_Horses padHorses, IStable_Horses stHorses, IControlCentre_Horses ccHorses, int horseID, int move, IGeneralRepository gr){
+    public Horse(IRacingTrack rt, IPaddock pad, IStable st, IControlCentre cc, int horseID, int move, IGeneralRepository gr){
         this.gr = gr;
-        this.stHorses = stHorses;
-        this.ccHorses = ccHorses;
-        this.padHorses = padHorses;
-        this.rtHorses = rtHorses;
+        this.st = st;
+        this.cc = cc;
+        this.pad = pad;
+        this.rt = rt;
         this.horseID = horseID;
         this.move = move;
         this.nRaces = gr.getnRaces();
@@ -43,23 +43,23 @@ public class Horse extends Thread{
     }
      
     public void proceedToStable(){
-      stHorses.proceedToStable(horseID);
+      st.proceedToStable(horseID);
       proceedToPaddock();
     }
 
     public void proceedToPaddock(){
       state = HorseStates.AT_THE_PADDOCK;
       gr.setHorseState(horseID,state,move);
-      ccHorses.proceedToPaddock(horseID);
-      padHorses.proceedToPaddock(horseID);
+      cc.proceedToPaddock(horseID);
+      pad.proceedToPaddock(horseID);
       proceedToStartLine();
     }
 
     public void proceedToStartLine(){
       state = HorseStates.AT_THE_START_LINE;
       gr.setHorseState(horseID,state,move);
-      padHorses.proceedToStartLine();
-      rtHorses.proceedToStartLine(horseID);
+      pad.proceedToStartLine();
+      rt.proceedToStartLine(horseID);
       makeAMove();
     }
 
@@ -70,8 +70,8 @@ public class Horse extends Thread{
 
         do {
             count++;
-            rtHorses.makeAMove(horseID, move,count);
-        } while (!rtHorses.hasFinishLineBeenCrossed(horseID));
+            rt.makeAMove(horseID, move,count);
+        } while (!rt.hasFinishLineBeenCrossed(horseID));
 
 
         System.out.print("\nCavalo " + horseID + " sai da corrida!");

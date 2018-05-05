@@ -17,22 +17,20 @@ public class PaddockServer extends Thread {
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IPaddock_Horses pdHorses;
-    private IPaddock_Spectator pdSpectator;
+    private IPaddock pd;
     
     
     /**
      * Construtor da classe servidor para o Paddock, recebe como parâmetro uma
-     * instancia da interface IPaddock_Horses e IPaddock_Spectator, e uma porta por onde o servidor vai
-     * receber as mensagens
+ instancia da interface IPaddock e IPaddock_Spectator, e uma porta por onde o servidor vai
+ receber as mensagens
      *
-     * @param pdSpectator Instancia da interface IPaddock_Horses
+     * @param pdSpectator Instancia da interface IPaddock
      * @param pdHorses Instancia da interface IPaddock_Spectator
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public PaddockServer(IPaddock_Spectator pdSpectator, IPaddock_Horses pdHorses, int port) {
-        this.pdSpectator = pdSpectator;
-        this.pdHorses = pdHorses;
+    public PaddockServer(IPaddock pd, int port) {
+        this.pd = pd;
         this.port = port;
         System.out.printf("\nPADDOCK SERVER\n");
     }
@@ -115,15 +113,15 @@ public class PaddockServer extends Thread {
                 System.out.print("\nPADDOCK SERVER RECEBEU UMA MENSAGEM COM TYPE: " + type.name());
                 switch (type) {
                     case PROCEEDTOSTARTLINE:
-                        pdHorses.proceedToStartLine();
+                        pd.proceedToStartLine();
                         break;
                     case PROCEEDTOPADDOCK:
                         int horseID = (int) param.get(0);
-                        pdHorses.proceedToPaddock(horseID);
+                        pd.proceedToPaddock(horseID);
                         break;
                     case GOCHECKHORSES:
                         int spectatorID = (int) param.get(0);
-                        pdSpectator.goCheckHorses(spectatorID);
+                        pd.goCheckHorses(spectatorID);
                         break;
                     case CLOSE:
                         close();

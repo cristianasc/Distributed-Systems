@@ -20,21 +20,18 @@ public class RacingTrackServer extends Thread {
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IRacingTrack_Horses rtH;
-    private IRacingTrack_Broker rtB;
+    private IRacingTrack rt;
 
     /**
      * Construtor da classe servidor para o RacingTrack, recebe como parâmetro
-     * uma instancia da interface IRacingTrack_Broker rtB,uma instância da interface IRacingTrack_Horses rtH
-     * e uma porta por onde o servidor vai receber as mensagens.
+ uma instancia da interface IRacingTrack rtB,uma instância da interface IRacingTrack_Horses rtH
+ e uma porta por onde o servidor vai receber as mensagens.
      *
-     * @param rtB Instância da interface IRacingTrack_Broker
-     * @param rtH Instância da interface IRacingTrack_Broker
+     * @param rt Instância da interface IRacingTrack
      * @param port Porta onde o servidor fica a "escuta" das mensagens 
      */
-    public RacingTrackServer(IRacingTrack_Broker rtB, IRacingTrack_Horses rtH, int port) {
-        this.rtB = rtB;
-        this.rtH = rtH;
+    public RacingTrackServer(IRacingTrack rt, int port) {
+        this.rt = rt;
         this.port = port;
         System.out.printf("\nRACINGTRACK SERVER\n");
     }
@@ -115,21 +112,21 @@ public class RacingTrackServer extends Thread {
                 switch (type) {
                     case PROCEEDTOSTARTLINE:
                         horseID = (int) param.get(0);
-                        rtH.proceedToStartLine(horseID);
+                        rt.proceedToStartLine(horseID);
                         break;
                     case HASFINISHLINEBEENCROSSED:
                         horseID = (int) param.get(0);
-                        boolean crossed = rtH.hasFinishLineBeenCrossed(horseID);
+                        boolean crossed = rt.hasFinishLineBeenCrossed(horseID);
                         tmp.add(crossed);
                         break;
                     case STARTTHERACE:
-                        rtB.startTheRace();
+                        rt.startTheRace();
                         break;
                     case MAKEAMOVE:
                         horseID = (int) param.get(0);
                         int maxJump = (int) param.get(1);
                         int count = (int) param.get(2);
-                        rtH.makeAMove(horseID, maxJump,count);
+                        rt.makeAMove(horseID, maxJump,count);
                         break;
                     case CLOSE:
                         close();

@@ -12,7 +12,7 @@ import GeneralRepository.*;
  * @author Miguel Maia
  *
  */
-public class ClientControlCentre extends ClientSend implements IControlCentre_Broker, IControlCentre_Spectator,IControlCentre_Horses {
+public class ClientControlCentre extends ClientSend implements IControlCentre{
 
     /**
      * Construtor da classe, que vai criar um centro de controlo remoto. Recebe

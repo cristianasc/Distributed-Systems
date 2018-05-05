@@ -19,9 +19,7 @@ public class ControlCenterServer extends Thread {
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IControlCentre_Horses ccH;
-    private IControlCentre_Broker ccB;
-    private IControlCentre_Spectator ccS;
+    private IControlCentre cc;
 
     /**
      * Construtor da classe servidor para centro de controlo, recebe como
@@ -29,14 +27,12 @@ public class ControlCenterServer extends Thread {
      * onde o servidor vai receber as mensagens
      *
      * @param ccH Instância da interface IControlCentre_Horses.
-     * @param ccB Instância da interface IControlCentre_Broker.
+     * @param ccB Instância da interface IControlCentre.
      * @param ccS Instância da interface IControlCentre_Spectator.
      * @param port Porta onde o servidor fica a "escuta" das mensagens.
      */
-    public ControlCenterServer(IControlCentre_Horses ccH,IControlCentre_Broker ccB,IControlCentre_Spectator ccS, int port) {
-        this.ccH = ccH;
-        this.ccB = ccB;
-        this.ccS = ccS;
+    public ControlCenterServer(IControlCentre cc, int port) {
+        this.cc = cc;
         this.port = port;
         System.out.printf("\nCONTROLCENTER SERVER\n");
     }
@@ -118,30 +114,30 @@ public class ControlCenterServer extends Thread {
                 switch (type) {
                     case REPORTRESULTS:
                         ArrayList<Bet> lista = (ArrayList<Bet>) param.get(0);
-                        ccB.reportResults(lista);
+                        cc.reportResults(lista);
                         break;
                     case SUMMONHORSESTOPADDOCKCC:
-                        ccB.summonHorsesToPaddock();
+                        cc.summonHorsesToPaddock();
                         break;
                     case GETWINNERS:
-                        ArrayList<Bet> winners = ccB.getWinners();
+                        ArrayList<Bet> winners = cc.getWinners();
                         tmp.add(winners);
                         break;     
                     case PROCEEDTOPADDOCK:
                         horseID = (int) param.get(0);
-                        ccH.proceedToPaddock(horseID);
+                        cc.proceedToPaddock(horseID);
                         break;
                     case GOWATCHTHERACE:
                         spectatorID = (int) param.get(0);
-                        ccS.goWatchTheRace(spectatorID);
+                        cc.goWatchTheRace(spectatorID);
                         break;
                     case WAITFORNEXTRACE:
                         spectatorID = (int) param.get(0);
-                        ccS.waitForTheNextRace(spectatorID);
+                        cc.waitForTheNextRace(spectatorID);
                         break;
                     case HAVEIWON:
                         spectatorID = (int) param.get(0);
-                        boolean tmpbool = ccS.haveIWon(spectatorID);
+                        boolean tmpbool = cc.haveIWon(spectatorID);
                         tmp.add(tmpbool);
                         break;
                     case CLOSE:

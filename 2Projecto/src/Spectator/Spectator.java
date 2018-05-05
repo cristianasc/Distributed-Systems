@@ -18,18 +18,18 @@ import java.util.Random;
 public class Spectator extends Thread{
     
     private SpectatorStates state;
-    private final IControlCentre_Spectator ccSpectator;
-    private final IPaddock_Spectator padSpectator;
-    private final IBettingCentre_Spectator bcSpectator;
+    private final IControlCentre cc;
+    private final IPaddock pad;
+    private final IBettingCentre bc;
     private final IGeneralRepository gr;
     private int spectatorID, bestHorse, money, total, bet,nRaces;
     private Bet aposta;
     private ArrayList<Bet> bets;
     
-    public Spectator(IBettingCentre_Spectator bcSpectator, IControlCentre_Spectator ccSpectator, IPaddock_Spectator padSpectator, int spectatorID, IGeneralRepository gr){
-        this.ccSpectator = ccSpectator;
-        this.padSpectator = padSpectator;
-        this.bcSpectator = bcSpectator;
+    public Spectator(IBettingCentre bc, IControlCentre cc, IPaddock pad, int spectatorID, IGeneralRepository gr){
+        this.cc = cc;
+        this.pad = pad;
+        this.bc = bc;
         this.gr = gr;
         this.spectatorID = spectatorID;
         this.money = 5;
@@ -48,13 +48,13 @@ public class Spectator extends Thread{
     
     public void waitForTheNextRace(){
         System.out.print("\nO espectador " + spectatorID + " está à espera da próxima corrida.");
-        ccSpectator.waitForTheNextRace(spectatorID);
+        cc.waitForTheNextRace(spectatorID);
         goCheckHorses();
     }
     
     public void goCheckHorses(){
         state = SpectatorStates.APPRAISING_THE_HORSES;
-        padSpectator.goCheckHorses(spectatorID);
+        pad.goCheckHorses(spectatorID);
         gr.setSpectatorState(spectatorID,state);
         
         //escolher um cavalo
@@ -72,7 +72,7 @@ public class Spectator extends Thread{
             bet = (int) ((money - 1) * Math.random()) + 1 ; //+1 para ser no minimo 1€.
         }
 
-        bcSpectator.placeABet(spectatorID, bet, bestHorse);
+        bc.placeABet(spectatorID, bet, bestHorse);
         money = money - bet;
         gr.setSpectatorState(spectatorID,state);
         gr.setSpectatorMoney(spectatorID,money);
@@ -82,14 +82,14 @@ public class Spectator extends Thread{
     
     public void goWatchTheRace(){
         state = SpectatorStates.WATCHING_A_RACE;
-        ccSpectator.goWatchTheRace(spectatorID);
+        cc.goWatchTheRace(spectatorID);
         gr.setSpectatorState(spectatorID,state);
         nRaces--;
         gr.setActualRace(nRaces);
         
-        if (ccSpectator.haveIWon(spectatorID)) {
+        if (cc.haveIWon(spectatorID)) {
             state = SpectatorStates.COLLECTING_THE_GAINS;
-            bcSpectator.goCollectTheGains(spectatorID);
+            bc.goCollectTheGains(spectatorID);
             gr.setSpectatorState(spectatorID,state);
             
         } else {
@@ -104,7 +104,7 @@ public class Spectator extends Thread{
         else {
             //RELAX A BIT
             state = SpectatorStates.CELEBRATING;
-            bcSpectator.relaxABit(spectatorID);
+            bc.relaxABit(spectatorID);
             gr.setSpectatorState(spectatorID,state);
         }
     }

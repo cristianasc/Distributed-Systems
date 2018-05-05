@@ -22,22 +22,19 @@ public class StableServer extends Thread {
     private Socket cSocket = null;
     private int port;
     private boolean run = true;
-    private IStable_Broker stBroker;
-    private IStable_Horses stHorses;
+    private IStable st;
     
 
     /**
      * Construtor da classe servidor para o Stable, recebe como parâmetro uma
-     * instancia da interface IStable, IStable_Broker e IStable_Horses, e uma porta por onde o servidor vai
-     * receber as mensagens
+ instancia da interface IStable, IStable e IStable_Horses, e uma porta por onde o servidor vai
+ receber as mensagens
      *
-     * @param stBroker Instancia da interface IStable_Broker
-     * @param stHorses Instancia da interface IStable_Horses
+     * @param st Instancia da interface IStable
      * @param port Porta onde o servidor fica a "escuta" das mensagens
      */
-    public StableServer(IStable_Broker stBroker, IStable_Horses stHorses, int port) {
-        this.stBroker = stBroker;
-        this.stHorses = stHorses;
+    public StableServer(IStable st, int port) {
+        this.st = st;
         this.port = port;
         System.out.printf("\nSTABLE SERVER\n");
     }
@@ -121,10 +118,10 @@ public class StableServer extends Thread {
                 switch (type) {
                     case PROCEEDTOSTABLE:
                         int horseID = (int) param.get(0);
-                        stHorses.proceedToStable(horseID);
+                        st.proceedToStable(horseID);
                         break;
                     case SUMMONHORSESTOPADDOCK:
-                        stBroker.summonHorsesToPaddock();
+                        st.summonHorsesToPaddock();
                         break;
                     case CLOSE:
                         close();
