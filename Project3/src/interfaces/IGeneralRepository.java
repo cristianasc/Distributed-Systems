@@ -1,6 +1,7 @@
-package GeneralRepository;
+package interfaces;
 
 import Broker.BrokerStates;
+import GeneralRepository.Bet;
 import Horse.HorseStates;
 import Spectator.SpectatorStates;
 import java.util.HashMap;

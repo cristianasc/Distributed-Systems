@@ -1,4 +1,4 @@
-package Stable;
+package interfaces;
 
 /**
  *
