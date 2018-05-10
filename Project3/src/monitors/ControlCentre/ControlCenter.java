@@ -1,8 +1,8 @@
 package monitors.ControlCentre;
 
-import GeneralRepository.*;
+import monitors.GeneralRepository.*;
 import java.util.ArrayList;
-import GeneralRepository.Bet;
+import monitors.GeneralRepository.Bet;
 import interfaces.*;
 
 /**

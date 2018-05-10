@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import GeneralRepository.Bet;
+import monitors.GeneralRepository.Bet;
 import java.util.ArrayList;
 
 /**

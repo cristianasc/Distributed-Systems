@@ -5,12 +5,12 @@
  */
 package main;
 
-import Stable.*;
-import RacingTrack.*;
-import ControlCentre.*;
-import BettingCentre.*;
+import monitors.Stable.*;
+import monitors.RacingTrack.*;
+import monitors.ControlCentre.*;
+import monitors.BettingCentre.*;
 import Broker.BrokerStates;
-import GeneralRepository.*;
+import monitors.GeneralRepository.*;
 import interfaces.*;
 import java.util.ArrayList;
 import java.util.HashMap;

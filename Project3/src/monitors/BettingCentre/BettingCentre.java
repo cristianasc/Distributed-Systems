@@ -1,6 +1,6 @@
 package monitors.BettingCentre;
 
-import GeneralRepository.*;
+import monitors.GeneralRepository.*;
 import interfaces.*;
 import java.util.ArrayList;
 

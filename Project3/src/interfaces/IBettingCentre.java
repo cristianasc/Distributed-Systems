@@ -1,6 +1,6 @@
 package interfaces;
-import GeneralRepository.*;
 import java.util.ArrayList;
+import monitors.GeneralRepository.Bet;
 
 /**
  *

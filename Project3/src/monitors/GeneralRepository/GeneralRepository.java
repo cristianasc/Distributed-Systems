@@ -1,8 +1,9 @@
-package GeneralRepository;
+package monitors.GeneralRepository;
 
 import Broker.BrokerStates;
 import Horse.HorseStates;
 import Spectator.SpectatorStates;
+import interfaces.IGeneralRepository;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

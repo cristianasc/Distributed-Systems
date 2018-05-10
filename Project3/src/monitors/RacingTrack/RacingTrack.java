@@ -1,6 +1,6 @@
 package monitors.RacingTrack;
 
-import GeneralRepository.GeneralRepository;
+import monitors.GeneralRepository.*;
 import interfaces.*;
 import java.util.HashMap;
 

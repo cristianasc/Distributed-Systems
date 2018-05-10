@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 package main;
-import Stable.*;
-import ControlCentre.*;
-import Paddock.*;
-import RacingTrack.*;
-import GeneralRepository.*;
+import monitors.Stable.*;
+import monitors.ControlCentre.*;
+import monitors.Paddock.*;
+import monitors.RacingTrack.*;
+import monitors.GeneralRepository.*;
 import Horse.HorseStates;
 import interfaces.*;
 

@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 package main;
-import ControlCentre.*;
-import GeneralRepository.*;
-import Paddock.*;
-import BettingCentre.*;
+import monitors.GeneralRepository.*;
+import monitors.ControlCentre.*;
+import monitors.GeneralRepository.*;
+import monitors.Paddock.*;
+import monitors.BettingCentre.*;
 import Spectator.SpectatorStates;
 import interfaces.*;
 import java.util.ArrayList;

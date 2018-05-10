@@ -1,6 +1,6 @@
 package monitors.Paddock;
 
-import GeneralRepository.*;
+import monitors.GeneralRepository.*;
 import interfaces.*;
 
 /**
