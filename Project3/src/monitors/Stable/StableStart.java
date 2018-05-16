@@ -54,6 +54,7 @@ public class StableStart {
             System.exit(1);
         }
         
+
         try{ 
             register.bind (nameEntryObject, (Remote) iSt);
         }catch (RemoteException e){ 
@@ -64,10 +65,23 @@ public class StableStart {
             System.out.println("ComputeEngine already bound exception: " + e.getMessage ());
             e.printStackTrace ();
             System.exit(1);
-     }
-     System.out.println("ComputeEngine object was registered!");
+        }
+        System.out.println("ComputeEngine object was registered!");
         
         
+    }
+    
+    
+    private static Registry getRegistry(String rmiServerHostname, int rmiServerPort) {
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.getRegistry(rmiServerHostname, rmiServerPort);
+        } catch (RemoteException e) {
+            System.out.println("RMI registry creation exception: " + e.getMessage ());
+            System.exit(1);
+        }
+        System.out.println("RMI registry was created!");
+        return registry;
     }
     
     private static Register getRegister(Registry registry){
