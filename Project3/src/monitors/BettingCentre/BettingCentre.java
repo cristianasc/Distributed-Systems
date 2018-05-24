@@ -2,6 +2,13 @@ package monitors.BettingCentre;
 
 import monitors.GeneralRepository.*;
 import interfaces.*;
+import java.rmi.NoSuchObjectException;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +23,11 @@ public class BettingCentre implements IBettingCentre{
     private boolean brokerAcceptingBets, finalBet, newBet, hounourTheBets, finalCollect;
     private Bet bet;
     private double totalValue;
+    private static int SERVER_PORT;
+    private static String rmiServerHostname;
+    private static int rmiServerPort;
+    private static String nameEntryBase = "RegisterHandler";
+    private static String nameEntryObject = "BettingCentre";
     
     /**
      * Construtor da classe
@@ -169,5 +181,54 @@ public class BettingCentre implements IBettingCentre{
     @Override
     public synchronized void relaxABit(int spectatorID) {
         System.out.print("\nApostador " + spectatorID + " vai relaxar.");    
+    }
+    
+    
+    private static Registry getRegistry(String rmiServerHostname, int rmiServerPort) {
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.getRegistry(rmiServerHostname, rmiServerPort);
+        } catch (RemoteException e) {
+            System.out.println("RMI registry creation exception: " + e.getMessage ());
+            System.exit(1);
+        }
+        System.out.println("RMI registry was created!");
+        return registry;
+    }
+    
+    private static Register getRegister(Registry registry){
+        Register register = null;
+        try{ 
+            register = (Register) registry.lookup(nameEntryObject);
+        }catch (RemoteException e){ 
+            System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit(1);
+        }catch (NotBoundException e){ 
+            System.out.println("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit(1);
+        }
+        return register;
+    }
+    
+    @Override
+    public void shutdown(){
+        Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
+        Register reg = getRegister(registry);
+        
+        try {
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            System.out.println("BettingCentre registration exception: " + e.getMessage());
+        } catch (NotBoundException e) {
+            System.out.println("BettingCentre not bound exception: " + e.getMessage());
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject((Remote) this, true);
+        } catch (NoSuchObjectException ex) {
+        }
+        System.out.printf("BettingCentre closed.\n");
     }
 }

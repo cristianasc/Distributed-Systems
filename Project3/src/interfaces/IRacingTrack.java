@@ -9,4 +9,5 @@ public interface IRacingTrack {
     void makeAMove(int horseID, int move,int count);
     boolean hasFinishLineBeenCrossed(int horseID);
     void proceedToStartLine(int horseID);
+    void shutdown();
 }

@@ -18,12 +18,11 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class GeneralRepositoryStart {
     
-     private static int SERVER_PORT;
+    private static int SERVER_PORT;
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "GeneralRepositoryStart";
-
 
     /**
      * @param args the command line arguments

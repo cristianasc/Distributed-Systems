@@ -42,10 +42,16 @@ public class BrokerStart {
         
         try { 
             br.join();
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
         
         
-        /**FALTA TERMINAR OS SERVERS*/
+        try {
+            gr.terminate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         
         
         System.out.println("End of Operations");

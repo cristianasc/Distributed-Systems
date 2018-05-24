@@ -22,13 +22,13 @@ public class ControlCentreStart {
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "ControlCentreStart";
+    private static String nameEntryObject = "ControlCentre";
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.print("Starting Paddock");
+        System.out.print("Starting ControlCentre");
         SERVER_PORT = Integer.parseInt(args[0]);
         rmiServerHostname = args[1];
         rmiServerPort = Integer.parseInt(args[2]);
@@ -110,5 +110,7 @@ public class ControlCentreStart {
 
        return gr;
     }
+    
+    
     
 }

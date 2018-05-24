@@ -21,4 +21,5 @@ public interface IControlCentre {
     void goWatchTheRace(int spectatorID);
     void waitForTheNextRace(int spectatorID);
     boolean haveIWon(int spectatorID);
+    void shutdown();
 }

@@ -38,4 +38,5 @@ public interface IGeneralRepository {
     void setSpectatorMoney(int spectatorID, int money);
     void setSpectatorBet(int spectatorID, int bet);
     void setBrokerState(BrokerStates state);
+    void terminate();
 }

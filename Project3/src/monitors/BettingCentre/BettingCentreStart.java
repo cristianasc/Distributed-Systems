@@ -22,7 +22,7 @@ public class BettingCentreStart {
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "BettingCentreStart";
+    private static String nameEntryObject = "BettingCentre";
 
 
     /**

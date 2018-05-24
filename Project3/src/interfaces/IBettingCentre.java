@@ -14,4 +14,5 @@ public interface IBettingCentre {
     void placeABet(int spectatorID, int value, int horseID);
     void goCollectTheGains(int SpectatorID);
     void relaxABit(int SpectatorID);
+    void shutdown();
 }

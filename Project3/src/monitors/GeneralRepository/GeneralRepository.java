@@ -3,10 +3,17 @@ package monitors.GeneralRepository;
 import Broker.BrokerStates;
 import Horse.HorseStates;
 import Spectator.SpectatorStates;
-import interfaces.IGeneralRepository;
+import interfaces.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.rmi.NoSuchObjectException;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +40,11 @@ public class GeneralRepository implements IGeneralRepository{
     private int[] HorseAgility;
     private int[] count;
     private HashMap<Integer,Integer> pos;
+    private static int SERVER_PORT;
+    private static String rmiServerHostname;
+    private static int rmiServerPort;
+    private static String nameEntryBase = "RegisterHandler";
+    private static String nameEntryObject = "GeneralRepository";
     
     /**
      * Construtor da classe
@@ -340,5 +352,133 @@ public class GeneralRepository implements IGeneralRepository{
     public void setHorseSkills(int horseID, int value) {
         HorseAgility[horseID] = value;
     }
+    
+    private static Registry getRegistry(String rmiServerHostname, int rmiServerPort) {
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.getRegistry(rmiServerHostname, rmiServerPort);
+        } catch (RemoteException e) {
+            System.out.println("RMI registry creation exception: " + e.getMessage ());
+            System.exit(1);
+        }
+        System.out.println("RMI registry was created!");
+        return registry;
+    }
+    
+    private static Register getRegister(Registry registry){
+        Register register = null;
+        try{ 
+            register = (Register) registry.lookup(nameEntryObject);
+        }catch (RemoteException e){ 
+            System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit(1);
+        }catch (NotBoundException e){ 
+            System.out.println("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit(1);
+        }
+        return register;
+    }
+    
+    @Override
+    public void terminate(){
+        System.out.println("Terminating Monitors...");
+        Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
+        
+        /* Shutdown Stable */
+        try
+        {
+            IStable st = (IStable) registry.lookup(nameEntryObject);
+            st.shutdown();
+        }
+        catch (RemoteException e)
+        { 
+            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+        }
+        catch (NotBoundException e)
+        { 
+            System.out.println("Stable is not registered: " + e.getMessage () + "!");
+        }
+        
+        
+        /* Shutdown RacingTrack */
+        try
+        {
+            IRacingTrack rt = (IRacingTrack) registry.lookup(nameEntryObject);
+            rt.shutdown();
+        }
+        catch (RemoteException e)
+        { 
+            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+        }
+        catch (NotBoundException e)
+        { 
+            System.out.println("RacingTrack is not registered: " + e.getMessage () + "!");
+        }
+       
+        /* Shutdown Paddock */
+        try
+        {
+            IPaddock pd = (IPaddock) registry.lookup(nameEntryObject);
+            pd.shutdown();
+        }
+        catch (RemoteException e)
+        { 
+            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+        }
+        catch (NotBoundException e)
+        { 
+            System.out.println("Paddock is not registered: " + e.getMessage () + "!");
+        }
+        
+        /* Shutdown ControlCentre*/
+        try
+        {
+            IControlCentre cc = (IControlCentre) registry.lookup(nameEntryObject);
+            cc.shutdown();
+        }
+        catch (RemoteException e)
+        { 
+            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+        }
+        catch (NotBoundException e)
+        { 
+            System.out.println("ControlCentre is not registered: " + e.getMessage () + "!");
+        }
+        
+        /* Shutdown BettingCentre*/
+        try
+        {
+            IBettingCentre bc = (IBettingCentre) registry.lookup(nameEntryObject);
+            bc.shutdown();
+        }
+        catch (RemoteException e)
+        { 
+            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+        }
+        catch (NotBoundException e)
+        { 
+            System.out.println("BettingCentre is not registered: " + e.getMessage () + "!");
+        }
+        
+        
+        /* Shutdown General Repository */
+        Register register = getRegister(registry);
+        try {
+            register.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            System.out.println("GeneralRepository registration exception: " + e.getMessage());
+        } catch (NotBoundException e) {
+            System.out.println("GeneralRepository not bound exception: " + e.getMessage());
+        }
 
+        try {
+            UnicastRemoteObject.unexportObject((Remote) this, true);
+        } catch (NoSuchObjectException ex) {
+        }
+        
+        
+    }
+    
 }

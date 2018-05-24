@@ -2,6 +2,13 @@ package monitors.RacingTrack;
 
 import monitors.GeneralRepository.*;
 import interfaces.*;
+import java.rmi.NoSuchObjectException;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
 /**
@@ -15,6 +22,11 @@ public class RacingTrack implements IRacingTrack{
     private final IGeneralRepository gr;
     private HashMap<Integer, Integer> positions;
     private int next, nHorses, position, nHorsesInRace;
+    private static int SERVER_PORT;
+    private static String rmiServerHostname;
+    private static int rmiServerPort;
+    private static String nameEntryBase = "RegisterHandler";
+    private static String nameEntryObject = "RacingTrack";
     
     /**
      * Construtor da classe
@@ -158,5 +170,54 @@ public class RacingTrack implements IRacingTrack{
         lastHorse = false;
         makeAMove = false;
         System.out.print("\nFIM DA CORRIDA.");
-    }    
+    }
+    
+    private static Registry getRegistry(String rmiServerHostname, int rmiServerPort) {
+        Registry registry = null;
+        try {
+            registry = LocateRegistry.getRegistry(rmiServerHostname, rmiServerPort);
+        } catch (RemoteException e) {
+            System.out.println("RMI registry creation exception: " + e.getMessage ());
+            System.exit(1);
+        }
+        System.out.println("RMI registry was created!");
+        return registry;
+    }
+    
+    private static Register getRegister(Registry registry){
+        Register register = null;
+        try{ 
+            register = (Register) registry.lookup(nameEntryObject);
+        }catch (RemoteException e){ 
+            System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit(1);
+        }catch (NotBoundException e){ 
+            System.out.println("RegisterRemoteObject not bound exception: " + e.getMessage ());
+            e.printStackTrace ();
+            System.exit(1);
+        }
+        return register;
+    }
+    
+    @Override
+    public void shutdown(){
+        Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
+        Register reg = getRegister(registry);
+        
+        try {
+            reg.unbind(nameEntryObject);
+        } catch (RemoteException e) {
+            System.out.println("RacingTrack registration exception: " + e.getMessage());
+        } catch (NotBoundException e) {
+            System.out.println("RacingTrack not bound exception: " + e.getMessage());
+        }
+
+        try {
+            UnicastRemoteObject.unexportObject((Remote) this, true);
+        } catch (NoSuchObjectException ex) {
+        }
+        System.out.printf("RacingTrack closed.\n");
+    }
+
 }
