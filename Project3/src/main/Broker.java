@@ -9,11 +9,11 @@ import monitors.Stable.*;
 import monitors.RacingTrack.*;
 import monitors.ControlCentre.*;
 import monitors.BettingCentre.*;
-import Broker.BrokerStates;
 import monitors.GeneralRepository.*;
 import interfaces.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import states.BrokerStates;
 
 /**
  *

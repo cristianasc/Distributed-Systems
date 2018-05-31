@@ -1,8 +1,9 @@
 package monitors.GeneralRepository;
 
-import Broker.BrokerStates;
-import Horse.HorseStates;
-import Spectator.SpectatorStates;
+import main.Broker.*;
+import main.Horse.*;
+import main.Spectator.*;
+import states.*;
 import interfaces.*;
 import java.io.File;
 import java.io.FileNotFoundException;

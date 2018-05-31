@@ -9,7 +9,7 @@ import monitors.ControlCentre.*;
 import monitors.GeneralRepository.*;
 import monitors.Paddock.*;
 import monitors.BettingCentre.*;
-import Spectator.SpectatorStates;
+import states.*;
 import interfaces.*;
 import java.util.ArrayList;
 import java.util.Random;

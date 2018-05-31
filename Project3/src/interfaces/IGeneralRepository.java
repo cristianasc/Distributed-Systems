@@ -1,9 +1,7 @@
 package interfaces;
 
-import Broker.BrokerStates;
+import states.*;
 import monitors.GeneralRepository.Bet;
-import Horse.HorseStates;
-import Spectator.SpectatorStates;
 import java.util.HashMap;
 
 /**

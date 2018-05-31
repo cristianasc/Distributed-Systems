@@ -9,7 +9,7 @@ import monitors.ControlCentre.*;
 import monitors.Paddock.*;
 import monitors.RacingTrack.*;
 import monitors.GeneralRepository.*;
-import Horse.HorseStates;
+import states.*;
 import interfaces.*;
 
 /**
