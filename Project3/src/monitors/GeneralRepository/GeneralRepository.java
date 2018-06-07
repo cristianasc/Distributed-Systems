@@ -45,7 +45,7 @@ public class GeneralRepository implements IGeneralRepository{
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "GeneralRepository";
+    private static String nameEntryObject = "GeneralRepositoryStart";
     
     /**
      * Construtor da classe
@@ -98,8 +98,6 @@ public class GeneralRepository implements IGeneralRepository{
         for (int i = 0; i < nSpectators; i++) {
             spectatorBet[i] = 0;
         }
-        
-        
 
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -369,7 +367,7 @@ public class GeneralRepository implements IGeneralRepository{
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();

@@ -37,11 +37,12 @@ public class GeneralRepositoryStart {
         Register register = getRegister(registry);
         
         /* create and install the security manager */
+        /*
         if (System.getSecurityManager () == null){
             System.setSecurityManager (new SecurityManager ());
             System.out.println("Security manager was installed!");
         }
-        
+        */
         GeneralRepository gr = new GeneralRepository(4,4,4,10);
         IGeneralRepository iGR = null;
         
@@ -82,7 +83,7 @@ public class GeneralRepositoryStart {
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();
