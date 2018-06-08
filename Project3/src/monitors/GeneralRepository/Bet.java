@@ -5,7 +5,9 @@
  */
 package monitors.GeneralRepository;
 
-public class Bet {
+import interfaces.IBet;
+
+public class Bet implements IBet{
 
     private int SpectatorID;       // SpectatorID identifica um espectador
     private int horseID;           // HorseID identifica um cavalo

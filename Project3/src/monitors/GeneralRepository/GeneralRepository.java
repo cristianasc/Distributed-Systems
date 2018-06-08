@@ -56,7 +56,7 @@ public class GeneralRepository implements IGeneralRepository{
      * @param distance - Distância de cada corrida
      */
     
-    public GeneralRepository(int nHorses, int nSpectators, int nRaces, int distance){
+    public GeneralRepository(int nHorses, int nSpectators, int nRaces, int distance)  throws RemoteException{
         this.nHorses = nHorses;
         this.nSpectators = nSpectators;
         this.nRaces = nRaces;

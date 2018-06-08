@@ -10,6 +10,8 @@ import static java.rmi.registry.LocateRegistry.getRegistry;
 import java.rmi.registry.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,14 +47,11 @@ public class BrokerStart {
         } catch (InterruptedException e) {
         }
         
-        
         try {
             gr.terminate();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+        } catch (RemoteException ex) {
+            Logger.getLogger(BrokerStart.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         
         System.out.println("End of Operations");
         

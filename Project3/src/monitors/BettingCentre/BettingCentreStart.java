@@ -28,7 +28,7 @@ public class BettingCentreStart {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         System.out.print("Starting BettingCentre");
         SERVER_PORT = Integer.parseInt(args[0]);
         rmiServerHostname = args[1];

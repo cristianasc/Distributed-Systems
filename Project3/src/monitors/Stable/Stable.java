@@ -25,7 +25,7 @@ public class Stable implements IStable {
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "Stable";
+    private static String nameEntryObject = "StableStart";
     
     /**
      * Construtor da classe
@@ -106,7 +106,7 @@ public class Stable implements IStable {
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();
@@ -120,7 +120,7 @@ public class Stable implements IStable {
     }
     
     @Override
-    public void shutdown(){
+    public void shutdown() throws RemoteException{
         Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
         Register reg = getRegister(registry);
         

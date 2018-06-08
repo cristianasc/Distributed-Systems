@@ -34,7 +34,7 @@ public class ControlCenter implements IControlCentre{
      * Construtor da classe
      * @param gr: General Repository
      */
-    public ControlCenter(IGeneralRepository gr){
+    public ControlCenter(IGeneralRepository gr)  throws RemoteException{
         this.gr = gr;
         lastHorseToPaddock = false;
         lastSpectator = false;

@@ -35,7 +35,7 @@ public class BettingCentre implements IBettingCentre{
      * Construtor da classe
      * @param gr: General Repository
      */
-    public BettingCentre(IGeneralRepository gr) {
+    public BettingCentre(IGeneralRepository gr)  throws RemoteException{
         this.gr = gr;
         brokerAcceptingBets = false;
         newBet = false;
@@ -209,7 +209,7 @@ public class BettingCentre implements IBettingCentre{
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();
