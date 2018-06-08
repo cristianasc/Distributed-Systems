@@ -54,6 +54,7 @@ public class PaddockStart {
             System.exit(1);
         }
         
+        
         try{ 
             register.bind (nameEntryObject, (Remote) iPd);
         }catch (RemoteException e){ 
@@ -83,7 +84,7 @@ public class PaddockStart {
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();
@@ -100,7 +101,7 @@ public class PaddockStart {
        IGeneralRepository gr = null;
 
        try{ 
-           gr = (IGeneralRepository) registry.lookup("GeneralRepository");
+           gr = (IGeneralRepository) registry.lookup("GeneralRepositoryStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
