@@ -22,7 +22,7 @@ public class StableStart {
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "Stable";
+    private static String nameEntryObject = "StableStart";
 
     /**
      * @param args the command line arguments
@@ -38,10 +38,11 @@ public class StableStart {
         IGeneralRepository gr = getGenerealRepository(registry);
         
         /* create and install the security manager */
+        /*
         if (System.getSecurityManager () == null){
             System.setSecurityManager (new SecurityManager ());
             System.out.println("Security manager was installed!");
-        }
+        }*/
         
         Stable st = new Stable((IGeneralRepository) gr);
         IStable iSt = null;
@@ -87,7 +88,7 @@ public class StableStart {
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();
@@ -105,7 +106,7 @@ public class StableStart {
         IGeneralRepository gr = null;
         
         try{ 
-            gr = (IGeneralRepository) registry.lookup("GeneralRepository");
+            gr = (IGeneralRepository) registry.lookup("GeneralRepositoryStart");
         }catch (RemoteException e){ 
             System.exit(1);
         }catch (NotBoundException e){

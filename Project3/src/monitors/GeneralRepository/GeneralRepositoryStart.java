@@ -27,7 +27,7 @@ public class GeneralRepositoryStart {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args){
         System.out.print("Starting GeneralRepository");
         SERVER_PORT = Integer.parseInt(args[0]);
         rmiServerHostname = args[1];
@@ -47,7 +47,7 @@ public class GeneralRepositoryStart {
         IGeneralRepository iGR = null;
         
         try{ 
-            iGR = (IGeneralRepository) UnicastRemoteObject.exportObject((Remote) gr, SERVER_PORT);
+            iGR = (IGeneralRepository) UnicastRemoteObject.exportObject(gr, SERVER_PORT);
         }catch (RemoteException e){
             System.out.println("ComputeEngine stub generation exception: " + e.getMessage ());
             e.printStackTrace ();
@@ -55,7 +55,7 @@ public class GeneralRepositoryStart {
         }
         
         try{ 
-            register.bind (nameEntryObject, (Remote) iGR);
+            register.bind(nameEntryObject, iGR);
         }catch (RemoteException e){ 
             System.out.println("ComputeEngine registration exception: " + e.getMessage ());
             e.printStackTrace ();

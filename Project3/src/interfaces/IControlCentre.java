@@ -7,19 +7,21 @@ package interfaces;
 
 import monitors.GeneralRepository.Bet;
 import java.util.ArrayList;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
  * @author cristianacarvalho
  */
-public interface IControlCentre {
-    void reportResults(ArrayList<Bet> betlist);
-    void summonHorsesToPaddock();
-    ArrayList<Bet> getWinners();
-    void close();
-    void proceedToPaddock(int HorseID);
-    void goWatchTheRace(int spectatorID);
-    void waitForTheNextRace(int spectatorID);
-    boolean haveIWon(int spectatorID);
-    void shutdown();
+public interface IControlCentre extends Remote{
+    void reportResults(ArrayList<Bet> betlist) throws RemoteException;
+    void summonHorsesToPaddock() throws RemoteException;
+    ArrayList<Bet> getWinners() throws RemoteException;
+    void close() throws RemoteException;
+    void proceedToPaddock(int HorseID) throws RemoteException;
+    void goWatchTheRace(int spectatorID) throws RemoteException;
+    void waitForTheNextRace(int spectatorID) throws RemoteException;
+    boolean haveIWon(int spectatorID) throws RemoteException;
+    void shutdown() throws RemoteException;
 }

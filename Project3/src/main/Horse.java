@@ -11,6 +11,9 @@ import monitors.RacingTrack.*;
 import monitors.GeneralRepository.*;
 import states.*;
 import interfaces.*;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +29,7 @@ public class Horse extends Thread{
     private final IGeneralRepository gr;
     private int horseID, nRaces, move;
     
-    public Horse(IRacingTrack rt, IPaddock pad, IStable st, IControlCentre cc, int horseID, int move, IGeneralRepository gr){
+    public Horse(IRacingTrack rt, IPaddock pad, IStable st, IControlCentre cc, int horseID, int move, IGeneralRepository gr) throws RemoteException{
         this.gr = gr;
         this.st = st;
         this.cc = cc;
@@ -40,47 +43,72 @@ public class Horse extends Thread{
     @Override
     public void run() {
         state = HorseStates.AT_THE_STABLE;
-        gr.setHorseState(horseID,state,move);
-        proceedToStable();
+        try {
+            gr.setHorseState(horseID,state,move);
+            proceedToStable();
+        } catch (RemoteException ex) {
+            Logger.getLogger(Horse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
      
     public void proceedToStable(){
-      st.proceedToStable(horseID);
-      proceedToPaddock();
+        try {
+            st.proceedToStable(horseID);
+            proceedToPaddock();
+        } catch (RemoteException ex) {
+            Logger.getLogger(Horse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
     }
 
     public void proceedToPaddock(){
       state = HorseStates.AT_THE_PADDOCK;
-      gr.setHorseState(horseID,state,move);
-      cc.proceedToPaddock(horseID);
-      pad.proceedToPaddock(horseID);
-      proceedToStartLine();
+        try {
+            gr.setHorseState(horseID,state,move);
+            cc.proceedToPaddock(horseID);
+            pad.proceedToPaddock(horseID);
+            proceedToStartLine();
+        } catch (RemoteException ex) {
+            Logger.getLogger(Horse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
     }
 
     public void proceedToStartLine(){
       state = HorseStates.AT_THE_START_LINE;
-      gr.setHorseState(horseID,state,move);
-      pad.proceedToStartLine();
-      rt.proceedToStartLine(horseID);
-      makeAMove();
+        try {
+            gr.setHorseState(horseID,state,move);
+            pad.proceedToStartLine();
+            rt.proceedToStartLine(horseID);
+            makeAMove();
+        } catch (RemoteException ex) {
+            Logger.getLogger(Horse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
     }
 
     public void makeAMove(){
         state = HorseStates.RUNNING;
-        gr.setHorseState(horseID,state,move);
-        int count = 0;
+        try {
+            gr.setHorseState(horseID,state,move);
+            int count = 0;
 
-        do {
-            count++;
-            rt.makeAMove(horseID, move,count);
-        } while (!rt.hasFinishLineBeenCrossed(horseID));
+            do {
+                count++;
+                rt.makeAMove(horseID, move,count);
+            } while (!rt.hasFinishLineBeenCrossed(horseID));
 
 
-        System.out.print("\nCavalo " + horseID + " sai da corrida!");
+            System.out.print("\nCavalo " + horseID + " sai da corrida!");
 
-        state = HorseStates.AT_THE_STABLE;
-        gr.setHorseState(horseID,state,move);
-        proceedToStable();
+            state = HorseStates.AT_THE_STABLE;
+            gr.setHorseState(horseID,state,move);
+            proceedToStable();
+        } catch (RemoteException ex) {
+            Logger.getLogger(Horse.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
        
 }

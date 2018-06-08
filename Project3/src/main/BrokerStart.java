@@ -24,7 +24,7 @@ public class BrokerStart {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         System.out.print("Starting Broker");
         rmiServerHostname = args[0];
         rmiServerPort = Integer.parseInt(args[1]);
@@ -90,7 +90,7 @@ public class BrokerStart {
        IGeneralRepository gr = null;
 
        try{ 
-           gr = (IGeneralRepository) registry.lookup("GeneralRepository");
+           gr = (IGeneralRepository) registry.lookup("GeneralRepositoryStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -104,7 +104,7 @@ public class BrokerStart {
        IBettingCentre bc = null;
 
        try{ 
-           bc = (IBettingCentre) registry.lookup("BettingCentre");
+           bc = (IBettingCentre) registry.lookup("BettingCentreStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -118,7 +118,7 @@ public class BrokerStart {
        IStable st = null;
 
        try{ 
-           st = (IStable) registry.lookup("Stable");
+           st = (IStable) registry.lookup("StableStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -132,7 +132,7 @@ public class BrokerStart {
        IRacingTrack rt = null;
 
        try{ 
-           rt = (IRacingTrack) registry.lookup("RacingTrack");
+           rt = (IRacingTrack) registry.lookup("RacingTrackStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -146,7 +146,7 @@ public class BrokerStart {
        IControlCentre cc = null;
 
        try{ 
-           cc = (IControlCentre) registry.lookup("ControlCentre");
+           cc = (IControlCentre) registry.lookup("ControlCentreStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){

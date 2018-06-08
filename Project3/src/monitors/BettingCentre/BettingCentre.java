@@ -10,6 +10,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,7 +29,7 @@ public class BettingCentre implements IBettingCentre{
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "BettingCentre";
+    private static String nameEntryObject = "BettingCentreStart";
     
     /**
      * Construtor da classe
@@ -71,10 +73,14 @@ public class BettingCentre implements IBettingCentre{
 
         brokerAcceptingBets = false;
         spectatorCount++;
-        if (spectatorCount == gr.getnSpectator()) {
-            finalBet = true;
-            notifyAll();
-            spectatorCount = 0;
+        try {
+            if (spectatorCount == gr.getnSpectator()) {
+                finalBet = true;
+                notifyAll();
+                spectatorCount = 0;
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(BettingCentre.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.print("\nApostador " + spectatorID + " apostou"  + " no cavalo " + horseID +", " + (int) value + " €.");
     }
@@ -149,9 +155,13 @@ public class BettingCentre implements IBettingCentre{
         notifyAll();
         nCollects++;        
         
-        if (nCollects == gr.getnWinners()) {
-            finalCollect = true;
-            notifyAll();
+        try {
+            if (nCollects == gr.getnWinners()) {
+                finalCollect = true;
+                notifyAll();
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(BettingCentre.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

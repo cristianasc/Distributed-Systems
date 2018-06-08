@@ -24,8 +24,11 @@ public class SpectatorStart {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         int nSpectators = 4;
+        System.out.print("Starting Spectator");
+        rmiServerHostname = args[0];
+        rmiServerPort = Integer.parseInt(args[1]);
         
         Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
         Register register = getRegister(registry);
@@ -86,7 +89,7 @@ public class SpectatorStart {
        IGeneralRepository gr = null;
 
        try{ 
-           gr = (IGeneralRepository) registry.lookup("GeneralRepository");
+           gr = (IGeneralRepository) registry.lookup("GeneralRepositoryStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -100,7 +103,7 @@ public class SpectatorStart {
        IBettingCentre bc = null;
 
        try{ 
-           bc = (IBettingCentre) registry.lookup("BettingCentre");
+           bc = (IBettingCentre) registry.lookup("BettingCentreStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -114,7 +117,7 @@ public class SpectatorStart {
        IControlCentre cc = null;
 
        try{ 
-           cc = (IControlCentre) registry.lookup("ControlCentre");
+           cc = (IControlCentre) registry.lookup("ControlCentreStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -128,7 +131,7 @@ public class SpectatorStart {
        IPaddock pd = null;
 
        try{ 
-           pd = (IPaddock) registry.lookup("Paddock");
+           pd = (IPaddock) registry.lookup("PaddockStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){

@@ -23,14 +23,14 @@ public class Paddock implements IPaddock{
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "Paddock";
+    private static String nameEntryObject = "PaddockStart";
     
     
     /**
      * Construtor da classe
      * @param gr: General Repository
      */
-    public Paddock(IGeneralRepository gr){
+    public Paddock(IGeneralRepository gr) throws RemoteException{
         this.gr = gr;
         horseNTotal = gr.getnHorses();
         spectatorNTotal = gr.getnSpectator();
@@ -125,7 +125,7 @@ public class Paddock implements IPaddock{
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();

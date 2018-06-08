@@ -1,11 +1,14 @@
 package interfaces;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author cristianacarvalho
  */
-public interface IStable {
-    void summonHorsesToPaddock();
-    void proceedToStable(int horseID);
-    void shutdown();
+public interface IStable extends Remote{
+    void summonHorsesToPaddock() throws RemoteException;
+    void proceedToStable(int horseID) throws RemoteException;
+    void shutdown() throws RemoteException;
 }

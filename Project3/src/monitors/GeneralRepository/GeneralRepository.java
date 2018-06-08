@@ -381,14 +381,14 @@ public class GeneralRepository implements IGeneralRepository{
     }
     
     @Override
-    public void terminate(){
+    public void terminate() throws RemoteException {
         System.out.println("Terminating Monitors...");
         Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
         
         /* Shutdown Stable */
         try
         {
-            IStable st = (IStable) registry.lookup(nameEntryObject);
+            IStable st = (IStable) registry.lookup("StableStart");
             st.shutdown();
         }
         catch (RemoteException e)
@@ -404,7 +404,7 @@ public class GeneralRepository implements IGeneralRepository{
         /* Shutdown RacingTrack */
         try
         {
-            IRacingTrack rt = (IRacingTrack) registry.lookup(nameEntryObject);
+            IRacingTrack rt = (IRacingTrack) registry.lookup("RacingTrackStart");
             rt.shutdown();
         }
         catch (RemoteException e)
@@ -419,7 +419,7 @@ public class GeneralRepository implements IGeneralRepository{
         /* Shutdown Paddock */
         try
         {
-            IPaddock pd = (IPaddock) registry.lookup(nameEntryObject);
+            IPaddock pd = (IPaddock) registry.lookup("PaddockStart");
             pd.shutdown();
         }
         catch (RemoteException e)
@@ -434,7 +434,7 @@ public class GeneralRepository implements IGeneralRepository{
         /* Shutdown ControlCentre*/
         try
         {
-            IControlCentre cc = (IControlCentre) registry.lookup(nameEntryObject);
+            IControlCentre cc = (IControlCentre) registry.lookup("ControlCentreStart");
             cc.shutdown();
         }
         catch (RemoteException e)
@@ -449,7 +449,7 @@ public class GeneralRepository implements IGeneralRepository{
         /* Shutdown BettingCentre*/
         try
         {
-            IBettingCentre bc = (IBettingCentre) registry.lookup(nameEntryObject);
+            IBettingCentre bc = (IBettingCentre) registry.lookup("BettingCentreStart");
             bc.shutdown();
         }
         catch (RemoteException e)

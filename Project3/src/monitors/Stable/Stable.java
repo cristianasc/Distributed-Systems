@@ -9,6 +9,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -72,11 +74,15 @@ public class Stable implements IStable {
         notifyAll();
         
         
-        while (horseId != gr.getnHorses()) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
+        try {
+            while (horseId != gr.getnHorses()) {
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                }
             }
+        } catch (RemoteException ex) {
+            Logger.getLogger(Stable.class.getName()).log(Level.SEVERE, null, ex);
         }
         
             

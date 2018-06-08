@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +28,7 @@ public class ControlCenter implements IControlCentre{
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "ControlCentre";
+    private static String nameEntryObject = "ControlCentreStart";
     
     /**
      * Construtor da classe
@@ -55,10 +57,14 @@ public class ControlCenter implements IControlCentre{
         System.out.print("\nO cavalo "+ horseID +" vai para o paddock.");
         
         nHorses++;
-        if(nHorses==gr.getnHorses()){
-            lastHorseToPaddock = true;
-            System.out.print("\nTodos os cavalos estão no Paddock.");
-            notifyAll();
+        try {
+            if(nHorses==gr.getnHorses()){
+                lastHorseToPaddock = true;
+                System.out.print("\nTodos os cavalos estão no Paddock.");
+                notifyAll();
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControlCenter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -124,8 +130,12 @@ public class ControlCenter implements IControlCentre{
         }
          
         spec++;
-        if (spec == gr.getnSpectator()) {
-            allReportResults = true;  
+        try {
+            if (spec == gr.getnSpectator()) {  
+                allReportResults = true;
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControlCenter.class.getName()).log(Level.SEVERE, null, ex);
         }
         notifyAll();
         
@@ -151,9 +161,13 @@ public class ControlCenter implements IControlCentre{
         
         nSpectators++; 
         System.out.print("\nO espectador "+ spectatorID +" vai para o Paddock.");
-        if(nSpectators == gr.getnSpectator()){
-            lastSpectator = true;
-            notifyAll();
+        try {
+            if(nSpectators == gr.getnSpectator()){
+                lastSpectator = true;
+                notifyAll();
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControlCenter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -204,7 +218,7 @@ public class ControlCenter implements IControlCentre{
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();

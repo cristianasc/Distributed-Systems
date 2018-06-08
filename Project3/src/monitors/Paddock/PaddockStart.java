@@ -27,7 +27,7 @@ public class PaddockStart {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         System.out.print("Starting Paddock");
         SERVER_PORT = Integer.parseInt(args[0]);
         rmiServerHostname = args[1];
@@ -38,10 +38,10 @@ public class PaddockStart {
         IGeneralRepository gr = getGenerealRepository(registry);
         
         /* create and install the security manager */
-        if (System.getSecurityManager () == null){
+        /*if (System.getSecurityManager () == null){
             System.setSecurityManager (new SecurityManager ());
             System.out.println("Security manager was installed!");
-        }
+        }*/
         
         Paddock pd = new Paddock((IGeneralRepository) gr);
         IPaddock iPd = null;

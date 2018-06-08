@@ -22,12 +22,12 @@ public class RacingTrackStart {
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "RacingTrack";
+    private static String nameEntryObject = "RacingTrackStart";
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         System.out.print("Starting RacingTrack");
         SERVER_PORT = Integer.parseInt(args[0]);
         rmiServerHostname = args[1];
@@ -38,10 +38,10 @@ public class RacingTrackStart {
         IGeneralRepository gr = getGenerealRepository(registry);
         
         /* create and install the security manager */
-        if (System.getSecurityManager () == null){
+        /*if (System.getSecurityManager () == null){
             System.setSecurityManager (new SecurityManager ());
             System.out.println("Security manager was installed!");
-        }
+        }*/
         
         RacingTrack st = new RacingTrack((IGeneralRepository) gr);
         IRacingTrack iRt = null;
@@ -85,7 +85,7 @@ public class RacingTrackStart {
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();
@@ -102,7 +102,7 @@ public class RacingTrackStart {
        IGeneralRepository gr = null;
 
        try{ 
-           gr = (IGeneralRepository) registry.lookup("GeneralRepository");
+           gr = (IGeneralRepository) registry.lookup("GeneralRepositoryStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){

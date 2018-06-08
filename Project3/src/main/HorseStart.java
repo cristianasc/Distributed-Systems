@@ -25,10 +25,10 @@ public class HorseStart {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
         int nHorses = 4;
         
-        System.out.print("Starting Broker");
+        System.out.print("Starting Horses");
         rmiServerHostname = args[0];
         rmiServerPort = Integer.parseInt(args[1]);
         
@@ -83,7 +83,7 @@ public class HorseStart {
        IGeneralRepository gr = null;
 
        try{ 
-           gr = (IGeneralRepository) registry.lookup("GeneralRepository");
+           gr = (IGeneralRepository) registry.lookup("GeneralRepositoryStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -97,7 +97,7 @@ public class HorseStart {
        IPaddock pd = null;
 
        try{ 
-           pd = (IPaddock) registry.lookup("Paddock");
+           pd = (IPaddock) registry.lookup("PaddockStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -111,7 +111,7 @@ public class HorseStart {
        IStable st = null;
 
        try{ 
-           st = (IStable) registry.lookup("Stable");
+           st = (IStable) registry.lookup("StableStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -125,7 +125,7 @@ public class HorseStart {
        IRacingTrack rt = null;
 
        try{ 
-           rt = (IRacingTrack) registry.lookup("RacingTrack");
+           rt = (IRacingTrack) registry.lookup("RacingTrackStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){
@@ -139,7 +139,7 @@ public class HorseStart {
        IControlCentre cc = null;
 
        try{ 
-           cc = (IControlCentre) registry.lookup("ControlCentre");
+           cc = (IControlCentre) registry.lookup("ControlCentreStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){

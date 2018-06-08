@@ -22,7 +22,7 @@ public class BettingCentreStart {
     private static String rmiServerHostname;
     private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
-    private static String nameEntryObject = "BettingCentre";
+    private static String nameEntryObject = "BettingCentreStart";
 
 
     /**
@@ -39,10 +39,10 @@ public class BettingCentreStart {
         IGeneralRepository gr = getGenerealRepository(registry);
         
         /* create and install the security manager */
-        if (System.getSecurityManager () == null){
+        /*if (System.getSecurityManager () == null){
             System.setSecurityManager (new SecurityManager ());
             System.out.println("Security manager was installed!");
-        }
+        }*/
         
         BettingCentre bc = new BettingCentre((IGeneralRepository) gr);
         IBettingCentre iBC = null;
@@ -84,7 +84,7 @@ public class BettingCentreStart {
     private static Register getRegister(Registry registry){
         Register register = null;
         try{ 
-            register = (Register) registry.lookup(nameEntryObject);
+            register = (Register) registry.lookup(nameEntryBase);
         }catch (RemoteException e){ 
             System.out.println("RegisterRemoteObject lookup exception: " + e.getMessage ());
             e.printStackTrace ();
@@ -101,7 +101,7 @@ public class BettingCentreStart {
        IGeneralRepository gr = null;
 
        try{ 
-           gr = (IGeneralRepository) registry.lookup("GeneralRepository");
+           gr = (IGeneralRepository) registry.lookup("GeneralRepositoryStart");
        }catch (RemoteException e){ 
            System.exit(1);
        }catch (NotBoundException e){

@@ -10,6 +10,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,7 +34,7 @@ public class RacingTrack implements IRacingTrack{
      * Construtor da classe
      * @param gr: General Repository
      */
-    public RacingTrack(IGeneralRepository gr){
+    public RacingTrack(IGeneralRepository gr) throws RemoteException{
         this.gr = gr;
         this.nHorses = gr.getnHorses();
         next = 0;
@@ -85,41 +87,46 @@ public class RacingTrack implements IRacingTrack{
         position += move;
         positions.put(horse, position);
        
-        gr.sethorsePositions(horse, position);
-        gr.setArrayPosition(positions);
-        gr.setCount(horse,count);
-        
-        System.out.print("\nCavalo " + horse+ " mexeu-se " + move + ", fica na posição " + position);
-        
-        if (position >= gr.getDistance()){
-            System.out.print("\nCavalo " + horse+ " passou a meta.");
-            
-            if(nHorsesInRace == gr.getnHorses())
-                gr.setHorseWinnerID(horse);
-            
-            if (positions.containsKey(horse))
-                positions.remove(horse);
-            
-            nHorsesInRace--; 
-        }
-        
-        gr.setArrayPosition(positions);
-        
-        if (nHorsesInRace != 0){
-            next = ((next % nHorses) + 1);
-            if (!positions.containsKey(next)) {
-                do {
-                    next = positions.keySet().iterator().next();
-                } while (!positions.containsKey(next));
+        try {
+            gr.sethorsePositions(horse, position);
+            gr.setArrayPosition(positions);
+            gr.setCount(horse,count);
+
+            System.out.print("\nCavalo " + horse+ " mexeu-se " + move + ", fica na posição " + position);
+
+            if (position >= gr.getDistance()){
+                System.out.print("\nCavalo " + horse+ " passou a meta.");
+
+                if(nHorsesInRace == gr.getnHorses())
+                    gr.setHorseWinnerID(horse);
+
+                if (positions.containsKey(horse))
+                    positions.remove(horse);
+
+                nHorsesInRace--; 
             }
+
+            gr.setArrayPosition(positions);
+
+            if (nHorsesInRace != 0){
+                next = ((next % nHorses) + 1);
+                if (!positions.containsKey(next)) {
+                    do {
+                        next = positions.keySet().iterator().next();
+                    } while (!positions.containsKey(next));
+                }
+            }
+
+            if (nHorsesInRace == 0){
+                System.out.print("\nO último cavalo passou a meta.");
+                lastHorse = true;
+            }
+
+            notifyAll();
+        } catch (RemoteException ex) {
+            Logger.getLogger(RacingTrack.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        if (nHorsesInRace == 0){
-            System.out.print("\nO último cavalo passou a meta.");
-            lastHorse = true;
-        }
-        
-        notifyAll();        
+                
     }
 
     /**
@@ -147,29 +154,34 @@ public class RacingTrack implements IRacingTrack{
         
         next = 1;
         makeAMove = true;
-        nHorsesInRace = gr.getnHorses();
-        
-        //posições iniciais dos cavalos
-        for (int i = 0; i < gr.getnHorses(); i++) {
-            positions.put((i + 1), 0);
-        }
-        
-        //Acordar os cavalos
-        notifyAll();
-        for (int i = 0; i < gr.getnHorses(); i++){
-            System.out.print("\nCavalo " + (i+1) + " na posição " + positions.get(i+1));
-        }
-        
-         while (!lastHorse) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                
+        try {
+            nHorsesInRace = gr.getnHorses();
+            //posições iniciais dos cavalos
+            for (int i = 0; i < gr.getnHorses(); i++) {
+                positions.put((i + 1), 0);
             }
+
+            //Acordar os cavalos
+            notifyAll();
+            for (int i = 0; i < gr.getnHorses(); i++){
+                System.out.print("\nCavalo " + (i+1) + " na posição " + positions.get(i+1));
+            }
+
+             while (!lastHorse) {
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+
+                }
+            }
+            lastHorse = false;
+            makeAMove = false;
+            System.out.print("\nFIM DA CORRIDA.");
+        } catch (RemoteException ex) {
+            Logger.getLogger(RacingTrack.class.getName()).log(Level.SEVERE, null, ex);
         }
-        lastHorse = false;
-        makeAMove = false;
-        System.out.print("\nFIM DA CORRIDA.");
+        
+        
     }
     
     private static Registry getRegistry(String rmiServerHostname, int rmiServerPort) {
