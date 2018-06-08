@@ -11,6 +11,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static monitors.Stable.StableStart.rmiServerHostname;
+import static monitors.Stable.StableStart.rmiServerPort;
 
 /**
  *
@@ -22,8 +24,6 @@ public class Stable implements IStable {
     private boolean callHorses;
     private final IGeneralRepository gr;
     private static int SERVER_PORT;
-    private static String rmiServerHostname;
-    private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "StableStart";
     
@@ -123,6 +123,7 @@ public class Stable implements IStable {
     public void shutdown() throws RemoteException{
         Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
         Register reg = getRegister(registry);
+        
         
         try {
             reg.unbind(nameEntryObject);

@@ -9,6 +9,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import static monitors.Paddock.PaddockStart.rmiServerHostname;
+import static monitors.Paddock.PaddockStart.rmiServerPort;
 
 /**
  *
@@ -20,8 +22,6 @@ public class Paddock implements IPaddock{
     private boolean goCheckHorses, goToStartLine;
     private final IGeneralRepository gr;
     private static int SERVER_PORT;
-    private static String rmiServerHostname;
-    private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "PaddockStart";
     

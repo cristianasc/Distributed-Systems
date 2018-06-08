@@ -12,6 +12,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static monitors.RacingTrack.RacingTrackStart.rmiServerHostname;
+import static monitors.RacingTrack.RacingTrackStart.rmiServerPort;
 
 /**
  *
@@ -25,8 +27,6 @@ public class RacingTrack implements IRacingTrack{
     private HashMap<Integer, Integer> positions;
     private int next, nHorses, position, nHorsesInRace;
     private static int SERVER_PORT;
-    private static String rmiServerHostname;
-    private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "RacingTrack";
     

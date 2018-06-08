@@ -7,6 +7,7 @@ import states.*;
 import interfaces.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
@@ -19,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import static monitors.GeneralRepository.GeneralRepositoryStart.rmiServerHostname;
+import static monitors.GeneralRepository.GeneralRepositoryStart.rmiServerPort;
 
 
 /**
@@ -42,8 +45,6 @@ public class GeneralRepository implements IGeneralRepository{
     private int[] count;
     private HashMap<Integer,Integer> pos;
     private static int SERVER_PORT;
-    private static String rmiServerHostname;
-    private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "GeneralRepositoryStart";
     
@@ -381,7 +382,7 @@ public class GeneralRepository implements IGeneralRepository{
     }
     
     @Override
-    public void terminate() throws RemoteException {
+    public void terminate() throws RemoteException  {
         System.out.println("Terminating Monitors...");
         Registry registry = getRegistry(rmiServerHostname, rmiServerPort);
         
@@ -409,7 +410,7 @@ public class GeneralRepository implements IGeneralRepository{
         }
         catch (RemoteException e)
         { 
-            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+            System.out.println("Exception thrown while locating RacingTrack: " + e.getMessage () + "!");
         }
         catch (NotBoundException e)
         { 
@@ -424,7 +425,7 @@ public class GeneralRepository implements IGeneralRepository{
         }
         catch (RemoteException e)
         { 
-            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+            System.out.println("Exception thrown while locating Paddock: " + e.getMessage () + "!");
         }
         catch (NotBoundException e)
         { 
@@ -439,7 +440,7 @@ public class GeneralRepository implements IGeneralRepository{
         }
         catch (RemoteException e)
         { 
-            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+            System.out.println("Exception thrown while locating ControlCentre: " + e.getMessage () + "!");
         }
         catch (NotBoundException e)
         { 
@@ -454,7 +455,7 @@ public class GeneralRepository implements IGeneralRepository{
         }
         catch (RemoteException e)
         { 
-            System.out.println("Exception thrown while locating Stable: " + e.getMessage () + "!");
+            System.out.println("Exception thrown while locating BettingCentre: " + e.getMessage () + "!");
         }
         catch (NotBoundException e)
         { 

@@ -19,8 +19,8 @@ import java.rmi.server.UnicastRemoteObject;
 public class StableStart {
     
     private static int SERVER_PORT;
-    private static String rmiServerHostname;
-    private static int rmiServerPort;
+    public static String rmiServerHostname;
+    public static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "StableStart";
 

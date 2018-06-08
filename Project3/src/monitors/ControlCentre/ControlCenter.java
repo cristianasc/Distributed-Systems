@@ -13,6 +13,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static monitors.ControlCentre.ControlCentreStart.rmiServerHostname;
+import static monitors.ControlCentre.ControlCentreStart.rmiServerPort;
 
 /**
  *
@@ -25,8 +27,6 @@ public class ControlCenter implements IControlCentre{
     private int nSpectators, nHorses, spec;
     private ArrayList<Bet> winners;
     private static int SERVER_PORT;
-    private static String rmiServerHostname;
-    private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "ControlCentreStart";
     

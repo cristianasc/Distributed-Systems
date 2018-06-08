@@ -12,6 +12,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static monitors.BettingCentre.BettingCentreStart.rmiServerHostname;
+import static monitors.BettingCentre.BettingCentreStart.rmiServerPort;
 
 /**
  *
@@ -26,8 +28,6 @@ public class BettingCentre implements IBettingCentre{
     private Bet bet;
     private double totalValue;
     private static int SERVER_PORT;
-    private static String rmiServerHostname;
-    private static int rmiServerPort;
     private static String nameEntryBase = "RegisterHandler";
     private static String nameEntryObject = "BettingCentreStart";
     
