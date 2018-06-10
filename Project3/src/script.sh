@@ -56,11 +56,7 @@ echo "Setting RMI repository.... "
 echo " "
 sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$registryHostName " rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false 22170;" &
 sleep 2
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$registryHostName " java 
--Djava.rmi.server.codebase="$(pwd)"\
-     -Djava.rmi.server.useCodebaseOnly=false\
-     -Djava.security.policy=java.policy\
-     registry.ServerRegisterRemoteObject" &
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$registryHostName " java registry.ServerRegisterRemoteObject" &
 sleep 5
 echo " "
 
