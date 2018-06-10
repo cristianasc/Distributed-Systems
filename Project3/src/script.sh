@@ -15,49 +15,41 @@ SpectatorHostName=l040101-ws10.ua.pt
 registryPortNum=22460
 
 echo "compressing source code..."
-tar -czf registry.tar.gz registry/
-tar -czf GeneralRepository.tar.gz monitors/GeneralRepository/
-tar -czf Paddock.tar.gz monitors/Paddock/
-tar -czf Stable.tar.gz monitors/Stable/
-tar -czf BettingCentre.tar.gz monitors/BettingCentre/
-tar -czf RacingTrack.tar.gz monitors/RacingTrack/
-tar -czf ControlCentre.tar.gz monitors/ControlCentre/
-tar -czf main.tar.gz main/
-tar -czf interfaces.tar.gz interfaces/
-tar -czf states.tar.gz states/
+
+tar -czf code.tar.gz registry/ monitors/ main/ interfaces/ states/
 
 sleep 5
 
 echo "Unziping code in machines"
-sshpass -p $password scp registry.tar.gz $username@$registryHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$registryHostName "cd ~/Public/ ; tar -xmzf registry.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$registryHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$registryHostName "cd ~/Public/ ; tar -xmzf code.tar.gz" &
 
-sshpass -p $password scp GeneralRepository.tar.gz $username@$GeneralRepositoryHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$GeneralRepositoryHostName "cd ~/Public/ ; tar -xmzf GeneralRepository.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$GeneralRepositoryHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$GeneralRepositoryHostName "cd ~/Public/ ; tar -xmzf code.tar.gz;" &
 
-sshpass -p $password scp Paddock.tar.gz $username@$PaddockHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$PaddockHostName "cd ~/Public/ ; tar -xmzf Paddock.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$PaddockHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$PaddockHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
-sshpass -p $password scp Stable.tar.gz $username@$StableHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$StableHostName "cd ~/Public/ ; tar -xmzf Stable.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$StableHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$StableHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
-sshpass -p $password scp BettingCentre.tar.gz $username@$BettingCenterHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$BettingCenterHostName "cd ~/Public/ ; tar -xmzf BettingCentre.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$BettingCenterHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$BettingCenterHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
-sshpass -p $password scp RacingTrack.tar.gz $username@$RaceTrackHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$RaceTrackHostName "cd ~/Public/ ; tar -xmzf RacingTrack.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$RaceTrackHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$RaceTrackHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
-sshpass -p $password scp ControlCentre.tar.gz $username@$ControlCenterHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$ControlCenterHostName "cd ~/Public/ ; tar -xmzf ControlCentre.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$ControlCenterHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$ControlCenterHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
-sshpass -p $password scp dir_MasterThief.tar.gz $username@$BrokerHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$BrokerHostName "cd ~/Public/ ; tar -xmzf main.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$BrokerHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$BrokerHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
-sshpass -p $password scp dir_MasterThief.tar.gz $username@$HorsesHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$HorsesHostName "cd ~/Public/ ; tar -xmzf main.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$HorsesHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$HorsesHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
-sshpass -p $password scp dir_MasterThief.tar.gz $username@$SpectatorHostName:~/Public/
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$SpectatorHostName "cd ~/Public/ ; tar -xmzf main.tar.gz; tar -xmzf interfaces.tar.gz; tar -xmzf states.tar.gz" &
+sshpass -p $password scp code.tar.gz $username@$SpectatorHostName:~/Public/
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$SpectatorHostName "cd ~/Public/ ; tar -xmzf code.tar.gz; " &
 
 
 echo "Setting RMI repository.... "
