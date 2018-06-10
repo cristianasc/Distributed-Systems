@@ -27,12 +27,9 @@ public class ServerRegisterRemoteObject
 
      String rmiRegHostName;
      int rmiRegPortNumb;
-
-     System.out.println("Nome do nó de processamento onde está localizado o serviço de registo? ");
-     Scanner scanner = new Scanner(System.in);
-     rmiRegHostName = scanner.nextLine();
-     System.out.println("Número do port de escuta do serviço de registo? ");
-     rmiRegPortNumb = scanner.nextInt();
+     
+     rmiRegHostName = args[0];
+     rmiRegPortNumb = Integer.parseInt(args[1]);
 
     /* create and install the security manager */
     /*
@@ -45,7 +42,7 @@ public class ServerRegisterRemoteObject
 
      RegisterRemoteObject regEngine = new RegisterRemoteObject (rmiRegHostName, rmiRegPortNumb);
      Register regEngineStub = null;
-     int listeningPort = 22000;             /* it should be set accordingly in each case */
+     int listeningPort = 22174;             /* it should be set accordingly in each case */
 
      try
      { regEngineStub = (Register) UnicastRemoteObject.exportObject (regEngine, listeningPort);
