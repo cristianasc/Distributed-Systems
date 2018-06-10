@@ -12,7 +12,7 @@ PaddockHostName=l040101-ws06.ua.pt
 BrokerHostName=l040101-ws08.ua.pt
 HorsesHostName=l040101-ws09.ua.pt
 SpectatorHostName=l040101-ws10.ua.pt
-registryPortNum=22460
+registryPortNum=22170
 
 find . -maxdepth 8 -type f -name "*.class" -delete
 
