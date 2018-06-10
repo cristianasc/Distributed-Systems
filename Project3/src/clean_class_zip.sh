@@ -18,7 +18,7 @@ find . -maxdepth 8 -type f -name "*.class" -delete
 
 rm -rf *.tar.gz
 echo "Cleaning..."
-sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$registryHostName "rm -rf *.tar.gz; rm -rf classes/ ; rm -rf deploy/ ; rm -rf *.sh"
+sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$registryHostName "rm -rf *"
 sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$GeneralRepositoryHostName "rm -rf *"
 sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$ControlCenterHostName " rm -rf *"
 sshpass -p $password ssh -o StrictHostKeyChecking=no -f $username@$BettingCenterHostName " rm -rf *"
